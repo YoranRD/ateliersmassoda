@@ -1,23 +1,19 @@
 ---
-import { getNavHref } from '../utils/nav';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import HeroSection from '../components/home/HeroSection.astro';
-import AteliersSection from '../components/home/AteliersSection.astro';
-import WellbeingSection from '../components/home/WellbeingSection.astro';
-import CredibilitySection from '../components/home/CredibilitySection.astro';
-import JournalSection from '../components/home/JournalSection.astro';
-import SocialSection from '../components/home/SocialSection.astro';
-import CtaBanner from '../components/home/CtaBanner.astro';
-
-const base = import.meta.env.BASE_URL;
+import NosAteliersSection from '../components/home/NosAteliersSection.astro';
+import ArtDeVivreSection from '../components/home/ArtDeVivreSection.astro';
+import ProchainsAteliersSection from '../components/home/ProchainsAteliersSection.astro';
+import LetterSection from '../components/home/LetterSection.astro';
 ---
 
-<BaseLayout title="Les Ateliers Massoda — Créativité, bien-être et lifestyle afro-caribéen" description="Ateliers créatifs, rituels de bien-être et communauté inspirante. Réservez votre prochaine expérience Massoda.">
+<BaseLayout
+  title="Les Ateliers Massoda — Culture, créativité et bien-être afro-caribéens"
+  description="Les Ateliers Massoda explorent les cultures afro-caribéennes pour réinventer son art de vivre : ateliers de créativité, d'artisanat et de bien-être, animés par des artistes, artisan·es et expert·es."
+>
   <HeroSection />
-  <AteliersSection />
-  <WellbeingSection />
-  <CredibilitySection />
-  <JournalSection />
-  <SocialSection />
-  <CtaBanner />
+  <NosAteliersSection />
+  <ArtDeVivreSection />
+  <ProchainsAteliersSection />
+  <LetterSection />
 </BaseLayout>

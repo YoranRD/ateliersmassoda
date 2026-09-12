@@ -1,19 +1,23 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { getNavHref } from '../utils/nav';
+import { SOCIAL_LINKS } from '../data/site';
 
 const base = import.meta.env.BASE_URL;
 const legalHref = getNavHref('mentions-legales', base);
 ---
 
-<BaseLayout title="Contact — Les Ateliers Massoda" description="Contactez Les Ateliers Massoda pour toute question, collaboration ou événement sur mesure.">
+<BaseLayout
+  title="Collaborer — Les Ateliers Massoda"
+  description="Marques, créateur·rices, lieux d’accueil et groupes : collaborez avec Les Ateliers Massoda ou privatisez un atelier sur mesure."
+>
 
   <section class="page-hero">
     <div class="container">
       <div class="page-hero__content reveal">
-        <span class="overline">Contact</span>
-        <h1 class="heading-1">Parlons ensemble</h1>
-        <p class="subtitle">Une question, une idée de collaboration, un atelier privé ou simplement envie d'échanger ? Nous lisons chaque message.</p>
+        <span class="overline">Collaborer</span>
+        <h1 class="heading-1">Collaborer avec Massoda</h1>
+        <p class="subtitle">Une collaboration de marque, un lieu à nous proposer, un atelier privé à organiser ou simplement une question : nous lisons chaque message.</p>
       </div>
     </div>
   </section>
@@ -35,9 +39,9 @@ const legalHref = getNavHref('mentions-legales', base);
         <div class="contact-info__block">
           <h2 class="heading-4">Nous retrouver</h2>
           <ul class="contact-info__links">
-            <li><a href="https://www.instagram.com/lesateliersmassoda/" target="_blank" rel="noopener">Instagram</a></li>
-            <li><a href="https://www.tiktok.com/@lesateliersmassoda1" target="_blank" rel="noopener">TikTok</a></li>
-            <li><a href="https://fr.pinterest.com/barbandchill/" target="_blank" rel="noopener">Pinterest</a></li>
+            {SOCIAL_LINKS.map(reseau => (
+              <li><a href={reseau.url} target="_blank" rel="noopener">{reseau.name}</a></li>
+            ))}
           </ul>
           <p class="contact-info__email">
             Ou écrivez directement à <a href="mailto:yoranrd@gmail.com">yoranrd@gmail.com</a>
@@ -67,8 +71,9 @@ const legalHref = getNavHref('mentions-legales', base);
             <label for="subject">Sujet</label>
             <select id="subject" name="subject" required>
               <option value="" disabled selected>Choisir un sujet</option>
-              <option value="collaboration">Collaboration</option>
-              <option value="evenement">Événement privé</option>
+              <option value="collaboration">Collaboration de marque</option>
+              <option value="lieu">Proposition de lieu</option>
+              <option value="evenement">Atelier privé / événement</option>
               <option value="presse">Presse</option>
               <option value="autre">Autre</option>
             </select>
@@ -188,6 +193,22 @@ const legalHref = getNavHref('mentions-legales', base);
     gap: var(--space-12);
   }
 
+  /* Sans min-width:0, le min-content d'un contenu insécable (adresse e-mail,
+     champ de formulaire) élargit la piste et fait déborder la page à 320px. */
+  .contact-grid > * {
+    min-width: 0;
+  }
+
+  .contact-info__email {
+    overflow-wrap: anywhere;
+  }
+
+  .contact-form select,
+  .contact-form input,
+  .contact-form textarea {
+    max-width: 100%;
+  }
+
   .contact-info {
     display: flex;
     flex-direction: column;
@@ -273,7 +294,7 @@ const legalHref = getNavHref('mentions-legales', base);
   .contact-form__group textarea:focus {
     outline: none;
     border-color: var(--color-brand);
-    box-shadow: 0 0 0 3px rgba(68, 82, 199, 0.1);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-brand) 18%, transparent);
   }
 
   .contact-form__group textarea {

@@ -1,0 +1,94 @@
+---
+import { NOS_ATELIERS_MEDIA } from '../../data/site';
+
+const base = import.meta.env.BASE_URL;
+const basePath = base.endsWith('/') ? base : `${base}/`;
+
+/* MASSODA_MISSING:NOS_ATELIERS_MEDIA — aucun média dédié fourni : le brief
+   autorise ici la réutilisation d'une image locale réelle. Renseigner
+   NOS_ATELIERS_MEDIA.finalImage dans src/data/site.ts pour la remplacer. */
+const isFinal = Boolean(NOS_ATELIERS_MEDIA.finalImage);
+const mediaSrc = `${basePath}${NOS_ATELIERS_MEDIA.finalImage ?? NOS_ATELIERS_MEDIA.fallbackImage}`;
+---
+
+<section class="nos-ateliers section">
+  <div class="container nos-ateliers__grid">
+    <div class="nos-ateliers__visual reveal">
+      <div class="nos-ateliers__frame">
+        <img
+          src={mediaSrc}
+          alt={NOS_ATELIERS_MEDIA.alt}
+          class="nos-ateliers__image"
+          loading="lazy"
+          width="800"
+          height="600"
+          data-massoda-placeholder={isFinal ? undefined : 'NOS_ATELIERS_MEDIA'}
+        />
+      </div>
+    </div>
+
+    <div class="nos-ateliers__content reveal reveal-delay-1">
+      <span class="overline">Nos ateliers</span>
+      <h2 class="heading-2">Des savoir-faire transmis par celles et ceux qui les portent</h2>
+      <p class="nos-ateliers__text">
+        Chaque expérience Massoda est imaginée avec des artistes, artisan·es et expert·es
+        choisi·es pour leur savoir-faire et leur capacité à transmettre. Ces rencontres
+        invitent à découvrir leurs pratiques, à les expérimenter et à se les réapproprier
+        à sa manière.
+      </p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .nos-ateliers {
+    background: var(--color-bg-light);
+  }
+
+  .nos-ateliers__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-10);
+    align-items: center;
+  }
+
+  .nos-ateliers__grid > * {
+    min-width: 0;
+  }
+
+  .nos-ateliers__frame {
+    width: 100%;
+    max-width: 520px;
+    aspect-ratio: 4 / 3;
+    border-radius: var(--radius-xl);
+    overflow: hidden;
+    border: 1px solid var(--color-border);
+    margin-inline: auto;
+  }
+
+  .nos-ateliers__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .nos-ateliers__content .overline {
+    display: block;
+    margin-bottom: var(--space-3);
+  }
+
+  .nos-ateliers__text {
+    margin-top: var(--space-5);
+    color: var(--color-text-light);
+    line-height: var(--leading-relaxed);
+    max-width: var(--measure);
+  }
+
+  @media (min-width: 768px) {
+    .nos-ateliers__grid {
+      grid-template-columns: 1fr 1.05fr;
+      gap: var(--space-16);
+    }
+  }
+</style>

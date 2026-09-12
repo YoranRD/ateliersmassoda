@@ -1,0 +1,103 @@
+---
+const piliers = [
+  {
+    emoji: '🌀',
+    title: 'L’équilibre intérieur',
+    text: 'Se reconnecter à soi, ralentir, créer, échanger et s’accorder des espaces de respiration.',
+  },
+  {
+    emoji: '🌱',
+    title: 'Le bien-être du corps',
+    text: 'Explorer l’alimentation, le mouvement, les soins et les pratiques qui nous aident à prendre soin de notre corps.',
+  },
+  {
+    emoji: '☀️',
+    title: 'L’estime de soi',
+    text: 'Cultiver la confiance, l’expression de soi, la fierté et un rapport plus conscient à son identité.',
+  },
+];
+---
+
+<section class="art-de-vivre section">
+  <div class="container">
+    <div class="art-de-vivre__header reveal">
+      <span class="overline">L’art de vivre</span>
+      <h2 class="heading-2">Trois dimensions de notre bien-être</h2>
+      <p class="art-de-vivre__intro">
+        Chez Massoda, le bien-être ne se limite pas à une pratique. Il se nourrit aussi de
+        notre façon de vivre au quotidien. À travers les cultures afro-caribéennes, nos
+        ateliers invitent à découvrir de nouveaux savoirs, gestes et pratiques pour
+        réinventer son art de vivre et nourrir trois dimensions essentielles de notre
+        bien-être.
+      </p>
+    </div>
+
+    <ul class="art-de-vivre__grid">
+      {piliers.map((pilier, i) => (
+        <li class={`art-de-vivre__pilier reveal reveal-delay-${i + 1}`}>
+          {/* Emoji décoratif : le titre porte déjà le sens. */}
+          <span class="art-de-vivre__emoji" aria-hidden="true">{pilier.emoji}</span>
+          <h3 class="art-de-vivre__titre">{pilier.title}</h3>
+          <p class="art-de-vivre__texte">{pilier.text}</p>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .art-de-vivre__header {
+    max-width: 760px;
+    margin-bottom: var(--space-12);
+  }
+
+  .art-de-vivre__header .overline {
+    display: block;
+    margin-bottom: var(--space-3);
+  }
+
+  .art-de-vivre__intro {
+    margin-top: var(--space-5);
+    color: var(--color-text-light);
+    line-height: var(--leading-relaxed);
+  }
+
+  .art-de-vivre__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-6);
+  }
+
+  .art-de-vivre__pilier {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-8);
+  }
+
+  .art-de-vivre__emoji {
+    display: block;
+    font-size: var(--text-3xl);
+    line-height: 1;
+    margin-bottom: var(--space-4);
+  }
+
+  .art-de-vivre__titre {
+    font-size: var(--text-xl);
+    line-height: var(--leading-snug);
+    margin-bottom: var(--space-3);
+  }
+
+  .art-de-vivre__texte {
+    font-size: var(--text-sm);
+    color: var(--color-text-light);
+    line-height: var(--leading-normal);
+  }
+
+  @media (min-width: 768px) {
+    .art-de-vivre__grid {
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-8);
+    }
+  }
+</style>

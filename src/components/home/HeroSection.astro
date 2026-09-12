@@ -1,45 +1,75 @@
 ---
 import { getNavHref } from '../../utils/nav';
-import { RESERVATION_URL } from '../../utils/links';
+import { getReservationCta, HERO_MEDIA } from '../../data/site';
 
 const base = import.meta.env.BASE_URL;
 const basePath = base.endsWith('/') ? base : `${base}/`;
-const heroImage = `${basePath}images/home/hero-atelier-masoda.png`;
+
+/* Sans billetterie confirmée, le CTA principal descend vers la section
+   des prochains ateliers plutôt que de promettre une réservation. */
+const cta = getReservationCta(`${getNavHref('', base)}#prochains-ateliers`);
+
+/* MASSODA_MISSING:HERO_VIDEO — tant que la vidéo réelle n'est pas déposée,
+   on garde l'image existante. Renseigner HERO_MEDIA.videoSrc dans
+   src/data/site.ts suffit à basculer sur la balise <video>. */
+const hasVideo = Boolean(HERO_MEDIA.videoSrc);
+const posterUrl = HERO_MEDIA.posterSrc ? `${basePath}${HERO_MEDIA.posterSrc}` : undefined;
+const fallbackUrl = `${basePath}${HERO_MEDIA.fallbackImage}`;
 ---
 
 <section class="hero">
-  <div class="hero__halo"></div>
+  <div class="hero__halo" aria-hidden="true"></div>
   <div class="container hero__inner">
     <div class="hero__content reveal">
-      <span class="overline">Ateliers créatifs · Bien-être · Lifestyle</span>
-      <h1 class="heading-1 hero__title">
-        Créer, partager,<br/>
-        <em>rayonner ensemble.</em>
-      </h1>
+      <span class="overline">Culture · Créativité · Bien-être</span>
+      <h1 class="heading-1 hero__title">Les Ateliers Massoda</h1>
       <p class="subtitle hero__subtitle">
-        Des ateliers qui mêlent créativité, bien-être et culture afro-caribéenne.
-        Un espace où l'on se retrouve, où l'on crée, où l'on se fait du bien.
+        Explorer les cultures afro-caribéennes pour réinventer son art de vivre.
       </p>
       <div class="hero__actions">
-        <a href={RESERVATION_URL} target="_blank" rel="noopener" class="btn btn--primary">
-          Réserver un atelier
+        <a
+          href={cta.href}
+          target={cta.external ? '_blank' : undefined}
+          rel={cta.external ? 'noopener' : undefined}
+          class="btn btn--primary"
+          data-massoda-placeholder={cta.isPlaceholder ? cta.placeholderId : undefined}
+        >
+          {cta.label}
         </a>
         <a href={getNavHref('ateliers', base)} class="btn btn--outline">
-          Découvrir les ateliers
+          Voir tous les ateliers
         </a>
       </div>
     </div>
+
     <div class="hero__visual reveal reveal-delay-2">
-      <div class="hero__image-frame">
-        <img
-          src={heroImage}
-          alt="Ambiance d'un atelier Massoda — créativité, partage et bien-être"
-          class="hero__image"
-          width="960"
-          height="1200"
-          decoding="async"
-          fetchpriority="high"
-        />
+      <div class="hero__media-frame">
+        {hasVideo ? (
+          <video
+            class="hero__media"
+            src={`${basePath}${HERO_MEDIA.videoSrc}`}
+            poster={posterUrl}
+            autoplay
+            muted
+            loop
+            playsinline
+            preload="metadata"
+            aria-label={HERO_MEDIA.fallbackAlt}
+          >
+            <img src={fallbackUrl} alt={HERO_MEDIA.fallbackAlt} width="960" height="1200" />
+          </video>
+        ) : (
+          <img
+            src={fallbackUrl}
+            alt={HERO_MEDIA.fallbackAlt}
+            class="hero__media"
+            width="960"
+            height="1200"
+            decoding="async"
+            fetchpriority="high"
+            data-massoda-placeholder="HERO_VIDEO"
+          />
+        )}
       </div>
     </div>
   </div>
@@ -60,7 +90,7 @@ const heroImage = `${basePath}images/home/hero-atelier-masoda.png`;
     width: 500px;
     height: 500px;
     border-radius: 50%;
-    background: radial-gradient(circle, rgba(255, 155, 84, 0.15) 0%, transparent 70%);
+    background: radial-gradient(circle, color-mix(in srgb, var(--color-warm) 22%, transparent) 0%, transparent 70%);
     pointer-events: none;
   }
 
@@ -80,14 +110,9 @@ const heroImage = `${basePath}images/home/hero-atelier-masoda.png`;
     color: var(--color-text);
   }
 
-  .hero__title em {
-    font-style: italic;
-    color: var(--color-brand);
-  }
-
   .hero__subtitle {
     margin-top: var(--space-6);
-    max-width: 480px;
+    max-width: 30ch;
   }
 
   .hero__actions {
@@ -102,7 +127,7 @@ const heroImage = `${basePath}images/home/hero-atelier-masoda.png`;
     justify-content: center;
   }
 
-  .hero__image-frame {
+  .hero__media-frame {
     width: 100%;
     max-width: 480px;
     aspect-ratio: 4 / 5;
@@ -113,7 +138,7 @@ const heroImage = `${basePath}images/home/hero-atelier-masoda.png`;
     border: 1px solid var(--color-border);
   }
 
-  .hero__image {
+  .hero__media {
     width: 100%;
     height: 100%;
     object-fit: cover;

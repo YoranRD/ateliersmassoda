@@ -1,41 +1,50 @@
 ---
 import { getNavHref, isActiveLink } from '../utils/nav';
-import { RESERVATION_URL } from '../utils/links';
+import { getReservationCta } from '../data/site';
 
 const base = import.meta.env.BASE_URL;
 const basePath = base.endsWith('/') ? base : `${base}/`;
 const currentPath = Astro.url.pathname;
-const logoUrl = `${basePath}brand/logo_halo.png`;
+const homeHref = getNavHref('', base);
+// Mot-symbole officiel, recadré sur ses pixels opaques (marges transparentes retirées)
+const logoUrl = `${basePath}brand/nouveau_logo_crop.png`;
+
+/* Sans billetterie confirmée, le CTA mène à /ateliers/ au lieu de promettre
+   une réservation immédiate. Voir getReservationCta() dans src/data/site.ts. */
+const cta = getReservationCta(getNavHref('ateliers', base));
 
 const navLinks = [
-  { label: 'Accueil', path: '' },
-  { label: 'Ateliers', path: 'ateliers' },
-  { label: 'Boutique', path: 'boutique' },
-  { label: 'Journal', path: 'journal' },
-  { label: 'À propos', path: 'a-propos' },
-  { label: 'Contact', path: 'contact' },
+  { label: 'Accueil', href: homeHref },
+  { label: 'Ateliers & expériences', href: getNavHref('ateliers', base) },
+  // La Lettre vit dans une section de l'accueil : le lien doit rester absolu
+  // (base path inclus) car le header est aussi rendu sur les autres pages.
+  { label: 'La Lettre', href: `${homeHref}#la-lettre`, isAnchor: true },
+  { label: 'À propos', href: getNavHref('a-propos', base) },
+  { label: 'Collaborer', href: getNavHref('contact', base) },
 ];
-
-const navLinksWithHref = navLinks.map(link => ({
-  ...link,
-  href: getNavHref(link.path, base),
-}));
 ---
 
 <header class="header">
   <div class="header__inner container">
-    <a href={getNavHref('', base)} class="header__logo" aria-label="Massoda — Accueil">
-      <img src={logoUrl} alt="Logo Les Ateliers Massoda" class="header__logo-img" width="44" height="44" />
-      <span class="header__logo-text">Massoda</span>
+    <a href={homeHref} class="header__logo" aria-label="Les Ateliers Massoda — Accueil">
+      <img
+        src={logoUrl}
+        alt="Les Ateliers Massoda"
+        class="header__logo-img"
+        width="355"
+        height="154"
+        fetchpriority="high"
+      />
     </a>
 
     <nav class="header__nav" aria-label="Navigation principale">
       <ul class="header__links">
-        {navLinksWithHref.map(link => (
+        {navLinks.map(link => (
           <li>
             <a
               href={link.href}
-              class:list={['header__link', { 'header__link--active': isActiveLink(currentPath, link.href) }]}
+              aria-current={!link.isAnchor && isActiveLink(currentPath, link.href) ? 'page' : undefined}
+              class:list={['header__link', { 'header__link--active': !link.isAnchor && isActiveLink(currentPath, link.href) }]}
             >
               {link.label}
             </a>
@@ -44,40 +53,65 @@ const navLinksWithHref = navLinks.map(link => ({
       </ul>
     </nav>
 
-    <a href={RESERVATION_URL} target="_blank" rel="noopener" class="btn btn--primary header__cta">
-      Réserver
+    <a
+      href={cta.href}
+      target={cta.external ? '_blank' : undefined}
+      rel={cta.external ? 'noopener' : undefined}
+      class="btn btn--primary header__cta"
+      data-massoda-placeholder={cta.isPlaceholder ? cta.placeholderId : undefined}
+    >
+      {cta.label}
     </a>
 
-    <button class="header__burger" aria-label="Ouvrir le menu" aria-expanded="false">
+    <button
+      class="header__burger"
+      aria-label="Ouvrir le menu"
+      aria-expanded="false"
+      aria-controls="menu-mobile"
+    >
       <span></span>
       <span></span>
       <span></span>
     </button>
   </div>
+</header>
 
-  <!-- Mobile menu -->
-  <div class="header__mobile-menu" aria-hidden="true">
-    <nav>
+<!-- Le panneau mobile est volontairement hors du <header> : celui-ci porte un
+     backdrop-filter, qui ferait de lui le bloc conteneur de tout descendant
+     position:fixed et réduirait le panneau à la hauteur du header. -->
+<div class="header__mobile-menu" id="menu-mobile" aria-hidden="true">
+    <nav aria-label="Navigation mobile">
       <ul class="header__mobile-links">
-        {navLinksWithHref.map(link => (
+        {navLinks.map(link => (
           <li>
-            <a href={link.href} class="header__mobile-link">{link.label}</a>
+            <a
+              href={link.href}
+              class="header__mobile-link"
+              aria-current={!link.isAnchor && isActiveLink(currentPath, link.href) ? 'page' : undefined}
+            >
+              {link.label}
+            </a>
           </li>
         ))}
       </ul>
-      <a href={RESERVATION_URL} target="_blank" rel="noopener" class="btn btn--primary header__mobile-cta">
-        Réserver un atelier
+      <a
+        href={cta.href}
+        target={cta.external ? '_blank' : undefined}
+        rel={cta.external ? 'noopener' : undefined}
+        class="btn btn--primary header__mobile-cta"
+        data-massoda-placeholder={cta.isPlaceholder ? cta.placeholderId : undefined}
+      >
+        {cta.label}
       </a>
     </nav>
-  </div>
-</header>
+</div>
 
 <style>
   .header {
     position: sticky;
     top: 0;
     z-index: 100;
-    background: rgba(246, 239, 231, 0.92);
+    background: color-mix(in srgb, var(--color-bg) 92%, transparent);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     border-bottom: 1px solid var(--color-border);
@@ -87,34 +121,22 @@ const navLinksWithHref = navLinks.map(link => ({
     display: flex;
     align-items: center;
     justify-content: space-between;
-    height: 64px;
+    gap: var(--space-4);
+    height: var(--header-h);
   }
 
   .header__logo {
     display: inline-flex;
     align-items: center;
-    gap: var(--space-3);
-  }
-
-  .header__logo-img {
-    width: 36px;
-    height: 36px;
-    object-fit: contain;
     flex-shrink: 0;
   }
 
-  .header__logo-text {
-    font-family: var(--font-heading);
-    font-size: var(--text-2xl);
-    color: var(--color-brand);
-    letter-spacing: -0.02em;
-  }
-
-  @media (min-width: 768px) {
-    .header__logo-img {
-      width: 44px;
-      height: 44px;
-    }
+  /* Le mot-symbole contient déjà « Les ateliers massoda » :
+     aucun texte de marque adjacent n'est nécessaire. */
+  .header__logo-img {
+    height: 32px;
+    width: auto;
+    object-fit: contain;
   }
 
   .header__nav {
@@ -123,7 +145,8 @@ const navLinksWithHref = navLinks.map(link => ({
 
   .header__links {
     display: flex;
-    gap: var(--space-8);
+    align-items: center;
+    gap: var(--space-5);
   }
 
   .header__link {
@@ -132,6 +155,7 @@ const navLinksWithHref = navLinks.map(link => ({
     color: var(--color-text-light);
     transition: color var(--duration-fast) var(--ease-out);
     position: relative;
+    white-space: nowrap;
   }
 
   .header__link:hover,
@@ -142,7 +166,7 @@ const navLinksWithHref = navLinks.map(link => ({
   .header__link--active::after {
     content: '';
     position: absolute;
-    bottom: -4px;
+    bottom: -6px;
     left: 0;
     right: 0;
     height: 2px;
@@ -152,8 +176,9 @@ const navLinksWithHref = navLinks.map(link => ({
 
   .header__cta {
     display: none;
-    padding: var(--space-2) var(--space-6);
-    font-size: var(--text-sm);
+    padding: var(--space-2) var(--space-5);
+    font-size: var(--text-xs);
+    flex-shrink: 0;
   }
 
   /* Burger */
@@ -162,6 +187,7 @@ const navLinksWithHref = navLinks.map(link => ({
     flex-direction: column;
     gap: 5px;
     padding: var(--space-2);
+    flex-shrink: 0;
   }
 
   .header__burger span {
@@ -170,7 +196,8 @@ const navLinksWithHref = navLinks.map(link => ({
     height: 2px;
     background: var(--color-text);
     border-radius: var(--radius-full);
-    transition: all var(--duration-normal) var(--ease-out);
+    transition: transform var(--duration-normal) var(--ease-out),
+                opacity var(--duration-fast) var(--ease-out);
   }
 
   .header__burger[aria-expanded="true"] span:nth-child(1) {
@@ -188,36 +215,59 @@ const navLinksWithHref = navLinks.map(link => ({
   /* Mobile menu */
   .header__mobile-menu {
     position: fixed;
-    top: 64px;
+    top: var(--header-h);
     left: 0;
     right: 0;
     bottom: 0;
     background: var(--color-bg);
     padding: var(--space-10) var(--space-6);
-    transform: translateX(100%);
-    transition: transform var(--duration-normal) var(--ease-out);
+    overflow-y: auto;
+    overscroll-behavior: contain;
     z-index: 99;
   }
 
+  /* Fermé : réellement retiré du rendu et du parcours de tabulation.
+     display plutôt qu'un translateX(100%), qui ferait déborder la page
+     de toute sa largeur, ou qu'une transition sur visibility, qui reste
+     bloquée tant que l'élément n'est pas rendu. */
+  .header__mobile-menu[aria-hidden="true"] {
+    display: none;
+  }
+
+  /* Pas de fill-mode : l'état de repos reste opacity 1, donc le menu est
+     lisible même si l'animation ne s'exécute pas. */
   .header__mobile-menu[aria-hidden="false"] {
-    transform: translateX(0);
+    animation: menu-entree var(--duration-normal) var(--ease-out);
+  }
+
+  @keyframes menu-entree {
+    from { opacity: 0; transform: translateY(-8px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .header__mobile-menu[aria-hidden="false"] { animation: none; }
   }
 
   .header__mobile-links {
     display: flex;
     flex-direction: column;
-    gap: var(--space-6);
+    gap: var(--space-5);
   }
 
   .header__mobile-link {
+    display: inline-block;
     font-family: var(--font-heading);
-    font-size: var(--text-3xl);
+    font-weight: var(--weight-bold);
+    font-size: var(--text-2xl);
+    letter-spacing: var(--tracking-tight);
     color: var(--color-text);
     transition: color var(--duration-fast);
   }
 
-  .header__mobile-link:hover {
-    color: var(--color-accent);
+  .header__mobile-link:hover,
+  .header__mobile-link[aria-current="page"] {
+    color: var(--color-brand);
   }
 
   .header__mobile-cta {
@@ -225,23 +275,50 @@ const navLinksWithHref = navLinks.map(link => ({
     margin-top: var(--space-10);
   }
 
-  @media (min-width: 768px) {
-    .header__inner { height: 72px; }
+  @media (min-width: 480px) {
+    .header__logo-img { height: 36px; }
+  }
+
+  @media (min-width: 1024px) {
+    .header__logo-img { height: 42px; }
     .header__nav { display: block; }
     .header__cta { display: inline-flex; }
     .header__burger { display: none; }
     .header__mobile-menu { display: none; }
   }
+
+  @media (min-width: 1200px) {
+    .header__links { gap: var(--space-8); }
+    .header__cta { font-size: var(--text-sm); padding: var(--space-2) var(--space-6); }
+  }
 </style>
 
 <script>
-  const burger = document.querySelector('.header__burger');
-  const mobileMenu = document.querySelector('.header__mobile-menu');
+  const burger = document.querySelector<HTMLButtonElement>('.header__burger');
+  const mobileMenu = document.querySelector<HTMLElement>('.header__mobile-menu');
+
+  function setMenu(open: boolean) {
+    if (!burger || !mobileMenu) return;
+    burger.setAttribute('aria-expanded', String(open));
+    burger.setAttribute('aria-label', open ? 'Fermer le menu' : 'Ouvrir le menu');
+    mobileMenu.setAttribute('aria-hidden', String(!open));
+    document.body.style.overflow = open ? 'hidden' : '';
+  }
 
   burger?.addEventListener('click', () => {
-    const expanded = burger.getAttribute('aria-expanded') === 'true';
-    burger.setAttribute('aria-expanded', String(!expanded));
-    mobileMenu?.setAttribute('aria-hidden', String(expanded));
-    document.body.style.overflow = expanded ? '' : 'hidden';
+    setMenu(burger.getAttribute('aria-expanded') !== 'true');
+  });
+
+  // Refermer après activation d'un lien : indispensable pour les ancres
+  // comme #la-lettre, qui ne provoquent pas de navigation.
+  mobileMenu?.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => setMenu(false));
+  });
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && burger?.getAttribute('aria-expanded') === 'true') {
+      setMenu(false);
+      burger.focus();
+    }
   });
 </script>

@@ -1,0 +1,73 @@
+---
+import { getNavHref } from '../../utils/nav';
+import { getWorkshopViews } from '../../data/workshops';
+import WorkshopCard from '../WorkshopCard.astro';
+
+const base = import.meta.env.BASE_URL;
+const ateliers = getWorkshopViews();
+---
+
+<section class="prochains section" id="prochains-ateliers">
+  <div class="container">
+    <div class="prochains__header reveal">
+      <span class="overline">Programmation</span>
+      <h2 class="heading-2">Nos trois prochains ateliers</h2>
+    </div>
+
+    <div class="prochains__grid">
+      {ateliers.map((atelier, i) => (
+        <div class={`reveal reveal-delay-${i + 1}`}>
+          <WorkshopCard workshop={atelier} headingLevel="h3" />
+        </div>
+      ))}
+    </div>
+
+    <div class="prochains__cta reveal">
+      <a href={getNavHref('ateliers', base)} class="btn btn--ghost">
+        Voir tous les ateliers
+      </a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .prochains {
+    background: var(--color-bg-light);
+  }
+
+  .prochains__header {
+    margin-bottom: var(--space-12);
+  }
+
+  .prochains__header .overline {
+    display: block;
+    margin-bottom: var(--space-3);
+  }
+
+  .prochains__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-8);
+  }
+
+  .prochains__grid > * {
+    min-width: 0;
+    display: flex;
+  }
+
+  .prochains__grid > * > * {
+    width: 100%;
+  }
+
+  .prochains__cta {
+    display: flex;
+    justify-content: center;
+    margin-top: var(--space-12);
+  }
+
+  @media (min-width: 768px) {
+    .prochains__grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+</style>

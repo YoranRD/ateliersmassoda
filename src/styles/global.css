@@ -2,7 +2,9 @@
    MASSODA — Global Styles
    ============================================ */
 
-@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Manrope:wght@400;500;600;700&display=swap');
+/* Raleway uniquement — graisses réellement utilisées :
+   400 (texte), 500 (liens de nav), 600 (labels, boutons), 700 (titres). */
+@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@400;500;600;700&display=swap');
 @import './tokens.css';
 
 /* --- Reset --- */
@@ -49,12 +51,19 @@ ul, ol {
   list-style: none;
 }
 
+/* Une seule famille : le contraste titres/texte vient de la graisse
+   (700 contre 400) et du letter-spacing, pas d'une seconde police. */
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-heading);
-  font-weight: var(--weight-normal);
+  font-weight: var(--weight-bold);
   line-height: var(--leading-tight);
   letter-spacing: var(--tracking-tight);
   color: var(--color-text);
+  text-wrap: balance;
+}
+
+p {
+  text-wrap: pretty;
 }
 
 /* --- Page accent line (top of main, below sticky header) --- */
@@ -114,15 +123,18 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: var(--weight-normal);
   line-height: var(--leading-normal);
   color: var(--color-text-light);
+  max-width: var(--measure);
 }
 
+/* Petit texte informatif : le bleu de marque (8.36:1 sur crème) et non
+   l'orange, qui ne monte qu'à 2.29:1. */
 .overline {
   font-family: var(--font-body);
   font-size: var(--text-sm);
   font-weight: var(--weight-semibold);
   letter-spacing: var(--tracking-wider);
   text-transform: uppercase;
-  color: var(--color-accent);
+  color: var(--color-brand);
 }
 
 /* --- Buttons --- */
@@ -142,24 +154,27 @@ h1, h2, h3, h4, h5, h6 {
   white-space: nowrap;
 }
 
+/* CTA principal : bleu du logo + blanc (contraste 10.19:1).
+   Le blanc sur orange ne monte qu'à 2.79:1 et n'est donc pas utilisé. */
 .btn--primary {
-  background-color: var(--color-accent);
-  color: var(--color-text-on-accent);
+  background-color: var(--color-brand);
+  color: var(--color-text-on-brand);
 }
 
 .btn--primary:hover {
-  background-color: var(--color-accent-hover);
+  background-color: var(--color-brand-hover);
   transform: translateY(-1px);
   box-shadow: var(--shadow-md);
 }
 
-.btn--brand {
-  background-color: var(--color-brand);
+/* CTA secondaire chaud : orange + encre foncée (contraste 6.19:1). */
+.btn--accent {
+  background-color: var(--color-accent);
   color: var(--color-text-on-accent);
 }
 
-.btn--brand:hover {
-  background-color: var(--color-brand-hover);
+.btn--accent:hover {
+  background-color: var(--color-accent-hover);
   transform: translateY(-1px);
   box-shadow: var(--shadow-md);
 }
@@ -175,15 +190,26 @@ h1, h2, h3, h4, h5, h6 {
   color: var(--color-bg);
 }
 
+.btn:disabled,
+.btn[aria-disabled='true'] {
+  background-color: var(--color-disabled-bg);
+  border-color: var(--color-disabled-bg);
+  color: var(--color-disabled-text);
+  cursor: not-allowed;
+  box-shadow: none;
+  transform: none;
+  pointer-events: none;
+}
+
 .btn--ghost {
-  color: var(--color-accent);
+  color: var(--color-brand);
   font-weight: var(--weight-semibold);
   padding: var(--space-2) 0;
   border-radius: 0;
 }
 
 .btn--ghost:hover {
-  color: var(--color-accent-hover);
+  color: var(--color-brand-hover);
 }
 
 .btn--ghost::after {
@@ -222,19 +248,25 @@ h1, h2, h3, h4, h5, h6 {
   padding: var(--space-6);
 }
 
+/* Pastille : l'orange pastel porte la couleur, l'encre porte le texte
+   (11.94:1) — l'orange vif en texte ne passerait pas le contraste. */
 .card__tag {
   display: inline-block;
   font-size: var(--text-xs);
   font-weight: var(--weight-semibold);
   letter-spacing: var(--tracking-wider);
   text-transform: uppercase;
-  color: var(--color-accent);
-  margin-bottom: var(--space-2);
+  color: var(--color-text);
+  background-color: var(--color-warm-light);
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-full);
+  margin-bottom: var(--space-3);
 }
 
 .card__title {
   font-family: var(--font-heading);
   font-size: var(--text-xl);
+  line-height: var(--leading-snug);
   margin-bottom: var(--space-2);
 }
 
@@ -292,6 +324,21 @@ h1, h2, h3, h4, h5, h6 {
 /* --- Focus --- */
 
 :focus-visible {
-  outline: 2px solid var(--color-brand);
+  outline: 3px solid var(--color-focus);
   outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+/* Sur l'aplat bleu, l'anneau de focus passe en clair pour rester visible. */
+.on-brand :focus-visible {
+  outline-color: var(--color-text-on-brand);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+  .reveal { opacity: 1; transform: none; }
 }

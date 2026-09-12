@@ -1,163 +1,147 @@
 ---
 import { getNavHref } from '../utils/nav';
-import { RESERVATION_URL } from '../utils/links';
+import { getReservationCta } from '../data/site';
+import { getWorkshopViews } from '../data/workshops';
 import BaseLayout from '../layouts/BaseLayout.astro';
+import WorkshopCard from '../components/WorkshopCard.astro';
+import Faq, { type FaqItem } from '../components/Faq.astro';
 
 const base = import.meta.env.BASE_URL;
-const basePath = base.endsWith('/') ? base : `${base}/`;
 
-const ateliers = [
+// Exactement la même source que l'accueil : aucune date, aucun prix,
+// aucune image ni URL n'est redéfini ici.
+const ateliers = getWorkshopViews();
+
+// Aucune billetterie ouverte à ce jour : le CTA final ne promet pas de
+// réservation et renvoie vers la liste des prochains ateliers.
+const cta = getReservationCta('#prochains-ateliers');
+
+const faqItems: FaqItem[] = [
   {
-    title: 'Baya',
-    tag: 'Artisanat',
-    description: 'Création de baya — ces perles de taille traditionnelles, portées comme une seconde peau. Un atelier intimiste pour renouer avec la féminité, l\'ancrage et la mémoire de nos racines.',
-    details: ['Format atelier', 'Perles & matériel fournis', 'Transmission culturelle', 'Petite collation'],
-    accent: 'var(--color-brand)',
-    ctaHref: RESERVATION_URL,
-    ctaLabel: 'Réserver',
-    ctaExternal: true,
-    image: `${basePath}images/home/atelier-baya.png`,
-    alt: 'Atelier Baya — création de perles de taille traditionnelles',
+    question: 'Puis-je venir seul·e à un atelier ?',
+    answer:
+      'Bien sûr. Beaucoup de participant·es viennent seul·es. Nos expériences sont pensées comme des espaces de partage et de rencontre, et nous veillons à créer une ambiance chaleureuse afin que chacun·e puisse se sentir à l’aise dès son arrivée.',
   },
   {
-    title: 'Paint & Jam',
-    tag: 'Créativité',
-    description: 'Peinture intuitive sur des sons afro, soul et jazz. Pas besoin de savoir dessiner — juste l\'envie de lâcher prise et de créer dans une ambiance bienveillante.',
-    details: ['Format atelier', 'Toile & matériel fournis', 'Musique live ou DJ set', 'Collation incluse'],
-    accent: 'var(--color-accent)',
-    ctaHref: RESERVATION_URL,
-    ctaLabel: 'Réserver',
-    ctaExternal: true,
-    image: `${basePath}images/workshops/paint-jam-banner.png`,
-    alt: 'Atelier Paint & Jam — peinture intuitive en musique',
+    question: 'Puis-je venir accompagné·e ?',
+    answer:
+      'Avec plaisir. Selon les ateliers, nous proposons ponctuellement des tarifs préférentiels pour venir à deux. Certaines expériences sont mixtes et d’autres peuvent être pensées pour un public particulier : toutes les informations sont précisées sur la page de l’atelier.',
   },
   {
-    title: 'Afro-diététique & plantes africaines',
-    tag: 'Bien-être',
-    description: 'Découverte des plantes africaines, des tisanes et d\'une nutrition douce inspirée des traditions du continent. Un atelier sensoriel pour prendre soin du corps autrement.',
-    details: ['Format atelier', 'Dégustation de tisanes', 'Plantes & infusions', 'Conseils personnalisés'],
-    accent: 'var(--color-coral)',
-    ctaHref: RESERVATION_URL,
-    ctaLabel: 'Réserver',
-    ctaExternal: true,
-    image: `${basePath}images/home/bien-etre-lifestyle.png`,
-    alt: 'Atelier afro-diététique — plantes africaines, tisanes et bien-être',
+    question: 'Faut-il déjà savoir pratiquer l’activité ?',
+    answer:
+      'Non. Nos ateliers sont conçus pour permettre à chacun·e de découvrir, d’expérimenter et d’apprendre à son rythme. Les artistes, artisan·es et expert·es accompagnent le groupe tout au long de l’expérience.',
+  },
+  {
+    question: 'Faut-il être issu·e de la communauté afrodescendante pour participer ?',
+    answer:
+      'Non. Les Ateliers Massoda sont ouverts à toutes et à tous. Nos expériences mettent à l’honneur les cultures afro-caribéennes, leurs savoirs, leurs pratiques et leurs créateur·rices dans une démarche de découverte, de transmission et de partage. Il n’est donc pas nécessaire d’être afrodescendant·e pour participer : nous demandons simplement de venir avec curiosité, respect et envie d’apprendre.',
+  },
+  {
+    question: 'Le matériel est-il fourni ?',
+    answer:
+      'Oui. Sauf indication contraire, tout le matériel nécessaire est inclus dans la réservation. Il ne reste plus qu’à venir profiter de l’expérience.',
+  },
+  {
+    question: 'Pourquoi le nombre de places est-il limité ?',
+    answer:
+      'Nous privilégions les petits groupes afin de préserver une expérience intimiste, de faciliter les échanges avec l’intervenant·e et de permettre à chacun·e d’être accompagné·e dans de bonnes conditions.',
+  },
+  {
+    question: 'Où ont lieu les ateliers ?',
+    answer:
+      'Les expériences Massoda sont organisées dans différents lieux sélectionnés en fonction de l’univers de chaque atelier. L’adresse exacte est indiquée sur la page de réservation et dans la confirmation.',
+  },
+  {
+    question: 'Comment être informé·e des prochains ateliers ?',
+    answer:
+      'En rejoignant La Lettre de Massoda, il est possible de découvrir la prochaine programmation et de bénéficier d’un accès prioritaire aux billetteries avant leur ouverture au public.',
+  },
+  {
+    question: 'Les ateliers sont-ils uniquement créatifs ?',
+    answer:
+      'Non. Massoda explore la culture afro-caribéenne à travers différents aspects de l’art de vivre et du bien-être : créativité, alimentation, soin de soi, estime de soi, décoration, artisanat et bien d’autres pratiques. Chaque expérience est une nouvelle manière de découvrir, d’expérimenter et de se réapproprier ces savoirs.',
   },
 ];
 ---
 
-<BaseLayout title="Nos Ateliers — Les Ateliers Massoda" description="Découvrez nos ateliers créatifs et bien-être. Peinture, rituels de soin, événements sur mesure. Réservez votre place.">
-
-  <!-- Hero -->
+<BaseLayout
+  title="Ateliers & expériences — Les Ateliers Massoda"
+  description="Rencontrez des artistes, artisan·es et expert·es afro-caribéen·nes le temps d’un atelier en petit comité, matériel fourni. Découvrez la prochaine programmation Massoda."
+>
+  <!-- 1. Introduction -->
   <section class="page-hero">
     <div class="container">
       <div class="page-hero__content reveal">
-        <span class="overline">Ateliers</span>
-        <h1 class="heading-1">Créer, partager, se ressourcer.</h1>
-        <p class="subtitle">Des ateliers pensés pour se reconnecter à soi à travers la créativité et le bien-être.</p>
-        <a href={RESERVATION_URL} target="_blank" rel="noopener" class="btn btn--primary">
-          Réserver maintenant
+        <h1 class="heading-1">Ateliers &amp; expériences</h1>
+        <p class="page-hero__lede">
+          Les Ateliers Massoda créent des espaces de partage où les cultures afro-caribéennes
+          se vivent à travers la créativité, le bien-être et l’art de vivre.
+        </p>
+        <p>
+          Ouverts à toutes et à tous, nos ateliers invitent à rencontrer des artistes,
+          artisan·es et expert·es, à découvrir leurs savoirs et leurs pratiques, puis à les
+          expérimenter à sa manière.
+        </p>
+        <p>
+          Chaque expérience est pensée en petit comité, avec un nombre de places limité et
+          tout le matériel fourni, afin de profiter pleinement du moment.
+        </p>
+        <p>
+          Que l’on vienne seul·e ou accompagné·e, Massoda est avant tout un espace de
+          rencontre, de transmission et de convivialité.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. Les trois prochains ateliers -->
+  <section class="section prochains" id="prochains-ateliers">
+    <div class="container">
+      <h2 class="heading-2 prochains__title reveal">Nos trois prochains ateliers</h2>
+      <div class="prochains__grid">
+        {ateliers.map((atelier, i) => (
+          <div class={`reveal reveal-delay-${i + 1}`}>
+            <WorkshopCard workshop={atelier} headingLevel="h3" />
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. Questions & réponses -->
+  <section class="section faq-section">
+    <div class="container container--narrow reveal">
+      <Faq title="Questions & réponses" items={faqItems} headingLevel="h2" />
+    </div>
+  </section>
+
+  <!-- 4. CTA final -->
+  <section class="section final-cta">
+    <div class="container container--narrow final-cta__inner reveal">
+      <h2 class="heading-3">Envie de vivre une expérience Massoda ?</h2>
+      <p class="final-cta__text">
+        La programmation se dévoile atelier après atelier. La Lettre de Massoda donne accès
+        aux billetteries avant leur ouverture au public.
+      </p>
+      <div class="final-cta__actions">
+        <a
+          href={cta.href}
+          target={cta.external ? '_blank' : undefined}
+          rel={cta.external ? 'noopener' : undefined}
+          class="btn btn--primary"
+          data-massoda-placeholder={cta.isPlaceholder ? cta.placeholderId : undefined}
+        >
+          {cta.label}
+        </a>
+        <a href={`${getNavHref('', base)}#la-lettre`} class="btn btn--outline">
+          Recevoir La Lettre
         </a>
       </div>
-    </div>
-  </section>
-
-  <!-- Ateliers list -->
-  <section class="section">
-    <div class="container">
-      {ateliers.map((atelier, i) => (
-        <article class={`atelier-card reveal ${i % 2 === 1 ? 'atelier-card--reverse' : ''}`}>
-          <div class="atelier-card__visual">
-            <div class="atelier-card__image" style={`background: linear-gradient(135deg, ${atelier.accent}18, ${atelier.accent}06);`}>
-              <img
-                src={atelier.image}
-                alt={atelier.alt}
-                class="atelier-card__img"
-                loading="lazy"
-                width="840"
-                height="630"
-              />
-            </div>
-          </div>
-          <div class="atelier-card__content">
-            <span class="overline" style={`color: ${atelier.accent};`}>{atelier.tag}</span>
-            <h2 class="heading-3">{atelier.title}</h2>
-            <p class="atelier-card__desc">{atelier.description}</p>
-            <ul class="atelier-card__details">
-              {atelier.details.map(d => (
-                <li>{d}</li>
-              ))}
-            </ul>
-            <a
-              href={atelier.ctaHref}
-              class="btn btn--primary"
-              {...(atelier.ctaExternal ? { target: '_blank', rel: 'noopener' } : {})}
-            >
-              {atelier.ctaLabel}
-            </a>
-          </div>
-        </article>
-      ))}
-    </div>
-  </section>
-
-  <!-- Sur mesure / Privatisation -->
-  <section class="section private-section">
-    <div class="container container--narrow">
-      <div class="private-block reveal">
-        <span class="overline">Ateliers privés</span>
-        <h2 class="heading-3">Privatiser un atelier Massoda</h2>
-        <p class="private-block__text">
-          Anniversaire, EVJF, team building, association ou groupe d'amies : nous concevons une expérience Massoda à l'image de votre groupe — Baya, Paint & Jam ou Afro-diététique, en formule sur mesure.
-        </p>
-        <div class="private-block__actions">
-          <a href={getNavHref('contact', base)} class="btn btn--primary">Organiser un atelier sur mesure</a>
-          <a href={getNavHref('contact', base)} class="btn btn--ghost">Demander un devis</a>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- FAQ -->
-  <section class="section faq-section">
-    <div class="container container--narrow">
-      <div class="reveal">
-        <h2 class="heading-3 faq-section__title">Questions fréquentes</h2>
-        <div class="faq-list">
-          <details class="faq-item">
-            <summary>Faut-il être expérimentée pour participer ?</summary>
-            <p>Non. Nos ateliers — Baya, Paint &amp; Jam, Afro-diététique — sont accessibles à toutes, même sans expérience préalable. L'idée est de découvrir, créer et passer un bon moment, à votre rythme.</p>
-          </details>
-          <details class="faq-item">
-            <summary>Qui peut venir ?</summary>
-            <p>Massoda est pensé en priorité comme un espace bienveillant d'échange et de création, avec une attention particulière aux femmes qui souhaitent prendre un temps pour elles. Selon les formats, certains ateliers peuvent aussi être mixtes — l'ambiance reste toujours douce et inclusive. Vous pouvez venir seule, entre amies ou en groupe.</p>
-          </details>
-          <details class="faq-item">
-            <summary>Qu'est-ce qui est inclus ?</summary>
-            <p>Tout le matériel nécessaire à l'atelier (perles, toile et peinture, plantes et tisanes selon le format), l'accompagnement, ainsi qu'un petit moment de partage autour d'une collation.</p>
-          </details>
-          <details class="faq-item">
-            <summary>Que dois-je apporter ?</summary>
-            <p>Rien de spécial. Pour Paint &amp; Jam, prévoyez simplement une tenue confortable que vous ne craignez pas de tacher.</p>
-          </details>
-          <details class="faq-item">
-            <summary>Où ont lieu les ateliers ?</summary>
-            <p>La plupart de nos ateliers se vivent en ce moment chez <a href="https://www.bmkparis.com/bmk-folie-bamako" target="_blank" rel="noopener">BMK Folie-Bamako</a>, 40 Rue Jean-Pierre Timbaud, 75011 Paris — un lieu chaleureux qui partage notre sensibilité afro-caribéenne. Selon les formats, certains ateliers (par exemple un futur atelier céramique) peuvent se tenir ailleurs en région parisienne. L'adresse exacte est toujours confirmée à la réservation.</p>
-          </details>
-          <details class="faq-item">
-            <summary>Comment réserver ?</summary>
-            <p>Les réservations se font en ligne via notre plateforme dédiée. Vous recevrez un e-mail de confirmation avec les détails pratiques (lieu, horaires, accès).</p>
-          </details>
-          <details class="faq-item">
-            <summary>Puis-je modifier ou annuler ma réservation ?</summary>
-            <p>En cas d'imprévu, écrivez-nous le plus tôt possible via la page <a href={getNavHref('contact', base)}>Contact</a>. Nous regarderons ensemble la meilleure solution selon la date de l'atelier.</p>
-          </details>
-          <details class="faq-item">
-            <summary>Peut-on privatiser un atelier ou commander un événement sur mesure ?</summary>
-            <p>Oui. Anniversaires, EVJF, team building ou événements associatifs : contactez-nous via la page <a href={getNavHref('contact', base)}>Contact</a> pour construire ensemble une formule adaptée à votre groupe.</p>
-          </details>
-        </div>
-      </div>
+      <p class="final-cta__note">
+        Un atelier privé, une collaboration ou un lieu à proposer ?
+        <a href={getNavHref('contact', base)}>Écrivez-nous</a>.
+      </p>
     </div>
   </section>
 </BaseLayout>
@@ -169,7 +153,7 @@ const ateliers = [
   }
 
   .page-hero__content {
-    max-width: 650px;
+    max-width: var(--measure);
   }
 
   .page-hero__content .overline {
@@ -178,166 +162,89 @@ const ateliers = [
   }
 
   .page-hero__content h1 {
-    margin-bottom: var(--space-4);
-  }
-
-  .page-hero__content .subtitle {
-    margin-bottom: var(--space-8);
-  }
-
-  .atelier-card {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: var(--space-8);
-    align-items: center;
-    padding-block: var(--space-10);
-    border-bottom: 1px solid var(--color-border);
-  }
-
-  .atelier-card:last-child {
-    border-bottom: none;
-  }
-
-  .atelier-card__visual {
-    display: flex;
-    justify-content: center;
-  }
-
-  .atelier-card__image {
-    width: 100%;
-    max-width: 420px;
-    aspect-ratio: 4 / 3;
-    border-radius: var(--radius-xl);
-    overflow: hidden;
-    border: 1px solid var(--color-border);
-  }
-
-  .atelier-card__img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-  }
-
-  .atelier-card__content .overline {
-    display: block;
-    margin-bottom: var(--space-2);
-  }
-
-  .atelier-card__content h2 {
-    margin-bottom: var(--space-4);
-  }
-
-  .atelier-card__desc {
-    color: var(--color-text-light);
-    line-height: var(--leading-relaxed);
     margin-bottom: var(--space-6);
   }
 
-  .atelier-card__details {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: var(--space-2) var(--space-4);
-    margin-bottom: var(--space-8);
-  }
-
-  .atelier-card__details li {
-    font-size: var(--text-sm);
+  .page-hero__content p {
     color: var(--color-text-light);
-    padding-left: var(--space-4);
-    position: relative;
-  }
-
-  .atelier-card__details li::before {
-    content: '✓';
-    position: absolute;
-    left: 0;
-    color: var(--color-accent);
-    font-weight: var(--weight-bold);
-  }
-
-  /* Private / sur mesure */
-  .private-section {
-    background: var(--color-bg-warm);
-  }
-
-  .private-block {
-    text-align: center;
-  }
-
-  .private-block .overline {
-    display: block;
-    margin-bottom: var(--space-3);
-  }
-
-  .private-block h2 {
+    line-height: var(--leading-relaxed);
     margin-bottom: var(--space-4);
   }
 
-  .private-block__text {
-    color: var(--color-text-light);
-    line-height: var(--leading-relaxed);
-    margin-bottom: var(--space-8);
+  .page-hero__lede {
+    font-size: var(--text-lg);
+    color: var(--color-text) !important;
   }
 
-  .private-block__actions {
+  /* Prochains ateliers */
+  .prochains {
+    background: var(--color-bg-light);
+    scroll-margin-top: var(--header-h);
+  }
+
+  .prochains__title {
+    margin-bottom: var(--space-10);
+  }
+
+  .prochains__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-8);
+  }
+
+  .prochains__grid > * {
+    min-width: 0;
     display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: center;
-    gap: var(--space-4) var(--space-6);
+  }
+
+  .prochains__grid > * > * {
+    width: 100%;
   }
 
   /* FAQ */
   .faq-section {
-    background: var(--color-bg-light);
+    background: var(--color-bg);
   }
 
-  .faq-item p a {
-    color: var(--color-accent);
-    font-weight: var(--weight-semibold);
+  /* CTA final */
+  .final-cta {
+    background: var(--color-bg-warm);
   }
 
-  .faq-item p a:hover {
-    color: var(--color-accent-hover);
+  .final-cta__inner {
+    text-align: center;
   }
 
-  .faq-section__title {
-    margin-bottom: var(--space-8);
+  .final-cta__inner h2 {
+    margin-bottom: var(--space-4);
   }
 
-  .faq-item {
-    border-bottom: 1px solid var(--color-border);
-    padding-block: var(--space-5);
-  }
-
-  .faq-item summary {
-    font-weight: var(--weight-semibold);
-    cursor: pointer;
-    font-size: var(--text-base);
-    list-style: none;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  .faq-item summary::after {
-    content: '+';
-    font-size: var(--text-xl);
-    color: var(--color-accent);
-    transition: transform var(--duration-fast);
-  }
-
-  .faq-item[open] summary::after {
-    transform: rotate(45deg);
-  }
-
-  .faq-item p {
-    margin-top: var(--space-3);
+  .final-cta__text {
     color: var(--color-text-light);
-    font-size: var(--text-sm);
     line-height: var(--leading-relaxed);
-    padding-right: var(--space-8);
+    margin-bottom: var(--space-8);
+    margin-inline: auto;
+    max-width: 46ch;
+  }
+
+  .final-cta__actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--space-4);
+  }
+
+  .final-cta__note {
+    margin-top: var(--space-8);
+    font-size: var(--text-sm);
+    color: var(--color-text-light);
+  }
+
+  .final-cta__note a {
+    color: var(--color-brand);
+    font-weight: var(--weight-semibold);
+    text-decoration: underline;
+    text-underline-offset: 3px;
   }
 
   @media (min-width: 768px) {
@@ -345,14 +252,8 @@ const ateliers = [
       padding-block: var(--space-24) var(--space-16);
     }
 
-    .atelier-card {
-      grid-template-columns: 1fr 1fr;
-      gap: var(--space-12);
-      padding-block: var(--space-16);
-    }
-
-    .atelier-card--reverse .atelier-card__visual {
-      order: 2;
+    .prochains__grid {
+      grid-template-columns: repeat(3, 1fr);
     }
   }
 </style>

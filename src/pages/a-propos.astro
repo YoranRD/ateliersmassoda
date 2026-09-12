@@ -1,12 +1,13 @@
 ---
 import { getNavHref } from '../utils/nav';
-import { RESERVATION_URL } from '../utils/links';
+import { getReservationCta } from '../data/site';
 import BaseLayout from '../layouts/BaseLayout.astro';
 
 const base = import.meta.env.BASE_URL;
 const basePath = base.endsWith('/') ? base : `${base}/`;
+const cta = getReservationCta(getNavHref('ateliers', base));
 const masodaImage = `${basePath}images/about/masoda-cest-quoi.png`;
-const founderImage = `${basePath}images/about/fondatrice-masoda.png`;
+const founderImage = `${basePath}images/about/photo-fondatrice.jpg`;
 ---
 
 <BaseLayout title="À propos — Les Ateliers Massoda" description="Découvrez l'histoire, les valeurs et l'univers de Massoda. Créativité, bien-être et culture afro-caribéenne.">
@@ -60,20 +61,40 @@ const founderImage = `${basePath}images/about/fondatrice-masoda.png`;
         <span class="overline">La fondatrice</span>
         <h2 class="heading-3">Une vision portée par une voix sincère.</h2>
         <p>
-          Massoda est née de l'envie de sa fondatrice de créer un espace où l'on prend soin
-          de soi sans masque, sans performance. Un projet qui réunit créativité,
-          bien-être et héritage afro-caribéen avec exigence et chaleur.
+          Française d’origines guadeloupéenne et camerounaise, Barbara a grandi au croisement
+          de plusieurs cultures. Très tôt, les questions d’identité, d’héritage et de
+          transmission ont occupé une place importante dans son parcours.
+        </p>
+        <p>
+          C’est dans les gestes simples de son quotidien qu’elle en prend pleinement
+          conscience : une nappe en madras posée par sa mère, des plats antillais cuisinés à
+          la maison, des façons de recevoir, de partager et de célébrer… Autant de détails qui
+          lui montrent que la culture perdure par l’art de vivre.
+        </p>
+        <p>
+          Elle réalise également que les cultures africaines, caribéennes et
+          afro-diasporiques sont encore souvent transmises à travers des récits de luttes et de
+          traumatismes. Une histoire essentielle qu’il ne s’agit pas d’effacer, mais à laquelle
+          Barbara souhaite faire côtoyer d’autres récits : ceux de la joie, de la créativité,
+          du soin, de la beauté et du bien-être.
+        </p>
+        <p>
+          Inspirée par son père, elle choisit le nom Massoda, un mot bassa associé au bonheur
+          et à la joie, et imagine un projet avec une conviction : faire de la culture une
+          matière vivante que chacun peut découvrir, expérimenter et intégrer à son quotidien
+          pour enrichir son art de vivre, se sentir davantage ancré et contribuer à son
+          bien-être.
         </p>
       </div>
       <div class="about-founder__visual reveal reveal-delay-1">
         <div class="about-founder__frame">
           <img
             src={founderImage}
-            alt="La fondatrice des Ateliers Massoda"
+            alt="Portrait de la fondatrice des Ateliers Massoda"
             class="about-founder__img"
             loading="lazy"
-            width="800"
-            height="1066"
+            width="720"
+            height="960"
           />
         </div>
       </div>
@@ -121,7 +142,13 @@ const founderImage = `${basePath}images/about/fondatrice-masoda.png`;
           peut rayonner à sa manière.
         </p>
         <div class="vision-block__actions">
-          <a href={RESERVATION_URL} target="_blank" rel="noopener" class="btn btn--primary">Réserver un atelier</a>
+          <a
+            href={cta.href}
+            target={cta.external ? '_blank' : undefined}
+            rel={cta.external ? 'noopener' : undefined}
+            class="btn btn--primary"
+            data-massoda-placeholder={cta.isPlaceholder ? cta.placeholderId : undefined}
+          >{cta.label}</a>
           <a href={getNavHref('contact', base)} class="btn btn--outline">Nous contacter</a>
         </div>
       </div>
@@ -208,6 +235,10 @@ const founderImage = `${basePath}images/about/fondatrice-masoda.png`;
     line-height: var(--leading-relaxed);
   }
 
+  .about-founder__content p + p {
+    margin-top: var(--space-4);
+  }
+
   .about-founder__frame {
     width: 100%;
     max-width: 380px;
@@ -223,6 +254,9 @@ const founderImage = `${basePath}images/about/fondatrice-masoda.png`;
     width: 100%;
     height: 100%;
     object-fit: cover;
+    /* Le fichier est déjà en 3:4 (720x960) : le cadrage haut protège
+       le visage et la coiffure si le cadre dévie du ratio. */
+    object-position: center 28%;
     display: block;
   }
 

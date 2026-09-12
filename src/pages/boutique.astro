@@ -1,5 +1,8 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { SOCIAL_LINKS } from '../data/site';
+
+const INSTAGRAM_URL = SOCIAL_LINKS[0].url;
 import { getNavHref } from '../utils/nav';
 
 const base = import.meta.env.BASE_URL;
@@ -94,7 +97,7 @@ const categories = [
         <h2 class="heading-4">La boutique se construit, vague après vague.</h2>
         <p>Pour être informée du lancement de chaque catégorie, suivez-nous sur Instagram — ou écrivez-nous directement si vous avez un projet ou une question.</p>
         <div class="boutique-notice__actions">
-          <a href="https://www.instagram.com/lesateliersmassoda/" target="_blank" rel="noopener" class="btn btn--primary">
+          <a href={INSTAGRAM_URL} target="_blank" rel="noopener" class="btn btn--primary">
             Suivre sur Instagram
           </a>
           <a href={getNavHref('contact', base)} class="btn btn--ghost">
@@ -160,7 +163,7 @@ const categories = [
     width: 64px;
     height: 64px;
     border-radius: var(--radius-md);
-    background: rgba(255, 155, 84, 0.08);
+    background: color-mix(in srgb, var(--color-warm) 14%, transparent);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -199,7 +202,7 @@ const categories = [
 
   .boutique-card__badge--soon {
     color: var(--color-accent);
-    background: rgba(255, 155, 84, 0.12);
+    background: color-mix(in srgb, var(--color-warm) 18%, transparent);
   }
 
   .boutique-notice__actions {
