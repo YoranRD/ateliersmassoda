@@ -2,12 +2,13 @@
 import { getNavHref } from '../utils/nav';
 import { getReservationCta } from '../data/site';
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { Picture } from 'astro:assets';
+import { img } from '../utils/images';
 
 const base = import.meta.env.BASE_URL;
-const basePath = base.endsWith('/') ? base : `${base}/`;
 const cta = getReservationCta(getNavHref('ateliers', base));
-const masodaImage = `${basePath}images/about/masoda-cest-quoi.png`;
-const founderImage = `${basePath}images/about/photo-fondatrice.jpg`;
+const masodaImage = img('about/masoda-cest-quoi');
+const founderImage = img('about/photo-fondatrice');
 ---
 
 <BaseLayout title="À propos — Les Ateliers Massoda" description="Découvrez l'histoire, les valeurs et l'univers de Massoda. Créativité, bien-être et culture afro-caribéenne.">
@@ -15,7 +16,7 @@ const founderImage = `${basePath}images/about/photo-fondatrice.jpg`;
   <!-- Hero -->
   <section class="page-hero">
     <div class="container">
-      <div class="page-hero__content reveal">
+      <div class="page-hero__content">
         <span class="overline">À propos</span>
         <h1 class="heading-1">L'histoire derrière Massoda</h1>
         <p class="subtitle">Un projet né de l'envie de créer un espace chaleureux où créativité, bien-être et culture se rencontrent.</p>
@@ -26,19 +27,22 @@ const founderImage = `${basePath}images/about/photo-fondatrice.jpg`;
   <!-- Story -->
   <section class="section">
     <div class="container about-story">
-      <div class="about-story__visual reveal">
+      <div class="about-story__visual">
         <div class="about-story__frame">
-          <img
+          <Picture
             src={masodaImage}
             alt="L'univers Massoda — créativité, bien-être et culture afro-caribéenne"
             class="about-story__img"
+            formats={['avif', 'webp']}
+            widths={[480, 800, 1100]}
+            sizes="(min-width:768px) 45vw, 100vw"
             loading="lazy"
-            width="800"
-            height="800"
+            width={masodaImage.width}
+            height={masodaImage.height}
           />
         </div>
       </div>
-      <div class="about-story__content reveal reveal-delay-1">
+      <div class="about-story__content">
         <h2 class="heading-4">Massoda, c'est quoi ?</h2>
         <p>
           Les Ateliers Massoda sont nés d'une envie simple : créer un espace où l'on peut
@@ -57,7 +61,7 @@ const founderImage = `${basePath}images/about/photo-fondatrice.jpg`;
   <!-- Founder -->
   <section class="section about-founder-section">
     <div class="container about-founder">
-      <div class="about-founder__content reveal">
+      <div class="about-founder__content">
         <span class="overline">La fondatrice</span>
         <h2 class="heading-3">Une vision portée par une voix sincère.</h2>
         <p>
@@ -86,15 +90,18 @@ const founderImage = `${basePath}images/about/photo-fondatrice.jpg`;
           bien-être.
         </p>
       </div>
-      <div class="about-founder__visual reveal reveal-delay-1">
+      <div class="about-founder__visual">
         <div class="about-founder__frame">
-          <img
+          <Picture
             src={founderImage}
             alt="Portrait de la fondatrice des Ateliers Massoda"
             class="about-founder__img"
+            formats={['avif', 'webp']}
+            widths={[480, 800, 1100]}
+            sizes="(min-width:768px) 45vw, 100vw"
             loading="lazy"
-            width="720"
-            height="960"
+            width={founderImage.width}
+            height={founderImage.height}
           />
         </div>
       </div>
@@ -104,24 +111,24 @@ const founderImage = `${basePath}images/about/photo-fondatrice.jpg`;
   <!-- Values -->
   <section class="section values-section">
     <div class="container">
-      <h2 class="heading-3 values-section__title reveal">Ce qui nous guide</h2>
+      <h2 class="heading-3 values-section__title">Ce qui nous guide</h2>
       <div class="values-grid">
-        <div class="value-card reveal reveal-delay-1">
+        <div class="value-card">
           <span class="value-card__icon">✦</span>
           <h3 class="value-card__title">Authenticité</h3>
           <p>Des expériences ancrées dans la culture, pas dans les tendances éphémères.</p>
         </div>
-        <div class="value-card reveal reveal-delay-2">
+        <div class="value-card">
           <span class="value-card__icon" style="color: var(--color-coral);">✦</span>
           <h3 class="value-card__title">Bienveillance</h3>
           <p>Un espace sans jugement, où chacune avance à son rythme.</p>
         </div>
-        <div class="value-card reveal reveal-delay-3">
+        <div class="value-card">
           <span class="value-card__icon" style="color: var(--color-brand);">✦</span>
           <h3 class="value-card__title">Qualité</h3>
           <p>Des ateliers soignés, des matériaux choisis, une attention portée à chaque détail.</p>
         </div>
-        <div class="value-card reveal reveal-delay-4">
+        <div class="value-card">
           <span class="value-card__icon" style="color: var(--color-warm);">✦</span>
           <h3 class="value-card__title">Communauté</h3>
           <p>On vient pour l'atelier, on revient pour les liens qu'on y crée.</p>
@@ -133,7 +140,7 @@ const founderImage = `${basePath}images/about/photo-fondatrice.jpg`;
   <!-- Vision -->
   <section class="section">
     <div class="container container--narrow">
-      <div class="vision-block reveal">
+      <div class="vision-block">
         <h2 class="heading-3">Notre vision</h2>
         <p class="vision-block__text">
           Massoda aspire à devenir un repère pour toutes celles qui cherchent un espace
@@ -197,6 +204,12 @@ const founderImage = `${basePath}images/about/photo-fondatrice.jpg`;
     height: 100%;
     object-fit: cover;
     display: block;
+  }
+
+  .about-story__frame :global(picture),
+  .about-founder__frame :global(picture) {
+    width: 100%;
+    height: 100%;
   }
 
   .about-story__content h2 {

@@ -2,9 +2,6 @@
    MASSODA — Global Styles
    ============================================ */
 
-/* Raleway uniquement — graisses réellement utilisées :
-   400 (texte), 500 (liens de nav), 600 (labels, boutons), 700 (titres). */
-@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@400;500;600;700&display=swap');
 @import './tokens.css';
 
 /* --- Reset --- */
@@ -150,7 +147,11 @@ p {
   font-weight: var(--weight-semibold);
   letter-spacing: var(--tracking-wide);
   border-radius: var(--radius-full);
-  transition: all var(--duration-normal) var(--ease-out);
+  transition: background-color var(--duration-normal) var(--ease-out),
+              color var(--duration-normal) var(--ease-out),
+              border-color var(--duration-normal) var(--ease-out),
+              box-shadow var(--duration-normal) var(--ease-out),
+              transform var(--duration-normal) var(--ease-out);
   white-space: nowrap;
 }
 
@@ -276,25 +277,6 @@ p {
   line-height: var(--leading-normal);
 }
 
-/* --- Scroll Animations --- */
-
-.reveal {
-  opacity: 0;
-  transform: translateY(24px);
-  transition: opacity var(--duration-slow) var(--ease-out),
-              transform var(--duration-slow) var(--ease-out);
-}
-
-.reveal.visible {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.reveal-delay-1 { transition-delay: 100ms; }
-.reveal-delay-2 { transition-delay: 200ms; }
-.reveal-delay-3 { transition-delay: 300ms; }
-.reveal-delay-4 { transition-delay: 400ms; }
-
 /* --- Selection --- */
 
 ::selection {
@@ -340,5 +322,8 @@ p {
     animation-duration: 0.01ms !important;
     transition-duration: 0.01ms !important;
   }
-  .reveal { opacity: 1; transform: none; }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  @view-transition { navigation: auto; }
 }

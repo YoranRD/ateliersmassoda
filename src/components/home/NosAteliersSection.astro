@@ -1,33 +1,35 @@
 ---
 import { NOS_ATELIERS_MEDIA } from '../../data/site';
-
-const base = import.meta.env.BASE_URL;
-const basePath = base.endsWith('/') ? base : `${base}/`;
+import { Picture } from 'astro:assets';
+import { img } from '../../utils/images';
 
 /* MASSODA_MISSING:NOS_ATELIERS_MEDIA — aucun média dédié fourni : le brief
    autorise ici la réutilisation d'une image locale réelle. Renseigner
    NOS_ATELIERS_MEDIA.finalImage dans src/data/site.ts pour la remplacer. */
 const isFinal = Boolean(NOS_ATELIERS_MEDIA.finalImage);
-const mediaSrc = `${basePath}${NOS_ATELIERS_MEDIA.finalImage ?? NOS_ATELIERS_MEDIA.fallbackImage}`;
+const mediaImage = img(NOS_ATELIERS_MEDIA.finalImage ?? NOS_ATELIERS_MEDIA.fallbackImage);
 ---
 
 <section class="nos-ateliers section">
   <div class="container nos-ateliers__grid">
-    <div class="nos-ateliers__visual reveal">
+    <div class="nos-ateliers__visual">
       <div class="nos-ateliers__frame">
-        <img
-          src={mediaSrc}
+        <Picture
+          src={mediaImage}
           alt={NOS_ATELIERS_MEDIA.alt}
+          formats={['avif', 'webp']}
+          widths={[480, 800, 1100]}
+          sizes="(min-width:768px) 45vw, 100vw"
           class="nos-ateliers__image"
           loading="lazy"
-          width="800"
-          height="600"
+          width={mediaImage.width}
+          height={mediaImage.height}
           data-massoda-placeholder={isFinal ? undefined : 'NOS_ATELIERS_MEDIA'}
         />
       </div>
     </div>
 
-    <div class="nos-ateliers__content reveal reveal-delay-1">
+    <div class="nos-ateliers__content">
       <span class="overline">Nos ateliers</span>
       <h2 class="heading-2">Des savoir-faire transmis par celles et ceux qui les portent</h2>
       <p class="nos-ateliers__text">
@@ -71,6 +73,11 @@ const mediaSrc = `${basePath}${NOS_ATELIERS_MEDIA.finalImage ?? NOS_ATELIERS_MED
     height: 100%;
     object-fit: cover;
     display: block;
+  }
+
+  .nos-ateliers__frame :global(picture) {
+    width: 100%;
+    height: 100%;
   }
 
   .nos-ateliers__content .overline {

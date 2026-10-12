@@ -15,7 +15,7 @@ import { PLACEHOLDER_LABELS, resolveField, type ResolvedField } from './site';
 export type TicketingStatus = 'open' | 'coming-soon';
 
 export interface WorkshopImage {
-  /** Chemin relatif à public/, sans le base path. */
+  /** Clé relative à src/assets/images/, sans extension. */
   src: string;
   alt: string;
 }

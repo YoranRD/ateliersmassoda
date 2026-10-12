@@ -72,7 +72,7 @@ const faqItems: FaqItem[] = [
   <!-- 1. Introduction -->
   <section class="page-hero">
     <div class="container">
-      <div class="page-hero__content reveal">
+      <div class="page-hero__content">
         <h1 class="heading-1">Ateliers &amp; expériences</h1>
         <p class="page-hero__lede">
           Les Ateliers Massoda créent des espaces de partage où les cultures afro-caribéennes
@@ -98,10 +98,10 @@ const faqItems: FaqItem[] = [
   <!-- 2. Les trois prochains ateliers -->
   <section class="section prochains" id="prochains-ateliers">
     <div class="container">
-      <h2 class="heading-2 prochains__title reveal">Nos trois prochains ateliers</h2>
+      <h2 class="heading-2 prochains__title">Nos trois prochains ateliers</h2>
       <div class="prochains__grid">
         {ateliers.map((atelier, i) => (
-          <div class={`reveal reveal-delay-${i + 1}`}>
+          <div>
             <WorkshopCard workshop={atelier} headingLevel="h3" />
           </div>
         ))}
@@ -111,14 +111,14 @@ const faqItems: FaqItem[] = [
 
   <!-- 3. Questions & réponses -->
   <section class="section faq-section">
-    <div class="container container--narrow reveal">
+    <div class="container container--narrow">
       <Faq title="Questions & réponses" items={faqItems} headingLevel="h2" />
     </div>
   </section>
 
   <!-- 4. CTA final -->
   <section class="section final-cta">
-    <div class="container container--narrow final-cta__inner reveal">
+    <div class="container container--narrow final-cta__inner">
       <h2 class="heading-3">Envie de vivre une expérience Massoda ?</h2>
       <p class="final-cta__text">
         La programmation se dévoile atelier après atelier. La Lettre de Massoda donne accès

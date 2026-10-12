@@ -33,7 +33,6 @@ const navLinks = [
         class="header__logo-img"
         width="355"
         height="154"
-        fetchpriority="high"
       />
     </a>
 
@@ -76,9 +75,7 @@ const navLinks = [
   </div>
 </header>
 
-<!-- Le panneau mobile est volontairement hors du <header> : celui-ci porte un
-     backdrop-filter, qui ferait de lui le bloc conteneur de tout descendant
-     position:fixed et réduirait le panneau à la hauteur du header. -->
+<!-- Le panneau mobile est indépendant du header collant. -->
 <div class="header__mobile-menu" id="menu-mobile" aria-hidden="true">
     <nav aria-label="Navigation mobile">
       <ul class="header__mobile-links">
@@ -111,9 +108,8 @@ const navLinks = [
     position: sticky;
     top: 0;
     z-index: 100;
-    background: color-mix(in srgb, var(--color-bg) 92%, transparent);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
+    background: var(--color-bg);
+    view-transition-name: site-header;
     border-bottom: 1px solid var(--color-border);
   }
 

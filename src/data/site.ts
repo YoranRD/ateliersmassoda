@@ -132,7 +132,7 @@ export interface HeroMedia {
   videoSrc: string | null;
   /** Poster de la vidéo. */
   posterSrc: string | null;
-  /** Image de repli, réellement présente dans public/. */
+  /** Clé du master de repli dans src/assets/images/, sans extension. */
   fallbackImage: string;
   fallbackAlt: string;
 }
@@ -143,7 +143,7 @@ export const HERO_MEDIA: HeroMedia = {
   // automatiquement de l'image vers la balise <video>.
   videoSrc: null,
   posterSrc: null,
-  fallbackImage: 'images/home/hero-atelier-masoda.png',
+  fallbackImage: 'about/masoda-cest-quoi',
   fallbackAlt: "Ambiance d'un atelier Massoda — créativité, partage et bien-être",
 };
 
@@ -159,6 +159,6 @@ export interface SectionMedia {
 
 export const NOS_ATELIERS_MEDIA: SectionMedia = {
   finalImage: null,
-  fallbackImage: 'images/home/atelier-paint-jam.png',
+  fallbackImage: 'home/atelier-paint-jam',
   alt: 'Participantes et intervenante réunies autour d’une création pendant un atelier Massoda',
 };

@@ -1,11 +1,11 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { Picture } from 'astro:assets';
+import { img } from '../utils/images';
 import { SOCIAL_LINKS } from '../data/site';
 
 const INSTAGRAM_URL = SOCIAL_LINKS[0].url;
 
-const base = import.meta.env.BASE_URL;
-const basePath = base.endsWith('/') ? base : `${base}/`;
 
 const articles = [
   {
@@ -13,7 +13,7 @@ const articles = [
     title: '5 rituels du matin pour commencer la journée en douceur',
     excerpt: 'Des gestes simples, inspirés des traditions afro-caribéennes, pour ancrer votre matinée dans la sérénité.',
     date: 'À paraître',
-    image: `${basePath}images/home/bien-etre-lifestyle.png`,
+    image: 'about/fondatrice-masoda',
     alt: 'Rituels bien-être Massoda',
   },
   {
@@ -21,7 +21,7 @@ const articles = [
     title: 'Oser créer sans jugement : le pouvoir de l\'art intuitif',
     excerpt: 'Pourquoi peindre sans règle peut transformer votre rapport à vous-même et libérer votre expression.',
     date: 'En écriture',
-    image: `${basePath}images/home/atelier-paint-jam.png`,
+    image: 'home/atelier-paint-jam',
     alt: 'Atelier Paint & Jam — peinture intuitive',
   },
   {
@@ -29,7 +29,7 @@ const articles = [
     title: 'Les plantes africaines anti-stress à redécouvrir',
     excerpt: 'Tisanes, racines et infusions : les trésors végétaux du continent et des îles, à intégrer au quotidien.',
     date: 'En préparation',
-    image: `${basePath}images/shop/boutique-plantes.png`,
+    image: 'collaborators/collaborateur-3',
     alt: 'Plantes & infusions afro-diététique',
   },
   {
@@ -37,7 +37,7 @@ const articles = [
     title: 'Baya : l\'histoire des perles de taille',
     excerpt: 'Symbole de féminité et d\'ancrage, la baya raconte un héritage transmis de femme à femme.',
     date: 'À paraître',
-    image: `${basePath}images/home/atelier-baya.png`,
+    image: 'home/atelier-baya',
     alt: 'Baya — perles de taille traditionnelles',
   },
   {
@@ -45,7 +45,7 @@ const articles = [
     title: 'Pourquoi les cercles de femmes nous font tant de bien',
     excerpt: 'La force du collectif féminin : un espace de parole, d\'écoute et de soutien qui transforme.',
     date: 'En écriture',
-    image: `${basePath}images/home/communaute-masoda.png`,
+    image: 'home/communaute-masoda',
     alt: 'Communauté Massoda — moments de partage',
   },
   {
@@ -53,7 +53,7 @@ const articles = [
     title: 'Massoda, une parole sincère sur le bien-être afro-caribéen',
     excerpt: 'Comment la fondatrice imagine un espace ancré, exigeant et profondément chaleureux.',
     date: 'En préparation',
-    image: `${basePath}images/about/fondatrice-masoda.png`,
+    image: 'about/fondatrice-masoda',
     alt: 'Fondatrice des Ateliers Massoda',
   },
 ];
@@ -63,7 +63,7 @@ const articles = [
 
   <section class="page-hero">
     <div class="container">
-      <div class="page-hero__content reveal">
+      <div class="page-hero__content">
         <span class="overline">Journal</span>
         <h1 class="heading-1">Inspirations & ressources</h1>
         <p class="subtitle">Le journal Massoda se construit progressivement : voici les premiers sujets qui s'écrivent autour du bien-être, de la créativité et des cultures afro-caribéennes.</p>
@@ -75,15 +75,18 @@ const articles = [
     <div class="container">
       <div class="journal-grid">
         {articles.map((article, i) => (
-          <article class={`card reveal reveal-delay-${(i % 4) + 1}`}>
+          <article class="card">
             <div class="journal-image-wrap">
-              <img
-                src={article.image}
+              <Picture
+                src={img(article.image)}
                 alt={article.alt}
+                formats={['avif', 'webp']}
+                widths={[400, 640, 900]}
+                sizes="(min-width:1024px) 30vw, (min-width:640px) 45vw, 100vw"
                 class="journal-image"
                 loading="lazy"
-                width="800"
-                height="600"
+                width={img(article.image).width}
+                height={img(article.image).height}
               />
             </div>
             <div class="card__body">
@@ -102,7 +105,7 @@ const articles = [
 
   <section class="section journal-cta-section">
     <div class="container container--narrow">
-      <div class="journal-cta reveal">
+      <div class="journal-cta">
         <h2 class="heading-4">Le journal s'écrit en ce moment.</h2>
         <p>Les premiers articles arrivent par vagues. Suivez-nous sur Instagram pour être prévenue dès leur publication.</p>
         <a href={INSTAGRAM_URL} target="_blank" rel="noopener" class="btn btn--primary">
@@ -150,6 +153,11 @@ const articles = [
     height: 100%;
     object-fit: cover;
     display: block;
+  }
+
+  .journal-image-wrap :global(picture) {
+    width: 100%;
+    height: 100%;
   }
 
   /* Cards are not yet clickable — keep them visually static. */

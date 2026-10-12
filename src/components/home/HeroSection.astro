@@ -1,6 +1,8 @@
 ---
 import { getNavHref } from '../../utils/nav';
 import { getReservationCta, HERO_MEDIA } from '../../data/site';
+import { Picture } from 'astro:assets';
+import { img } from '../../utils/images';
 
 const base = import.meta.env.BASE_URL;
 const basePath = base.endsWith('/') ? base : `${base}/`;
@@ -14,13 +16,13 @@ const cta = getReservationCta(`${getNavHref('', base)}#prochains-ateliers`);
    src/data/site.ts suffit à basculer sur la balise <video>. */
 const hasVideo = Boolean(HERO_MEDIA.videoSrc);
 const posterUrl = HERO_MEDIA.posterSrc ? `${basePath}${HERO_MEDIA.posterSrc}` : undefined;
-const fallbackUrl = `${basePath}${HERO_MEDIA.fallbackImage}`;
+const fallbackImage = img(HERO_MEDIA.fallbackImage);
 ---
 
 <section class="hero">
   <div class="hero__halo" aria-hidden="true"></div>
   <div class="container hero__inner">
-    <div class="hero__content reveal">
+    <div class="hero__content">
       <span class="overline">Culture · Créativité · Bien-être</span>
       <h1 class="heading-1 hero__title">Les Ateliers Massoda</h1>
       <p class="subtitle hero__subtitle">
@@ -42,7 +44,7 @@ const fallbackUrl = `${basePath}${HERO_MEDIA.fallbackImage}`;
       </div>
     </div>
 
-    <div class="hero__visual reveal reveal-delay-2">
+    <div class="hero__visual">
       <div class="hero__media-frame">
         {hasVideo ? (
           <video
@@ -56,15 +58,28 @@ const fallbackUrl = `${basePath}${HERO_MEDIA.fallbackImage}`;
             preload="metadata"
             aria-label={HERO_MEDIA.fallbackAlt}
           >
-            <img src={fallbackUrl} alt={HERO_MEDIA.fallbackAlt} width="960" height="1200" />
+            <Picture
+              src={fallbackImage}
+              alt={HERO_MEDIA.fallbackAlt}
+              formats={['avif', 'webp']}
+              widths={[480, 720, 960, 1200]}
+              sizes="(min-width:1024px) 40vw, (min-width:768px) 50vw, 100vw"
+              width={fallbackImage.width}
+              height={fallbackImage.height}
+              loading="lazy"
+            />
           </video>
         ) : (
-          <img
-            src={fallbackUrl}
+          <Picture
+            src={fallbackImage}
             alt={HERO_MEDIA.fallbackAlt}
+            formats={['avif', 'webp']}
+            widths={[480, 720, 960, 1200]}
+            sizes="(min-width:1024px) 40vw, (min-width:768px) 50vw, 100vw"
             class="hero__media"
-            width="960"
-            height="1200"
+            width={fallbackImage.width}
+            height={fallbackImage.height}
+            loading="eager"
             decoding="async"
             fetchpriority="high"
             data-massoda-placeholder="HERO_VIDEO"
@@ -143,6 +158,38 @@ const fallbackUrl = `${basePath}${HERO_MEDIA.fallbackImage}`;
     height: 100%;
     object-fit: cover;
     display: block;
+  }
+
+  .hero__media-frame :global(picture) {
+    width: 100%;
+    height: 100%;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .hero__content > .overline,
+    .hero__title,
+    .hero__subtitle,
+    .hero__actions {
+      animation: hero-text-enter 700ms var(--ease-out) both;
+    }
+
+    .hero__title { animation-delay: 80ms; }
+    .hero__subtitle { animation-delay: 160ms; }
+    .hero__actions { animation-delay: 240ms; }
+
+    .hero__media {
+      animation: hero-media-enter 1200ms var(--ease-out) both;
+    }
+
+    @keyframes hero-text-enter {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes hero-media-enter {
+      from { transform: scale(1.04); }
+      to { transform: scale(1); }
+    }
   }
 
   @media (min-width: 768px) {

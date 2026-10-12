@@ -1,18 +1,19 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { Picture } from 'astro:assets';
+import { img } from '../utils/images';
 import { SOCIAL_LINKS } from '../data/site';
 
 const INSTAGRAM_URL = SOCIAL_LINKS[0].url;
 import { getNavHref } from '../utils/nav';
 
 const base = import.meta.env.BASE_URL;
-const basePath = base.endsWith('/') ? base : `${base}/`;
 
 const categories = [
   {
     name: 'Baya',
     description: 'Perles de taille traditionnelles, portées pour la féminité, l\'ancrage et la confiance en soi.',
-    image: `${basePath}images/shop/boutique-baya.png`,
+    image: 'home/atelier-baya',
     alt: 'Baya — perles de taille traditionnelles',
     icon: null,
     badge: 'Première vague',
@@ -20,7 +21,7 @@ const categories = [
   {
     name: 'Plantes africaines',
     description: 'Plantes médicinales et infusions inspirées des traditions africaines et caribéennes.',
-    image: `${basePath}images/shop/boutique-plantes.png`,
+    image: 'collaborators/collaborateur-3',
     alt: 'Plantes & infusions afro-diététique',
     icon: null,
     badge: 'Première vague',
@@ -53,7 +54,7 @@ const categories = [
 
   <section class="page-hero">
     <div class="container">
-      <div class="page-hero__content reveal">
+      <div class="page-hero__content">
         <span class="overline">Boutique</span>
         <h1 class="heading-1">Une sélection en préparation</h1>
         <p class="subtitle">Voici un aperçu de la future boutique Massoda. Une sélection curatée d'objets de bien-être, d'artisanat et de lifestyle afro-caribéen, dévoilée par vagues.</p>
@@ -65,16 +66,19 @@ const categories = [
     <div class="container">
       <div class="boutique-grid">
         {categories.map((cat, i) => (
-          <article class={`boutique-card reveal reveal-delay-${(i % 4) + 1}`}>
+          <article class="boutique-card">
             {cat.image ? (
               <div class="boutique-card__image-wrap">
-                <img
-                  src={cat.image}
+                <Picture
+                  src={img(cat.image)}
                   alt={cat.alt}
+                  formats={['avif', 'webp']}
+                  widths={[400, 640, 900]}
+                  sizes="(min-width:1024px) 30vw, (min-width:640px) 45vw, 100vw"
                   class="boutique-card__image"
                   loading="lazy"
-                  width="600"
-                  height="450"
+                  width={img(cat.image).width}
+                  height={img(cat.image).height}
                 />
               </div>
             ) : (
@@ -93,7 +97,7 @@ const categories = [
 
   <section class="section boutique-notice">
     <div class="container container--narrow">
-      <div class="boutique-notice__inner reveal">
+      <div class="boutique-notice__inner">
         <h2 class="heading-4">La boutique se construit, vague après vague.</h2>
         <p>Pour être informée du lancement de chaque catégorie, suivez-nous sur Instagram — ou écrivez-nous directement si vous avez un projet ou une question.</p>
         <div class="boutique-notice__actions">
@@ -157,6 +161,11 @@ const categories = [
     height: 100%;
     object-fit: cover;
     display: block;
+  }
+
+  .boutique-card__image-wrap :global(picture) {
+    width: 100%;
+    height: 100%;
   }
 
   .boutique-card__icon-wrap {
