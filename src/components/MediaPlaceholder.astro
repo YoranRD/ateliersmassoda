@@ -1,0 +1,37 @@
+---
+interface Props {
+  index?: number;
+  caption: string;
+  label: string;
+  placeholderId?: string;
+}
+
+const { index = 0, caption, label, placeholderId } = Astro.props;
+if (!Number.isSafeInteger(index) || index < 0) throw new Error('Index de média invalide');
+---
+
+<div
+  class:list={['media-placeholder', `media-placeholder--${index % 3}`]}
+  role="img"
+  aria-label={label}
+  data-massoda-placeholder={placeholderId}
+>
+  <span aria-hidden="true">{caption}</span>
+</div>
+
+<style>
+  .media-placeholder {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    display: flex;
+    align-items: flex-end;
+    padding: var(--space-4);
+    color: var(--color-text-light);
+    font-size: var(--text-sm);
+    text-align: left;
+  }
+
+  .media-placeholder--0 { background: var(--color-warm-light); }
+  .media-placeholder--1 { background: var(--color-bg-warm); }
+  .media-placeholder--2 { background: var(--color-surface-warm); }
+</style>

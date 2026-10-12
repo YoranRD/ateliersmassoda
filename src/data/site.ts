@@ -45,10 +45,10 @@ export const PLACEHOLDER_LABELS = {
   time: 'Horaire à venir',
   place: 'Lieu à venir',
   price: 'Prix à venir',
-  practical: 'Informations pratiques à venir',
-  image: 'Visuel à venir',
+  practical: 'Infos pratiques à venir',
+  image: 'Photo à venir',
   ticketing: 'Billetterie bientôt disponible',
-  letterSignup: 'Inscriptions bientôt disponibles',
+  letterSignup: 'Les inscriptions ouvrent très bientôt.',
 } as const;
 
 /* ---------- Réservation ---------- */
@@ -81,7 +81,10 @@ export interface ReservationCtaView {
  *
  * Aucun composant ne doit refaire ce test localement.
  */
-export function getReservationCta(fallbackHref: string): ReservationCtaView {
+export function getReservationCta(
+  fallbackHref: string,
+  fallbackLabel: 'Découvrir les prochains ateliers' | 'Prochains ateliers' | 'Découvrir les ateliers' = 'Découvrir les prochains ateliers',
+): ReservationCtaView {
   if (RESERVATION_URL) {
     return {
       label: 'Réserver un atelier',
@@ -91,7 +94,7 @@ export function getReservationCta(fallbackHref: string): ReservationCtaView {
     };
   }
   return {
-    label: 'Découvrir les prochains ateliers',
+    label: fallbackLabel,
     href: fallbackHref,
     external: false,
     isPlaceholder: true,
@@ -125,12 +128,45 @@ export const SOCIAL_LINKS = [
   { name: 'Pinterest', url: 'https://fr.pinterest.com/barbandchill/', handle: 'barbandchill' },
 ] as const;
 
+export interface AnnouncementCtaView extends ReservationCtaView {
+  kind: 'reservation' | 'letter' | 'instagram';
+  message?: string;
+}
+
+/** Chaîne de repli commune : réservation, inscription réelle, puis Instagram. */
+export function getAnnouncementCta(includeReservation = true): AnnouncementCtaView {
+  // La décision de réservation reste entièrement dans getReservationCta.
+  const reservation = includeReservation ? getReservationCta('') : undefined;
+  if (reservation && !reservation.isPlaceholder) return { ...reservation, kind: 'reservation' };
+  if (LETTER.signupUrl) {
+    return {
+      kind: 'letter',
+      label: LETTER.ctaLabel,
+      href: LETTER.signupUrl,
+      external: true,
+      isPlaceholder: includeReservation,
+      placeholderId: includeReservation ? 'GLOBAL_RESERVATION_URL' : undefined,
+    };
+  }
+  const instagram = SOCIAL_LINKS.find(reseau => reseau.name === 'Instagram');
+  if (!instagram) throw new Error('Lien Instagram absent des réseaux sociaux');
+  return {
+    kind: 'instagram',
+    label: 'Suivre les annonces sur Instagram',
+    href: instagram.url,
+    external: true,
+    isPlaceholder: true,
+    placeholderId: includeReservation ? 'GLOBAL_RESERVATION_URL LETTER_SIGNUP_URL' : 'LETTER_SIGNUP_URL',
+    message: 'La programmation se dévoile atelier après atelier. En attendant l’ouverture de La Lettre, les annonces passent par Instagram.',
+  };
+}
+
 /* ---------- Média du hero ---------- */
 
 export interface HeroMedia {
   /** Vidéo réelle « mains qui créent ». MASSODA_MISSING:HERO_VIDEO */
   videoSrc: string | null;
-  /** Poster de la vidéo. */
+  /** Poster réel de la vidéo. MASSODA_MISSING:HERO_VIDEO_POSTER */
   posterSrc: string | null;
   /** Clé du master de repli dans src/assets/images/, sans extension. */
   fallbackImage: string;
@@ -144,7 +180,7 @@ export const HERO_MEDIA: HeroMedia = {
   videoSrc: null,
   posterSrc: null,
   fallbackImage: 'about/masoda-cest-quoi',
-  fallbackAlt: "Ambiance d'un atelier Massoda — créativité, partage et bien-être",
+  fallbackAlt: 'Une femme sur le seuil de BMK, lieu partenaire des Ateliers Massoda',
 };
 
 /* ---------- Média de la section « Nos ateliers » ---------- */
@@ -160,5 +196,5 @@ export interface SectionMedia {
 export const NOS_ATELIERS_MEDIA: SectionMedia = {
   finalImage: null,
   fallbackImage: 'home/atelier-paint-jam',
-  alt: 'Participantes et intervenante réunies autour d’une création pendant un atelier Massoda',
+  alt: 'Des participant·es peignent sur des toiles autour d’une table',
 };

@@ -41,9 +41,11 @@
 
   /* Bordures */
   --color-border:      #DAD5C0;
+  --color-border-strong:#8C8672;
 
   /* États */
   --color-focus:       #1612D3;
+  --color-error:       #B4321C;
   --color-disabled-bg: #DEDACA;
   --color-disabled-text:#8A8778;
 

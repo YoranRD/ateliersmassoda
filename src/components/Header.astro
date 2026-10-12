@@ -1,6 +1,6 @@
 ---
 import { getNavHref, isActiveLink } from '../utils/nav';
-import { getReservationCta } from '../data/site';
+import { getReservationCta, SOCIAL_LINKS } from '../data/site';
 
 const base = import.meta.env.BASE_URL;
 const basePath = base.endsWith('/') ? base : `${base}/`;
@@ -11,7 +11,7 @@ const logoUrl = `${basePath}brand/nouveau_logo_crop.png`;
 
 /* Sans billetterie confirmée, le CTA mène à /ateliers/ au lieu de promettre
    une réservation immédiate. Voir getReservationCta() dans src/data/site.ts. */
-const cta = getReservationCta(getNavHref('ateliers', base));
+const cta = getReservationCta(`${getNavHref('ateliers', base)}#prochains-ateliers`, 'Prochains ateliers');
 
 const navLinks = [
   { label: 'Accueil', href: homeHref },
@@ -100,6 +100,11 @@ const navLinks = [
       >
         {cta.label}
       </a>
+      <div class="header__mobile-social">
+        {SOCIAL_LINKS.map(reseau => (
+          <a href={reseau.url} target="_blank" rel="noopener">{reseau.name}</a>
+        ))}
+      </div>
     </nav>
 </div>
 
@@ -184,6 +189,10 @@ const navLinks = [
     gap: 5px;
     padding: var(--space-2);
     flex-shrink: 0;
+    width: 44px;
+    height: 44px;
+    align-items: center;
+    justify-content: center;
   }
 
   .header__burger span {
@@ -271,6 +280,22 @@ const navLinks = [
     margin-top: var(--space-10);
   }
 
+  .header__mobile-social {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-4);
+    margin-top: var(--space-6);
+  }
+
+  .header__mobile-social a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    color: var(--color-brand);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
   @media (min-width: 480px) {
     .header__logo-img { height: 36px; }
   }
@@ -292,17 +317,26 @@ const navLinks = [
 <script>
   const burger = document.querySelector<HTMLButtonElement>('.header__burger');
   const mobileMenu = document.querySelector<HTMLElement>('.header__mobile-menu');
+  const main = document.querySelector<HTMLElement>('main');
+  const footer = document.querySelector<HTMLElement>('footer');
+  const desktop = window.matchMedia('(min-width: 1024px)');
 
   function setMenu(open: boolean) {
     if (!burger || !mobileMenu) return;
     burger.setAttribute('aria-expanded', String(open));
     burger.setAttribute('aria-label', open ? 'Fermer le menu' : 'Ouvrir le menu');
     mobileMenu.setAttribute('aria-hidden', String(!open));
-    document.body.style.overflow = open ? 'hidden' : '';
+    document.documentElement.style.overflow = open ? 'hidden' : '';
+    if (main) main.inert = open;
+    if (footer) footer.inert = open;
   }
 
   burger?.addEventListener('click', () => {
+    if (desktop.matches) return;
     setMenu(burger.getAttribute('aria-expanded') !== 'true');
+    if (burger.getAttribute('aria-expanded') === 'true') {
+      mobileMenu?.querySelector<HTMLElement>('a[href]')?.focus();
+    }
   });
 
   // Refermer après activation d'un lien : indispensable pour les ancres
@@ -312,9 +346,22 @@ const navLinks = [
   });
 
   document.addEventListener('keydown', (event) => {
-    if (event.key === 'Escape' && burger?.getAttribute('aria-expanded') === 'true') {
+    if (!burger || !mobileMenu || burger.getAttribute('aria-expanded') !== 'true') return;
+    if (event.key === 'Escape') {
+      event.preventDefault();
       setMenu(false);
       burger.focus();
+    } else if (event.key === 'Tab') {
+      const targets = [burger, ...mobileMenu.querySelectorAll<HTMLElement>('a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])')];
+      const current = targets.indexOf(document.activeElement as HTMLElement);
+      const next = event.shiftKey
+        ? (current <= 0 ? targets.length - 1 : current - 1)
+        : (current + 1) % targets.length;
+      event.preventDefault();
+      targets[next].focus();
     }
   });
+
+  desktop.addEventListener('change', () => { if (desktop.matches) setMenu(false); });
+  window.addEventListener('pagehide', () => setMenu(false));
 </script>

@@ -1,10 +1,10 @@
 ---
-import { LETTER, PLACEHOLDER_LABELS } from '../../data/site';
+import { LETTER, PLACEHOLDER_LABELS, getAnnouncementCta } from '../../data/site';
 
 /* MASSODA_MISSING:LETTER_SIGNUP_URL — sans URL réelle, aucun href n'est
    fabriqué et aucun formulaire n'est simulé. Renseigner LETTER.signupUrl
    dans src/data/site.ts rend le CTA cliquable automatiquement. */
-const hasSignup = Boolean(LETTER.signupUrl);
+const cta = getAnnouncementCta(false);
 ---
 
 <section class="lettre on-brand" id={LETTER.anchorId}>
@@ -23,13 +23,13 @@ const hasSignup = Boolean(LETTER.signupUrl);
       <p>
         Parce que nous prenons rarement le temps de nous arrêter, d’être curieux, d’essayer,
         de nous questionner. Pourtant, je crois que ces moments participent profondément à
-        notre bien-être.
+        notre bien-⁠être.
       </p>
       <p><strong>La Lettre Massoda</strong>, c’est un peu le prolongement de cette réflexion.</p>
       <p>
         Chaque mois, je t’y partagerai les questionnements, rencontres et découvertes qui
         nourrissent Massoda et donnent naissance aux ateliers. Mais aussi mes recommandations :
-        lieux, food, bien-être, culture, activités et belles découvertes à expérimenter.
+        lieux, food, bien-⁠être, culture, activités et belles découvertes à expérimenter.
       </p>
       <p>
         Et parce que cette lettre est aussi une façon de réunir celles et ceux qui souhaitent
@@ -43,15 +43,20 @@ const hasSignup = Boolean(LETTER.signupUrl);
       </p>
     </div>
 
-    {hasSignup ? (
-      <a href={LETTER.signupUrl} target="_blank" rel="noopener" class="lettre__btn">
-        {LETTER.ctaLabel}
-      </a>
-    ) : (
+    {cta.kind === 'instagram' && (
       <p class="lettre__pending" data-massoda-placeholder="LETTER_SIGNUP_URL">
         {PLACEHOLDER_LABELS.letterSignup}
       </p>
     )}
+    <a
+      href={cta.href}
+      target="_blank"
+      rel="noopener"
+      class="lettre__btn"
+      data-massoda-placeholder={cta.isPlaceholder ? cta.placeholderId : undefined}
+    >
+      {cta.label}
+    </a>
   </div>
 </section>
 
@@ -63,7 +68,6 @@ const hasSignup = Boolean(LETTER.signupUrl);
     position: relative;
     overflow: hidden;
     /* Compense le header collant lors d'un saut sur #la-lettre. */
-    scroll-margin-top: var(--header-h);
   }
 
   .lettre::before {
@@ -113,6 +117,7 @@ const hasSignup = Boolean(LETTER.signupUrl);
   }
 
   .lettre__btn {
+    max-width: 100%;
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -134,13 +139,9 @@ const hasSignup = Boolean(LETTER.signupUrl);
 
   /* État temporaire : visuellement abouti, mais non cliquable. */
   .lettre__pending {
-    display: inline-block;
-    padding: var(--space-4) var(--space-10);
-    border: 1px dashed color-mix(in srgb, var(--color-text-on-brand) 55%, transparent);
-    border-radius: var(--radius-full);
+    margin-bottom: var(--space-4);
     font-size: var(--text-sm);
     font-weight: var(--weight-semibold);
-    letter-spacing: var(--tracking-wide);
     color: var(--color-text-on-brand);
   }
 </style>

@@ -12,6 +12,9 @@ const ateliers = getWorkshopViews();
     <div class="prochains__header">
       <span class="overline">Programmation</span>
       <h2 class="heading-2">Nos trois prochains ateliers</h2>
+      {ateliers.some(atelier => atelier.hasPlaceholder) && (
+        <p class="prochains__note">Dates, lieux et billetteries seront annoncés ici dès leur ouverture.</p>
+      )}
     </div>
 
     <div class="prochains__grid">
@@ -48,6 +51,12 @@ const ateliers = getWorkshopViews();
     display: grid;
     grid-template-columns: 1fr;
     gap: var(--space-8);
+  }
+
+  .prochains__note {
+    margin-top: var(--space-4);
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
   }
 
   .prochains__grid > * {

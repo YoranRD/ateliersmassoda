@@ -1,32 +1,33 @@
 ---
 import { getNavHref } from '../../utils/nav';
 import { getReservationCta, HERO_MEDIA } from '../../data/site';
-import { Picture } from 'astro:assets';
+import { Picture, getImage } from 'astro:assets';
 import { img } from '../../utils/images';
 
 const base = import.meta.env.BASE_URL;
 const basePath = base.endsWith('/') ? base : `${base}/`;
 
-/* Sans billetterie confirmée, le CTA principal descend vers la section
-   des prochains ateliers plutôt que de promettre une réservation. */
-const cta = getReservationCta(`${getNavHref('', base)}#prochains-ateliers`);
+/* Sans billetterie confirmée, le CTA principal mène à la page des ateliers. */
+const cta = getReservationCta(getNavHref('ateliers', base), 'Découvrir les ateliers');
 
 /* MASSODA_MISSING:HERO_VIDEO — tant que la vidéo réelle n'est pas déposée,
    on garde l'image existante. Renseigner HERO_MEDIA.videoSrc dans
    src/data/site.ts suffit à basculer sur la balise <video>. */
 const hasVideo = Boolean(HERO_MEDIA.videoSrc);
-const posterUrl = HERO_MEDIA.posterSrc ? `${basePath}${HERO_MEDIA.posterSrc}` : undefined;
 const fallbackImage = img(HERO_MEDIA.fallbackImage);
+const fallbackPoster = hasVideo && !HERO_MEDIA.posterSrc
+  ? await getImage({ src: fallbackImage, width: 960, format: 'avif' }) : null;
+const posterUrl = HERO_MEDIA.posterSrc ? `${basePath}${HERO_MEDIA.posterSrc}` : fallbackPoster?.src;
 ---
 
 <section class="hero">
   <div class="hero__halo" aria-hidden="true"></div>
   <div class="container hero__inner">
     <div class="hero__content">
-      <span class="overline">Culture · Créativité · Bien-être</span>
+      <span class="overline">Culture · Créativité · Bien-⁠être</span>
       <h1 class="heading-1 hero__title">Les Ateliers Massoda</h1>
       <p class="subtitle hero__subtitle">
-        Explorer les cultures afro-caribéennes pour réinventer son art de vivre.
+        Explorer les cultures afro-⁠caribéennes pour réinventer son art de vivre.
       </p>
       <div class="hero__actions">
         <a
@@ -38,9 +39,11 @@ const fallbackImage = img(HERO_MEDIA.fallbackImage);
         >
           {cta.label}
         </a>
-        <a href={getNavHref('ateliers', base)} class="btn btn--outline">
-          Voir tous les ateliers
-        </a>
+        {!cta.isPlaceholder && (
+          <a href={getNavHref('ateliers', base)} class="btn btn--outline">
+            Découvrir les ateliers
+          </a>
+        )}
       </div>
     </div>
 
@@ -48,15 +51,16 @@ const fallbackImage = img(HERO_MEDIA.fallbackImage);
       <div class="hero__media-frame">
         {hasVideo ? (
           <video
-            class="hero__media"
+            class="hero__media hero__video"
+            id="hero-video"
             src={`${basePath}${HERO_MEDIA.videoSrc}`}
             poster={posterUrl}
-            autoplay
             muted
             loop
             playsinline
-            preload="metadata"
+            preload="none"
             aria-label={HERO_MEDIA.fallbackAlt}
+            data-massoda-placeholder={HERO_MEDIA.posterSrc ? undefined : 'HERO_VIDEO_POSTER'}
           >
             <Picture
               src={fallbackImage}
@@ -84,6 +88,14 @@ const fallbackImage = img(HERO_MEDIA.fallbackImage);
             fetchpriority="high"
             data-massoda-placeholder="HERO_VIDEO"
           />
+        )}
+        {hasVideo && (
+          <button
+            type="button"
+            class="btn btn--primary hero__video-toggle"
+            aria-controls="hero-video"
+            aria-pressed="false"
+          >Lire la vidéo</button>
         )}
       </div>
     </div>
@@ -119,6 +131,8 @@ const fallbackImage = img(HERO_MEDIA.fallbackImage);
   .hero__content {
     max-width: 600px;
   }
+
+  .hero__inner > * { min-width: 0; }
 
   .hero__title {
     margin-top: var(--space-4);
@@ -163,6 +177,22 @@ const fallbackImage = img(HERO_MEDIA.fallbackImage);
   .hero__media-frame :global(picture) {
     width: 100%;
     height: 100%;
+  }
+
+  .hero__video-toggle {
+    position: absolute;
+    inset: auto var(--space-4) var(--space-4);
+    min-height: 44px;
+    padding-inline: var(--space-4);
+    white-space: normal;
+    font-size: var(--text-xs);
+  }
+
+  @media (max-width: 479px) {
+    .hero__actions .btn {
+      width: 100%;
+      white-space: normal;
+    }
   }
 
   @media (prefers-reduced-motion: no-preference) {
@@ -216,3 +246,10 @@ const fallbackImage = img(HERO_MEDIA.fallbackImage);
     }
   }
 </style>
+
+<script>
+  import { initHeroVideo } from '../../utils/heroVideo';
+  const video = document.querySelector<HTMLVideoElement>('.hero__video');
+  const toggle = document.querySelector<HTMLButtonElement>('.hero__video-toggle');
+  if (video && toggle) initHeroVideo(video, toggle);
+</script>

@@ -138,18 +138,20 @@ const base = import.meta.env.BASE_URL;
   }
 
   .legal__block em {
-    color: var(--color-accent);
+    color: var(--color-text-muted);
     font-style: normal;
     font-weight: var(--weight-medium);
   }
 
   .legal__block a {
-    color: var(--color-accent);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    color: var(--color-brand);
     font-weight: var(--weight-semibold);
   }
 
   .legal__block a:hover {
-    color: var(--color-accent-hover);
+    color: var(--color-brand-hover);
   }
 
   @media (min-width: 768px) {

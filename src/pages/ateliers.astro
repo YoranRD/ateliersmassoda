@@ -1,6 +1,6 @@
 ---
 import { getNavHref } from '../utils/nav';
-import { getReservationCta } from '../data/site';
+import { getAnnouncementCta, LETTER } from '../data/site';
 import { getWorkshopViews } from '../data/workshops';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import WorkshopCard from '../components/WorkshopCard.astro';
@@ -12,9 +12,7 @@ const base = import.meta.env.BASE_URL;
 // aucune image ni URL n'est redéfini ici.
 const ateliers = getWorkshopViews();
 
-// Aucune billetterie ouverte à ce jour : le CTA final ne promet pas de
-// réservation et renvoie vers la liste des prochains ateliers.
-const cta = getReservationCta('#prochains-ateliers');
+const cta = getAnnouncementCta();
 
 const faqItems: FaqItem[] = [
   {
@@ -35,7 +33,7 @@ const faqItems: FaqItem[] = [
   {
     question: 'Faut-il être issu·e de la communauté afrodescendante pour participer ?',
     answer:
-      'Non. Les Ateliers Massoda sont ouverts à toutes et à tous. Nos expériences mettent à l’honneur les cultures afro-caribéennes, leurs savoirs, leurs pratiques et leurs créateur·rices dans une démarche de découverte, de transmission et de partage. Il n’est donc pas nécessaire d’être afrodescendant·e pour participer : nous demandons simplement de venir avec curiosité, respect et envie d’apprendre.',
+      'Non. Les Ateliers Massoda sont ouverts à toutes et à tous. Nos expériences mettent à l’honneur les cultures afro-⁠caribéennes, leurs savoirs, leurs pratiques et leurs créateur·rices dans une démarche de découverte, de transmission et de partage. Il n’est donc pas nécessaire d’être afrodescendant·e pour participer : nous demandons simplement de venir avec curiosité, respect et envie d’apprendre.',
   },
   {
     question: 'Le matériel est-il fourni ?',
@@ -60,14 +58,14 @@ const faqItems: FaqItem[] = [
   {
     question: 'Les ateliers sont-ils uniquement créatifs ?',
     answer:
-      'Non. Massoda explore la culture afro-caribéenne à travers différents aspects de l’art de vivre et du bien-être : créativité, alimentation, soin de soi, estime de soi, décoration, artisanat et bien d’autres pratiques. Chaque expérience est une nouvelle manière de découvrir, d’expérimenter et de se réapproprier ces savoirs.',
+      'Non. Massoda explore la culture afro-⁠caribéenne à travers différents aspects de l’art de vivre et du bien-⁠être : créativité, alimentation, soin de soi, estime de soi, décoration, artisanat et bien d’autres pratiques. Chaque expérience est une nouvelle manière de découvrir, d’expérimenter et de se réapproprier ces savoirs.',
   },
 ];
 ---
 
 <BaseLayout
   title="Ateliers & expériences — Les Ateliers Massoda"
-  description="Rencontrez des artistes, artisan·es et expert·es afro-caribéen·nes le temps d’un atelier en petit comité, matériel fourni. Découvrez la prochaine programmation Massoda."
+  description="Rencontrer des artistes, artisan·es et expert·es le temps d’un atelier en petit comité, matériel fourni : la programmation des Ateliers Massoda."
 >
   <!-- 1. Introduction -->
   <section class="page-hero">
@@ -75,8 +73,8 @@ const faqItems: FaqItem[] = [
       <div class="page-hero__content">
         <h1 class="heading-1">Ateliers &amp; expériences</h1>
         <p class="page-hero__lede">
-          Les Ateliers Massoda créent des espaces de partage où les cultures afro-caribéennes
-          se vivent à travers la créativité, le bien-être et l’art de vivre.
+          Les Ateliers Massoda créent des espaces de partage où les cultures afro-⁠caribéennes
+          se vivent à travers la créativité, le bien-⁠être et l’art de vivre.
         </p>
         <p>
           Ouverts à toutes et à tous, nos ateliers invitent à rencontrer des artistes,
@@ -98,7 +96,12 @@ const faqItems: FaqItem[] = [
   <!-- 2. Les trois prochains ateliers -->
   <section class="section prochains" id="prochains-ateliers">
     <div class="container">
-      <h2 class="heading-2 prochains__title">Nos trois prochains ateliers</h2>
+      <div class="prochains__header">
+        <h2 class="heading-2 prochains__title">Nos trois prochains ateliers</h2>
+        {ateliers.some(atelier => atelier.hasPlaceholder) && (
+          <p class="prochains__note">Dates, lieux et billetteries seront annoncés ici dès leur ouverture.</p>
+        )}
+      </div>
       <div class="prochains__grid">
         {ateliers.map((atelier, i) => (
           <div>
@@ -121,8 +124,10 @@ const faqItems: FaqItem[] = [
     <div class="container container--narrow final-cta__inner">
       <h2 class="heading-3">Envie de vivre une expérience Massoda ?</h2>
       <p class="final-cta__text">
-        La programmation se dévoile atelier après atelier. La Lettre de Massoda donne accès
-        aux billetteries avant leur ouverture au public.
+        {cta.kind === 'instagram' ? cta.message : (
+          <>La programmation se dévoile atelier après atelier. La Lettre de Massoda donne accès
+          aux billetteries avant leur ouverture au public.</>
+        )}
       </p>
       <div class="final-cta__actions">
         <a
@@ -134,9 +139,11 @@ const faqItems: FaqItem[] = [
         >
           {cta.label}
         </a>
-        <a href={`${getNavHref('', base)}#la-lettre`} class="btn btn--outline">
-          Recevoir La Lettre
-        </a>
+        {cta.kind === 'reservation' && LETTER.signupUrl && (
+          <a href={LETTER.signupUrl} target="_blank" rel="noopener" class="btn btn--outline">
+            Recevoir La Lettre
+          </a>
+        )}
       </div>
       <p class="final-cta__note">
         Un atelier privé, une collaboration ou un lieu à proposer ?
@@ -179,11 +186,16 @@ const faqItems: FaqItem[] = [
   /* Prochains ateliers */
   .prochains {
     background: var(--color-bg-light);
-    scroll-margin-top: var(--header-h);
   }
 
-  .prochains__title {
+  .prochains__header {
     margin-bottom: var(--space-10);
+  }
+
+  .prochains__note {
+    margin-top: var(--space-4);
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
   }
 
   .prochains__grid {
@@ -233,6 +245,8 @@ const faqItems: FaqItem[] = [
     justify-content: center;
     gap: var(--space-4);
   }
+
+  .final-cta__actions .btn { white-space: normal; }
 
   .final-cta__note {
     margin-top: var(--space-8);

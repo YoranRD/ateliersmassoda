@@ -61,11 +61,11 @@ const legalHref = getNavHref('mentions-legales', base);
           <input type="checkbox" name="botcheck" tabindex="-1" autocomplete="off" class="contact-form__botcheck" />
           <div class="contact-form__group">
             <label for="name">Nom</label>
-            <input type="text" id="name" name="name" placeholder="Votre nom" required />
+            <input type="text" id="name" name="name" autocomplete="name" placeholder="Votre nom" required />
           </div>
           <div class="contact-form__group">
             <label for="email">Email</label>
-            <input type="email" id="email" name="email" placeholder="votre@email.com" required />
+            <input type="email" id="email" name="email" autocomplete="email" placeholder="votre@email.com" required />
           </div>
           <div class="contact-form__group">
             <label for="subject">Sujet</label>
@@ -232,14 +232,16 @@ const legalHref = getNavHref('mentions-legales', base);
   }
 
   .contact-info__links a {
+    text-decoration: underline;
+    text-underline-offset: 3px;
     font-size: var(--text-sm);
-    color: var(--color-accent);
+    color: var(--color-brand);
     font-weight: var(--weight-medium);
     transition: color var(--duration-fast);
   }
 
   .contact-info__links a:hover {
-    color: var(--color-accent-hover);
+    color: var(--color-brand-hover);
   }
 
   .contact-info__email {
@@ -247,7 +249,9 @@ const legalHref = getNavHref('mentions-legales', base);
   }
 
   .contact-info__email a {
-    color: var(--color-accent);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    color: var(--color-brand);
     font-weight: var(--weight-semibold);
   }
 
@@ -282,7 +286,7 @@ const legalHref = getNavHref('mentions-legales', base);
     font-family: var(--font-body);
     font-size: var(--text-base);
     padding: var(--space-3) var(--space-4);
-    border: 1px solid var(--color-border);
+    border: 1px solid var(--color-border-strong);
     border-radius: var(--radius-md);
     background: var(--color-bg-white);
     color: var(--color-text);
@@ -292,9 +296,7 @@ const legalHref = getNavHref('mentions-legales', base);
   .contact-form__group input:focus,
   .contact-form__group select:focus,
   .contact-form__group textarea:focus {
-    outline: none;
     border-color: var(--color-brand);
-    box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-brand) 18%, transparent);
   }
 
   .contact-form__group textarea {
@@ -331,7 +333,7 @@ const legalHref = getNavHref('mentions-legales', base);
   }
 
   .contact-form__status[data-state='error'] {
-    color: var(--color-warm);
+    color: var(--color-error);
   }
 
   .contact-form__privacy {
@@ -342,12 +344,19 @@ const legalHref = getNavHref('mentions-legales', base);
   }
 
   .contact-form__privacy a {
-    color: var(--color-accent);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    color: var(--color-brand);
     font-weight: var(--weight-medium);
   }
 
   .contact-form__privacy a:hover {
-    color: var(--color-accent-hover);
+    color: var(--color-brand-hover);
+  }
+
+  @media (max-width: 767px) {
+    .contact-form-wrap { order: -1; }
+    .contact-form__submit { width: 100%; }
   }
 
   @media (min-width: 768px) {

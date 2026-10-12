@@ -8,6 +8,7 @@
 import type { WorkshopView } from '../data/workshops';
 import { Picture } from 'astro:assets';
 import { img } from '../utils/images';
+import MediaPlaceholder from './MediaPlaceholder.astro';
 
 interface Props {
   workshop: WorkshopView;
@@ -34,16 +35,12 @@ const Heading = headingLevel;
       height={img(workshop.image.src).height}
     />
   ) : (
-    /* MASSODA_MISSING: visuel non fourni — bloc de marque, jamais d'image cassée */
-    <div
-      class="workshop-card__image workshop-card__image--placeholder"
-      data-massoda-placeholder={workshop.image.placeholderId}
-      role="img"
-      aria-label={`${workshop.title} — ${workshop.image.label}`}
-    >
-      <span class="workshop-card__placeholder-mark" aria-hidden="true">✦</span>
-      <span class="workshop-card__placeholder-text" aria-hidden="true">{workshop.image.label}</span>
-    </div>
+    <MediaPlaceholder
+      index={workshop.index}
+      caption={workshop.image.label}
+      label={`${workshop.title} — ${workshop.image.label}`}
+      placeholderId={workshop.image.placeholderId}
+    />
   )}
 
   <div class="card__body workshop-card__body">
@@ -52,19 +49,23 @@ const Heading = headingLevel;
 
     {workshop.description && <p class="card__text workshop-card__desc">{workshop.description}</p>}
 
-    <dl class="workshop-card__practical">
-      {workshop.practical.map((item) => (
-        <div class="workshop-card__row">
-          <dt>{item.label}</dt>
-          <dd
-            class:list={['workshop-card__value', { 'workshop-card__value--pending': item.status === 'placeholder' }]}
-            data-massoda-placeholder={item.status === 'placeholder' ? item.placeholderId : undefined}
-          >
-            {item.text}
-          </dd>
-        </div>
-      ))}
-    </dl>
+    <div class="workshop-card__practical">
+      {workshop.practical.length > 0 && (
+        <dl>
+          {workshop.practical.map((item) => (
+            <div class="workshop-card__row">
+              <dt>{item.label}</dt>
+              <dd class="workshop-card__value">{item.text}</dd>
+            </div>
+          ))}
+        </dl>
+      )}
+      {workshop.missingPractical && (
+        <p class="workshop-card__missing" data-massoda-placeholder={workshop.missingPractical.placeholderId}>
+          {workshop.missingPractical.text}
+        </p>
+      )}
+    </div>
 
     <div class="workshop-card__action">
       {workshop.action.kind === 'book' ? (
@@ -77,6 +78,7 @@ const Heading = headingLevel;
           class="workshop-card__pending"
           data-massoda-placeholder={workshop.action.placeholderId}
         >
+          <span class="workshop-card__status-dot" aria-hidden="true"></span>
           {workshop.action.label}
         </p>
       )}
@@ -98,36 +100,6 @@ const Heading = headingLevel;
     display: block;
   }
 
-  /* Repli graphique de marque : clairement temporaire, jamais confondable
-     avec une photo réelle de l'atelier. */
-  .workshop-card__image--placeholder {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: var(--space-2);
-    background:
-      repeating-linear-gradient(
-        135deg,
-        var(--color-surface-warm) 0 14px,
-        var(--color-bg-warm) 14px 28px
-      );
-    border-bottom: 1px solid var(--color-border);
-    color: var(--color-text-light);
-  }
-
-  .workshop-card__placeholder-mark {
-    font-size: var(--text-2xl);
-    color: var(--color-warm);
-    line-height: 1;
-  }
-
-  .workshop-card__placeholder-text {
-    font-size: var(--text-sm);
-    font-weight: var(--weight-semibold);
-    letter-spacing: var(--tracking-wide);
-  }
-
   .workshop-card__body {
     display: flex;
     flex-direction: column;
@@ -147,6 +119,12 @@ const Heading = headingLevel;
     border-top: 1px solid var(--color-border);
   }
 
+  .workshop-card__practical dl {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
   .workshop-card__row {
     display: flex;
     gap: var(--space-3);
@@ -157,8 +135,6 @@ const Heading = headingLevel;
     flex: 0 0 5.5rem;
     font-size: var(--text-xs);
     font-weight: var(--weight-semibold);
-    text-transform: uppercase;
-    letter-spacing: var(--tracking-wider);
     color: var(--color-text-muted);
   }
 
@@ -167,11 +143,9 @@ const Heading = headingLevel;
     color: var(--color-text);
   }
 
-  /* Valeur encore temporaire : ton plus discret + italique, pour qu'elle
-     ne se lise jamais comme une information commerciale définitive. */
-  .workshop-card__value--pending {
+  .workshop-card__missing {
+    font-size: var(--text-sm);
     color: var(--color-text-muted);
-    font-style: italic;
   }
 
   .workshop-card__action {
@@ -184,14 +158,19 @@ const Heading = headingLevel;
   }
 
   .workshop-card__pending {
-    display: block;
-    padding: var(--space-3) var(--space-4);
-    border: 1px dashed var(--color-border);
-    border-radius: var(--radius-full);
-    text-align: center;
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-2);
     font-size: var(--text-sm);
     font-weight: var(--weight-medium);
     color: var(--color-text-light);
-    background: var(--color-surface-warm);
+  }
+
+  .workshop-card__status-dot {
+    width: 8px;
+    height: 8px;
+    flex: 0 0 8px;
+    border-radius: var(--radius-full);
+    background: var(--color-accent);
   }
 </style>

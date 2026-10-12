@@ -120,12 +120,14 @@ export type WorkshopAction =
   | { kind: 'pending'; label: string; placeholderId?: string };
 
 export interface WorkshopView {
+  index: number;
   id: string;
   title: string;
   tag: string;
   description: string | null;
   /** Informations pratiques, dans l'ordre d'affichage. */
   practical: Array<{ key: string; label: string } & ResolvedField>;
+  missingPractical: ResolvedField | null;
   image: { kind: 'image'; src: string; alt: string } | { kind: 'placeholder'; label: string; placeholderId: string };
   action: WorkshopAction;
   /** Vrai si au moins un champ de la carte est encore temporaire. */
@@ -138,13 +140,25 @@ export interface WorkshopView {
  * n'est donc écrite qu'une seule fois.
  */
 export function getWorkshopViews(): WorkshopView[] {
-  return workshops.map((w) => {
-    const practical = [
+  return workshops.map((w, index) => {
+    const fields = [
       { key: 'date', label: 'Date', ...resolveField(w.date, workshopPlaceholderId(w.id, 'date'), PLACEHOLDER_LABELS.date) },
       { key: 'time', label: 'Horaire', ...resolveField(w.time, workshopPlaceholderId(w.id, 'time'), PLACEHOLDER_LABELS.time) },
       { key: 'place', label: 'Lieu', ...resolveField(w.place, workshopPlaceholderId(w.id, 'place'), PLACEHOLDER_LABELS.place) },
       { key: 'price', label: 'Prix', ...resolveField(w.price, workshopPlaceholderId(w.id, 'price'), PLACEHOLDER_LABELS.price) },
     ];
+
+    const practical = fields.filter(item => item.status === 'ready');
+    const missing = fields.filter(item => item.status === 'placeholder');
+    const labels = missing.map((item, i) => i === 0 ? item.label : item.label.toLocaleLowerCase('fr'));
+    const missingText = missing.length === 0 ? '' : missing.length === fields.length
+      ? PLACEHOLDER_LABELS.practical
+      : `${labels.length > 1 ? `${labels.slice(0, -1).join(', ')} et ${labels.at(-1)}` : labels[0]} à venir`;
+    const missingPractical: ResolvedField | null = missing.length ? {
+      status: 'placeholder',
+      text: missingText,
+      placeholderId: missing.map(item => item.placeholderId).join(' '),
+    } : null;
 
     const image: WorkshopView['image'] = w.image
       ? { kind: 'image', src: w.image.src, alt: w.image.alt }
@@ -156,25 +170,31 @@ export function getWorkshopViews(): WorkshopView[] {
     if (w.ticketing.status === 'open' && w.ticketing.url) {
       action = { kind: 'book', label: 'Réserve ta place', url: w.ticketing.url };
     } else if (w.ticketing.opensOn) {
-      action = { kind: 'pending', label: `Ouverture de la billetterie le ${w.ticketing.opensOn}` };
+      action = {
+        kind: 'pending',
+        label: `Ouverture de la billetterie le ${w.ticketing.opensOn}`,
+        placeholderId: workshopPlaceholderId(w.id, 'ticketing_url'),
+      };
     } else {
       action = {
         kind: 'pending',
         label: PLACEHOLDER_LABELS.ticketing,
-        placeholderId: workshopPlaceholderId(w.id, 'ticketing_url'),
+        placeholderId: [workshopPlaceholderId(w.id, 'ticketing_url'), workshopPlaceholderId(w.id, 'ticketing_opens_on')].join(' '),
       };
     }
 
     return {
+      index,
       id: w.id,
       title: w.title,
       tag: w.tag,
       description: w.description,
       practical,
+      missingPractical,
       image,
       action,
       hasPlaceholder:
-        practical.some((p) => p.status === 'placeholder') ||
+        missingPractical !== null ||
         image.kind === 'placeholder' ||
         action.kind === 'pending',
     };

@@ -1,0 +1,28 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getNavHref } from '../utils/nav';
+const base = import.meta.env.BASE_URL;
+---
+
+<BaseLayout title="Page introuvable" description="Cette page n’existe pas ou a changé d’adresse.">
+  <section class="section">
+    <div class="container not-found">
+      <h1 class="heading-1">Page introuvable</h1>
+      <p class="subtitle">Cette page n’existe pas ou a changé d’adresse.</p>
+      <div class="not-found__actions">
+        <a href={getNavHref('', base)} class="btn btn--primary">Retour à l’accueil</a>
+        <a href={getNavHref('ateliers', base)} class="btn btn--outline">Découvrir les ateliers</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .not-found p { margin-top: var(--space-6); }
+  .not-found__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-4);
+    margin-top: var(--space-8);
+  }
+</style>
