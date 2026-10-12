@@ -3,6 +3,7 @@ import { getNavHref } from '../utils/nav';
 import { getAnnouncementCta, LETTER } from '../data/site';
 import { getWorkshopViews } from '../data/workshops';
 import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHeader from '../components/PageHeader.astro';
 import WorkshopCard from '../components/WorkshopCard.astro';
 import Faq, { type FaqItem } from '../components/Faq.astro';
 
@@ -16,51 +17,56 @@ const cta = getAnnouncementCta();
 
 const faqItems: FaqItem[] = [
   {
-    question: 'Puis-je venir seul·e à un atelier ?',
+    question: 'Puis-je venir seul·e à un atelier ?',
     answer:
       'Bien sûr. Beaucoup de participant·es viennent seul·es. Nos expériences sont pensées comme des espaces de partage et de rencontre, et nous veillons à créer une ambiance chaleureuse afin que chacun·e puisse se sentir à l’aise dès son arrivée.',
   },
   {
-    question: 'Puis-je venir accompagné·e ?',
+    question: 'Puis-je venir accompagné·e ?',
     answer:
-      'Avec plaisir. Selon les ateliers, nous proposons ponctuellement des tarifs préférentiels pour venir à deux. Certaines expériences sont mixtes et d’autres peuvent être pensées pour un public particulier : toutes les informations sont précisées sur la page de l’atelier.',
+      'Avec plaisir. Selon les ateliers, nous proposons ponctuellement des tarifs préférentiels pour venir à deux. Certaines expériences sont mixtes et d’autres peuvent être pensées pour un public particulier : toutes les informations sont précisées sur la page de l’atelier.',
   },
   {
-    question: 'Faut-il déjà savoir pratiquer l’activité ?',
+    question: 'Faut-il déjà savoir pratiquer l’activité ?',
     answer:
       'Non. Nos ateliers sont conçus pour permettre à chacun·e de découvrir, d’expérimenter et d’apprendre à son rythme. Les artistes, artisan·es et expert·es accompagnent le groupe tout au long de l’expérience.',
   },
   {
-    question: 'Faut-il être issu·e de la communauté afrodescendante pour participer ?',
+    question: 'Faut-il être issu·e de la communauté afrodescendante pour participer ?',
     answer:
-      'Non. Les Ateliers Massoda sont ouverts à toutes et à tous. Nos expériences mettent à l’honneur les cultures afro-⁠caribéennes, leurs savoirs, leurs pratiques et leurs créateur·rices dans une démarche de découverte, de transmission et de partage. Il n’est donc pas nécessaire d’être afrodescendant·e pour participer : nous demandons simplement de venir avec curiosité, respect et envie d’apprendre.',
+      'Non. Les Ateliers Massoda sont ouverts à toutes et à tous. Nos expériences mettent à l’honneur les cultures afro-⁠caribéennes, leurs savoirs, leurs pratiques et leurs créateur·rices dans une démarche de découverte, de transmission et de partage. Il n’est donc pas nécessaire d’être afrodescendant·e pour participer : nous demandons simplement de venir avec curiosité, respect et envie d’apprendre.',
   },
   {
-    question: 'Le matériel est-il fourni ?',
+    question: 'Le matériel est-il fourni ?',
     answer:
       'Oui. Sauf indication contraire, tout le matériel nécessaire est inclus dans la réservation. Il ne reste plus qu’à venir profiter de l’expérience.',
   },
   {
-    question: 'Pourquoi le nombre de places est-il limité ?',
+    question: 'Pourquoi le nombre de places est-il limité ?',
     answer:
       'Nous privilégions les petits groupes afin de préserver une expérience intimiste, de faciliter les échanges avec l’intervenant·e et de permettre à chacun·e d’être accompagné·e dans de bonnes conditions.',
   },
   {
-    question: 'Où ont lieu les ateliers ?',
+    question: 'Où ont lieu les ateliers ?',
     answer:
       'Les expériences Massoda sont organisées dans différents lieux sélectionnés en fonction de l’univers de chaque atelier. L’adresse exacte est indiquée sur la page de réservation et dans la confirmation.',
   },
   {
-    question: 'Comment être informé·e des prochains ateliers ?',
+    question: 'Comment être informé·e des prochains ateliers ?',
     answer:
       'En rejoignant La Lettre de Massoda, il est possible de découvrir la prochaine programmation et de bénéficier d’un accès prioritaire aux billetteries avant leur ouverture au public.',
   },
   {
-    question: 'Les ateliers sont-ils uniquement créatifs ?',
+    question: 'Les ateliers sont-ils uniquement créatifs ?',
     answer:
-      'Non. Massoda explore la culture afro-⁠caribéenne à travers différents aspects de l’art de vivre et du bien-⁠être : créativité, alimentation, soin de soi, estime de soi, décoration, artisanat et bien d’autres pratiques. Chaque expérience est une nouvelle manière de découvrir, d’expérimenter et de se réapproprier ces savoirs.',
+      'Non. Massoda explore la culture afro-⁠caribéenne à travers différents aspects de l’art de vivre et du bien-⁠être : créativité, alimentation, soin de soi, estime de soi, décoration, artisanat et bien d’autres pratiques. Chaque expérience est une nouvelle manière de découvrir, d’expérimenter et de se réapproprier ces savoirs.',
   },
 ];
+
+const pageHeader = {
+  "title": "Ateliers & expériences",
+  "lede": "Les Ateliers Massoda créent des espaces de partage où les cultures afro-⁠caribéennes se vivent à travers la créativité, le bien-⁠être et l’art de vivre."
+};
 ---
 
 <BaseLayout
@@ -68,30 +74,21 @@ const faqItems: FaqItem[] = [
   description="Rencontrer des artistes, artisan·es et expert·es le temps d’un atelier en petit comité, matériel fourni : la programmation des Ateliers Massoda."
 >
   <!-- 1. Introduction -->
-  <section class="page-hero">
-    <div class="container">
-      <div class="page-hero__content">
-        <h1 class="heading-1">Ateliers &amp; expériences</h1>
-        <p class="page-hero__lede">
-          Les Ateliers Massoda créent des espaces de partage où les cultures afro-⁠caribéennes
-          se vivent à travers la créativité, le bien-⁠être et l’art de vivre.
-        </p>
-        <p>
-          Ouverts à toutes et à tous, nos ateliers invitent à rencontrer des artistes,
-          artisan·es et expert·es, à découvrir leurs savoirs et leurs pratiques, puis à les
-          expérimenter à sa manière.
-        </p>
-        <p>
-          Chaque expérience est pensée en petit comité, avec un nombre de places limité et
-          tout le matériel fourni, afin de profiter pleinement du moment.
-        </p>
-        <p>
-          Que l’on vienne seul·e ou accompagné·e, Massoda est avant tout un espace de
-          rencontre, de transmission et de convivialité.
-        </p>
-      </div>
-    </div>
-  </section>
+  <PageHeader {...pageHeader}>
+    <p>
+      Ouverts à toutes et à tous, nos ateliers invitent à rencontrer des artistes,
+      artisan·es et expert·es, à découvrir leurs savoirs et leurs pratiques, puis à les
+      expérimenter à sa manière.
+    </p>
+    <p>
+      Chaque expérience est pensée en petit comité, avec un nombre de places limité et
+      tout le matériel fourni, afin de profiter pleinement du moment.
+    </p>
+    <p>
+      Que l’on vienne seul·e ou accompagné·e, Massoda est avant tout un espace de
+      rencontre, de transmission et de convivialité.
+    </p>
+  </PageHeader>
 
   <!-- 2. Les trois prochains ateliers -->
   <section class="section prochains" id="prochains-ateliers">
@@ -122,7 +119,7 @@ const faqItems: FaqItem[] = [
   <!-- 4. CTA final -->
   <section class="section final-cta">
     <div class="container container--narrow final-cta__inner">
-      <h2 class="heading-3">Envie de vivre une expérience Massoda ?</h2>
+      <h2 class="heading-3">Envie de vivre une expérience Massoda ?</h2>
       <p class="final-cta__text">
         {cta.kind === 'instagram' ? cta.message : (
           <>La programmation se dévoile atelier après atelier. La Lettre de Massoda donne accès
@@ -140,13 +137,13 @@ const faqItems: FaqItem[] = [
           {cta.label}
         </a>
         {cta.kind === 'reservation' && LETTER.signupUrl && (
-          <a href={LETTER.signupUrl} target="_blank" rel="noopener" class="btn btn--outline">
+          <a href={LETTER.signupUrl ?? getNavHref('la-lettre', base)} target={LETTER.signupUrl ? '_blank' : undefined} rel={LETTER.signupUrl ? 'noopener' : undefined} class="btn btn--outline">
             Recevoir La Lettre
           </a>
         )}
       </div>
       <p class="final-cta__note">
-        Un atelier privé, une collaboration ou un lieu à proposer ?
+        Un atelier privé, une collaboration ou un lieu à proposer ?
         <a href={getNavHref('contact', base)}>Écrivez-nous</a>.
       </p>
     </div>
@@ -154,34 +151,6 @@ const faqItems: FaqItem[] = [
 </BaseLayout>
 
 <style>
-  .page-hero {
-    padding-block: var(--space-16) var(--space-12);
-    background: var(--color-bg);
-  }
-
-  .page-hero__content {
-    max-width: var(--measure);
-  }
-
-  .page-hero__content .overline {
-    display: block;
-    margin-bottom: var(--space-3);
-  }
-
-  .page-hero__content h1 {
-    margin-bottom: var(--space-6);
-  }
-
-  .page-hero__content p {
-    color: var(--color-text-light);
-    line-height: var(--leading-relaxed);
-    margin-bottom: var(--space-4);
-  }
-
-  .page-hero__lede {
-    font-size: var(--text-lg);
-    color: var(--color-text) !important;
-  }
 
   /* Prochains ateliers */
   .prochains {
@@ -262,9 +231,6 @@ const faqItems: FaqItem[] = [
   }
 
   @media (min-width: 768px) {
-    .page-hero {
-      padding-block: var(--space-24) var(--space-16);
-    }
 
     .prochains__grid {
       grid-template-columns: repeat(3, 1fr);

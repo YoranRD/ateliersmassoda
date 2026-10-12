@@ -1,10 +1,16 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHeader from '../components/PageHeader.astro';
 import { getNavHref } from '../utils/nav';
 import { SOCIAL_LINKS } from '../data/site';
 
 const base = import.meta.env.BASE_URL;
 const legalHref = getNavHref('mentions-legales', base);
+
+const pageHeader = {
+  "title": "Collaborer avec Massoda",
+  "lede": "Une collaboration de marque, un lieu à nous proposer, un atelier privé à organiser ou simplement une question : nous lisons chaque message."
+};
 ---
 
 <BaseLayout
@@ -12,15 +18,7 @@ const legalHref = getNavHref('mentions-legales', base);
   description="Marques, créateur·rices, lieux d’accueil et groupes : collaborez avec Les Ateliers Massoda ou privatisez un atelier sur mesure."
 >
 
-  <section class="page-hero">
-    <div class="container">
-      <div class="page-hero__content">
-        <span class="overline">Collaborer</span>
-        <h1 class="heading-1">Collaborer avec Massoda</h1>
-        <p class="subtitle">Une collaboration de marque, un lieu à nous proposer, un atelier privé à organiser ou simplement une question : nous lisons chaque message.</p>
-      </div>
-    </div>
-  </section>
+  <PageHeader {...pageHeader} />
 
   <section class="section">
     <div class="container contact-grid">
@@ -28,12 +26,12 @@ const legalHref = getNavHref('mentions-legales', base);
       <div class="contact-info">
         <div class="contact-info__block">
           <h2 class="heading-4">Collaborations & lieux</h2>
-          <p>Marques, créatrices, lieux d'accueil : si nos univers se rejoignent, construisons quelque chose ensemble. Nous sommes aussi ouvertes aux propositions de nouveaux lieux pour accueillir des formats spécifiques.</p>
+          <p>Marques, créatrices, lieux d’accueil : si nos univers se rejoignent, construisons quelque chose ensemble. Nous sommes aussi ouvertes aux propositions de nouveaux lieux pour accueillir des formats spécifiques.</p>
         </div>
 
         <div class="contact-info__block">
           <h2 class="heading-4">Ateliers privés & sur mesure</h2>
-          <p>Anniversaires, EVJF, team building, associations : nous concevons une expérience Massoda à l'image de votre groupe.</p>
+          <p>Anniversaires, EVJF, team building, associations : nous concevons une expérience Massoda à l’image de votre groupe.</p>
         </div>
 
         <div class="contact-info__block">
@@ -153,7 +151,7 @@ const legalHref = getNavHref('mentions-legales', base);
         } else {
           status.dataset.state = 'error';
           status.textContent =
-            result.message || "L'envoi n'a pas pu aboutir. Merci de réessayer ou de nous écrire à yoranrd@gmail.com.";
+            result.message || "L’envoi n’a pas pu aboutir. Merci de réessayer ou de nous écrire à yoranrd@gmail.com.";
         }
       } catch (error) {
         console.error(error);
@@ -169,23 +167,6 @@ const legalHref = getNavHref('mentions-legales', base);
 </script>
 
 <style>
-  .page-hero {
-    padding-block: var(--space-16) var(--space-12);
-    background: var(--color-bg);
-  }
-
-  .page-hero__content {
-    max-width: 600px;
-  }
-
-  .page-hero__content .overline {
-    display: block;
-    margin-bottom: var(--space-3);
-  }
-
-  .page-hero__content h1 {
-    margin-bottom: var(--space-4);
-  }
 
   .contact-grid {
     display: grid;
@@ -360,9 +341,6 @@ const legalHref = getNavHref('mentions-legales', base);
   }
 
   @media (min-width: 768px) {
-    .page-hero {
-      padding-block: var(--space-24) var(--space-16);
-    }
 
     .contact-grid {
       grid-template-columns: 1fr 1.2fr;

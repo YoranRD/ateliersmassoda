@@ -1,87 +1,24 @@
 ---
-import { LETTER, PLACEHOLDER_LABELS, getAnnouncementCta } from '../../data/site';
-
-/* MASSODA_MISSING:LETTER_SIGNUP_URL — sans URL réelle, aucun href n'est
-   fabriqué et aucun formulaire n'est simulé. Renseigner LETTER.signupUrl
-   dans src/data/site.ts rend le CTA cliquable automatiquement. */
-const cta = getAnnouncementCta(false);
+import { LETTER } from '../../data/site';
+import { getNavHref } from '../../utils/nav';
+import LetterContent from '../letter/LetterContent.astro';
+import LetterAction from '../letter/LetterAction.astro';
+const base = import.meta.env.BASE_URL;
 ---
 
-<section class="lettre on-brand" id={LETTER.anchorId}>
+<section class="lettre letter-surface on-brand" id={LETTER.anchorId}>
   <div class="container lettre__inner">
-    <span class="lettre__eyebrow">La Lettre de Massoda</span>
+    <span class="overline lettre__eyebrow">La Lettre de Massoda</span>
     <h2 class="heading-3 lettre__titre">L’accès prioritaire aux billetteries</h2>
     <div class="lettre__texte">
-      <p>
-        Bien avant d’être un concept, <strong>Massoda qui est le fruit d’un cheminement.</strong>
-      </p>
-      <p>
-        Celui d’apprendre à mieux se connaître, de questionner ce que l’on nous a transmis,
-        d’expérimenter de nouvelles façons de prendre soin de soi et de créer du lien avec les
-        autres.
-      </p>
-      <p>
-        Parce que nous prenons rarement le temps de nous arrêter, d’être curieux, d’essayer,
-        de nous questionner. Pourtant, je crois que ces moments participent profondément à
-        notre bien-⁠être.
-      </p>
-      <p><strong>La Lettre Massoda</strong>, c’est un peu le prolongement de cette réflexion.</p>
-      <p>
-        Chaque mois, je t’y partagerai les questionnements, rencontres et découvertes qui
-        nourrissent Massoda et donnent naissance aux ateliers. Mais aussi mes recommandations :
-        lieux, food, bien-⁠être, culture, activités et belles découvertes à expérimenter.
-      </p>
-      <p>
-        Et parce que cette lettre est aussi une façon de réunir celles et ceux qui souhaitent
-        suivre Massoda de plus près, <strong>ses abonnés auront accès en avant-première aux
-        billetteries de tous les ateliers du trimestre</strong>, avant leur annonce sur
-        Instagram.
-      </p>
-      <p>
-        Une lettre pour découvrir, expérimenter, s’inspirer… et peut-être voir son quotidien
-        autrement.
-      </p>
+      <LetterContent excerpt />
     </div>
-
-    {cta.kind === 'instagram' && (
-      <p class="lettre__pending" data-massoda-placeholder="LETTER_SIGNUP_URL">
-        {PLACEHOLDER_LABELS.letterSignup}
-      </p>
-    )}
-    <a
-      href={cta.href}
-      target="_blank"
-      rel="noopener"
-      class="lettre__btn"
-      data-massoda-placeholder={cta.isPlaceholder ? cta.placeholderId : undefined}
-    >
-      {cta.label}
-    </a>
+    <a href={getNavHref('la-lettre', base)} class="lettre__read-link">Lire la lettre en entier</a>
+    <LetterAction />
   </div>
 </section>
 
 <style>
-  /* Section accentuée de l'accueil : bleu de marque, texte clair. */
-  .lettre {
-    background: var(--color-brand);
-    padding-block: var(--space-16);
-    position: relative;
-    overflow: hidden;
-    /* Compense le header collant lors d'un saut sur #la-lettre. */
-  }
-
-  .lettre::before {
-    content: '';
-    position: absolute;
-    top: -80px;
-    right: -80px;
-    width: 400px;
-    height: 400px;
-    border-radius: 50%;
-    background: radial-gradient(circle, color-mix(in srgb, var(--color-warm) 32%, transparent) 0%, transparent 70%);
-    pointer-events: none;
-  }
-
   .lettre__inner {
     position: relative;
     text-align: center;
@@ -90,10 +27,6 @@ const cta = getAnnouncementCta(false);
 
   .lettre__eyebrow {
     display: block;
-    font-size: var(--text-xs);
-    font-weight: var(--weight-semibold);
-    letter-spacing: var(--tracking-wider);
-    text-transform: uppercase;
     color: var(--color-warm-light);
     margin-bottom: var(--space-4);
   }
@@ -107,41 +40,16 @@ const cta = getAnnouncementCta(false);
     color: color-mix(in srgb, var(--color-text-on-brand) 88%, transparent);
     font-size: var(--text-lg);
     line-height: var(--leading-normal);
-    margin-bottom: var(--space-8);
-    margin-inline: auto;
+    margin-bottom: var(--space-6);
     text-align: left;
   }
 
-  .lettre__texte p + p {
-    margin-top: var(--space-4);
-  }
-
-  .lettre__btn {
-    max-width: 100%;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: var(--space-4) var(--space-10);
-    background: var(--color-bg);
-    color: var(--color-brand);
-    font-size: var(--text-sm);
-    font-weight: var(--weight-semibold);
-    letter-spacing: var(--tracking-wide);
-    border-radius: var(--radius-full);
-    transition: background var(--duration-normal) var(--ease-out),
-                transform var(--duration-normal) var(--ease-out);
-  }
-
-  .lettre__btn:hover {
-    background: var(--color-surface);
-    transform: translateY(-2px);
-  }
-
-  /* État temporaire : visuellement abouti, mais non cliquable. */
-  .lettre__pending {
-    margin-bottom: var(--space-4);
-    font-size: var(--text-sm);
-    font-weight: var(--weight-semibold);
+  .lettre__read-link {
+    display: inline-block;
     color: var(--color-text-on-brand);
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    margin-bottom: var(--space-8);
+    padding-block: var(--space-2);
   }
 </style>

@@ -2,27 +2,25 @@
 import { getNavHref } from '../utils/nav';
 import { getReservationCta } from '../data/site';
 import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHeader from '../components/PageHeader.astro';
 import { Picture } from 'astro:assets';
 import { img } from '../utils/images';
 
 const base = import.meta.env.BASE_URL;
 const cta = getReservationCta(getNavHref('ateliers', base));
-const masodaImage = img('about/masoda-cest-quoi');
+const masodaImage = img('home/communaute-masoda');
 const founderImage = img('about/photo-fondatrice');
+
+const pageHeader = {
+  "title": "L’histoire derrière Massoda",
+  "lede": "Un projet né de l’envie de créer un espace chaleureux où créativité, bien-⁠être et culture se rencontrent."
+};
 ---
 
 <BaseLayout title="À propos — Les Ateliers Massoda" description="Découvrez l'histoire, les valeurs et l'univers de Massoda. Créativité, bien-être et culture afro-caribéenne.">
 
   <!-- Hero -->
-  <section class="page-hero">
-    <div class="container">
-      <div class="page-hero__content">
-        <span class="overline">À propos</span>
-        <h1 class="heading-1">L'histoire derrière Massoda</h1>
-        <p class="subtitle">Un projet né de l'envie de créer un espace chaleureux où créativité, bien-⁠être et culture se rencontrent.</p>
-      </div>
-    </div>
-  </section>
+  <PageHeader {...pageHeader} />
 
   <!-- Story -->
   <section class="section">
@@ -31,7 +29,7 @@ const founderImage = img('about/photo-fondatrice');
         <div class="about-story__frame">
           <Picture
             src={masodaImage}
-            alt="Une femme sur le seuil de BMK, lieu partenaire des Ateliers Massoda"
+            alt="Tablée d’atelier : création de baya, boîtes de perles et fleurs roses"
             class="about-story__img"
             formats={['avif', 'webp']}
             widths={[480, 800, 1100]}
@@ -43,16 +41,16 @@ const founderImage = img('about/photo-fondatrice');
         </div>
       </div>
       <div class="about-story__content">
-        <h2 class="heading-4">Massoda, c'est quoi ?</h2>
+        <h2 class="heading-4">Massoda, c’est quoi ?</h2>
         <p>
-          Les Ateliers Massoda sont nés d'une envie simple : créer un espace où l'on peut
+          Les Ateliers Massoda sont nés d’une envie simple : créer un espace où l’on peut
           souffler, créer et se retrouver. Un lieu qui célèbre la culture afro-⁠caribéenne
           à travers des expériences de bien-⁠être et de créativité, sans prétention mais avec exigence.
         </p>
         <p>
           Ici, on ne cherche pas la performance. On cherche la connexion — à soi, aux autres,
           à ses racines. Que ce soit à travers la peinture, les rituels de soin ou simplement
-          un moment de partage autour d'une tisane, chaque atelier est pensé pour faire du bien.
+          un moment de partage autour d’une tisane, chaque atelier est pensé pour faire du bien.
         </p>
       </div>
     </div>
@@ -71,7 +69,7 @@ const founderImage = img('about/photo-fondatrice');
         </p>
         <p>
           C’est dans les gestes simples de son quotidien qu’elle en prend pleinement
-          conscience : une nappe en madras posée par sa mère, des plats antillais cuisinés à
+          conscience : une nappe en madras posée par sa mère, des plats antillais cuisinés à
           la maison, des façons de recevoir, de partager et de célébrer… Autant de détails qui
           lui montrent que la culture perdure par l’art de vivre.
         </p>
@@ -79,12 +77,12 @@ const founderImage = img('about/photo-fondatrice');
           Elle réalise également que les cultures africaines, caribéennes et
           afro-diasporiques sont encore souvent transmises à travers des récits de luttes et de
           traumatismes. Une histoire essentielle qu’il ne s’agit pas d’effacer, mais à laquelle
-          Barbara souhaite faire côtoyer d’autres récits : ceux de la joie, de la créativité,
+          Barbara souhaite faire côtoyer d’autres récits : ceux de la joie, de la créativité,
           du soin, de la beauté et du bien-⁠être.
         </p>
         <p>
           Inspirée par son père, elle choisit le nom Massoda, un mot bassa associé au bonheur
-          et à la joie, et imagine un projet avec une conviction : faire de la culture une
+          et à la joie, et imagine un projet avec une conviction : faire de la culture une
           matière vivante que chacun peut découvrir, expérimenter et intégrer à son quotidien
           pour enrichir son art de vivre, se sentir davantage ancré et contribuer à son
           bien-⁠être.
@@ -114,24 +112,20 @@ const founderImage = img('about/photo-fondatrice');
       <h2 class="heading-3 values-section__title">Ce qui nous guide</h2>
       <div class="values-grid">
         <div class="value-card">
-          <span class="value-card__icon">✦</span>
           <h3 class="value-card__title">Authenticité</h3>
           <p>Des expériences ancrées dans la culture, pas dans les tendances éphémères.</p>
         </div>
         <div class="value-card">
-          <span class="value-card__icon" style="color: var(--color-coral);">✦</span>
           <h3 class="value-card__title">Bienveillance</h3>
           <p>Un espace sans jugement, où chacune avance à son rythme.</p>
         </div>
         <div class="value-card">
-          <span class="value-card__icon" style="color: var(--color-brand);">✦</span>
           <h3 class="value-card__title">Qualité</h3>
           <p>Des ateliers soignés, des matériaux choisis, une attention portée à chaque détail.</p>
         </div>
         <div class="value-card">
-          <span class="value-card__icon" style="color: var(--color-warm);">✦</span>
           <h3 class="value-card__title">Communauté</h3>
-          <p>On vient pour l'atelier, on revient pour les liens qu'on y crée.</p>
+          <p>On vient pour l’atelier, on revient pour les liens qu’on y crée.</p>
         </div>
       </div>
     </div>
@@ -164,23 +158,6 @@ const founderImage = img('about/photo-fondatrice');
 </BaseLayout>
 
 <style>
-  .page-hero {
-    padding-block: var(--space-16) var(--space-12);
-    background: var(--color-bg);
-  }
-
-  .page-hero__content {
-    max-width: 650px;
-  }
-
-  .page-hero__content .overline {
-    display: block;
-    margin-bottom: var(--space-3);
-  }
-
-  .page-hero__content h1 {
-    margin-bottom: var(--space-4);
-  }
 
   .about-story {
     display: grid;
@@ -296,13 +273,6 @@ const founderImage = img('about/photo-fondatrice');
     border: 1px solid var(--color-border);
   }
 
-  .value-card__icon {
-    font-size: var(--text-2xl);
-    color: var(--color-accent);
-    display: block;
-    margin-bottom: var(--space-4);
-  }
-
   .value-card__title {
     font-family: var(--font-heading);
     font-size: var(--text-xl);
@@ -339,9 +309,8 @@ const founderImage = img('about/photo-fondatrice');
   }
 
   @media (min-width: 768px) {
-    .page-hero {
-      padding-block: var(--space-24) var(--space-16);
-    }
+    .about-story__frame,
+    .about-founder__frame { margin-inline: 0; }
 
     .about-story {
       grid-template-columns: 1fr 1.2fr;

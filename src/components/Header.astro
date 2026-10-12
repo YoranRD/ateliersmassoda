@@ -16,9 +16,7 @@ const cta = getReservationCta(`${getNavHref('ateliers', base)}#prochains-atelier
 const navLinks = [
   { label: 'Accueil', href: homeHref },
   { label: 'Ateliers & expériences', href: getNavHref('ateliers', base) },
-  // La Lettre vit dans une section de l'accueil : le lien doit rester absolu
-  // (base path inclus) car le header est aussi rendu sur les autres pages.
-  { label: 'La Lettre', href: `${homeHref}#la-lettre`, isAnchor: true },
+  { label: 'La Lettre', href: getNavHref('la-lettre', base) },
   { label: 'À propos', href: getNavHref('a-propos', base) },
   { label: 'Collaborer', href: getNavHref('contact', base) },
 ];
@@ -42,8 +40,8 @@ const navLinks = [
           <li>
             <a
               href={link.href}
-              aria-current={!link.isAnchor && isActiveLink(currentPath, link.href) ? 'page' : undefined}
-              class:list={['header__link', { 'header__link--active': !link.isAnchor && isActiveLink(currentPath, link.href) }]}
+              aria-current={isActiveLink(currentPath, link.href) ? 'page' : undefined}
+              class:list={['header__link', { 'header__link--active': isActiveLink(currentPath, link.href) }]}
             >
               {link.label}
             </a>
@@ -84,7 +82,7 @@ const navLinks = [
             <a
               href={link.href}
               class="header__mobile-link"
-              aria-current={!link.isAnchor && isActiveLink(currentPath, link.href) ? 'page' : undefined}
+              aria-current={isActiveLink(currentPath, link.href) ? 'page' : undefined}
             >
               {link.label}
             </a>
@@ -339,8 +337,7 @@ const navLinks = [
     }
   });
 
-  // Refermer après activation d'un lien : indispensable pour les ancres
-  // comme #la-lettre, qui ne provoquent pas de navigation.
+  // Refermer après activation d’un lien avant la navigation.
   mobileMenu?.querySelectorAll('a').forEach(link => {
     link.addEventListener('click', () => setMenu(false));
   });

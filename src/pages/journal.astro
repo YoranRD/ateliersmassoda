@@ -1,11 +1,11 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHeader from '../components/PageHeader.astro';
 import { Picture } from 'astro:assets';
 import { img } from '../utils/images';
 import { SOCIAL_LINKS } from '../data/site';
 
 const INSTAGRAM_URL = SOCIAL_LINKS[0].url;
-
 
 const articles = [
   {
@@ -18,7 +18,7 @@ const articles = [
   },
   {
     tag: 'Créativité',
-    title: 'Oser créer sans jugement : le pouvoir de l\'art intuitif',
+    title: 'Oser créer sans jugement : le pouvoir de l’art intuitif',
     excerpt: 'Pourquoi peindre sans règle peut transformer votre rapport à vous-même et libérer votre expression.',
     date: 'En écriture',
     image: 'home/atelier-paint-jam',
@@ -27,15 +27,15 @@ const articles = [
   {
     tag: 'Plantes',
     title: 'Les plantes africaines anti-stress à redécouvrir',
-    excerpt: 'Tisanes, racines et infusions : les trésors végétaux du continent et des îles, à intégrer au quotidien.',
+    excerpt: 'Tisanes, racines et infusions : les trésors végétaux du continent et des îles, à intégrer au quotidien.',
     date: 'En préparation',
     image: 'collaborators/collaborateur-3',
     alt: 'Bocaux de plantes séchées et boîtes d’infusions sur une table',
   },
   {
     tag: 'Artisanat',
-    title: 'Baya : l\'histoire des perles de taille',
-    excerpt: 'Symbole de féminité et d\'ancrage, la baya raconte un héritage transmis de femme à femme.',
+    title: 'Baya : l’histoire des perles de taille',
+    excerpt: 'Symbole de féminité et d’ancrage, la baya raconte un héritage transmis de femme à femme.',
     date: 'À paraître',
     image: 'home/atelier-baya',
     alt: 'Baya de perles colorées sur un présentoir, avec une boîte de perles',
@@ -43,10 +43,10 @@ const articles = [
   {
     tag: 'Communauté',
     title: 'Pourquoi les cercles de femmes nous font tant de bien',
-    excerpt: 'La force du collectif féminin : un espace de parole, d\'écoute et de soutien qui transforme.',
+    excerpt: 'La force du collectif féminin : un espace de parole, d’écoute et de soutien qui transforme.',
     date: 'En écriture',
     image: 'home/communaute-masoda',
-    alt: 'Tablée d’atelier : création de baya, boîtes de perles et fleurs roses',
+    alt: 'Tablée d’atelier : création de baya, boîtes de perles et fleurs roses',
   },
   {
     tag: 'Identité',
@@ -57,19 +57,16 @@ const articles = [
     alt: 'Portrait d’une femme tenant un verre',
   },
 ];
+
+const pageHeader = {
+  "title": "Inspirations & ressources",
+  "lede": "Le journal Massoda se construit progressivement : voici les premiers sujets qui s’écrivent autour du bien-⁠être, de la créativité et des cultures afro-⁠caribéennes."
+};
 ---
 
 <BaseLayout title="Journal — Les Ateliers Massoda" description="Inspirations, bien-être et culture afro-caribéenne. Articles et ressources pour prendre soin de soi autrement.">
 
-  <section class="page-hero">
-    <div class="container">
-      <div class="page-hero__content">
-        <span class="overline">Journal</span>
-        <h1 class="heading-1">Inspirations & ressources</h1>
-        <p class="subtitle">Le journal Massoda se construit progressivement : voici les premiers sujets qui s'écrivent autour du bien-⁠être, de la créativité et des cultures afro-⁠caribéennes.</p>
-      </div>
-    </div>
-  </section>
+  <PageHeader {...pageHeader} />
 
   <section class="section">
     <div class="container">
@@ -106,7 +103,7 @@ const articles = [
   <section class="section journal-cta-section">
     <div class="container container--narrow">
       <div class="journal-cta">
-        <h2 class="heading-4">Le journal s'écrit en ce moment.</h2>
+        <h2 class="heading-4">Le journal s’écrit en ce moment.</h2>
         <p>Les premiers articles arrivent par vagues. Suivez-nous sur Instagram pour être prévenue dès leur publication.</p>
         <a href={INSTAGRAM_URL} target="_blank" rel="noopener" class="btn btn--primary">
           Suivre sur Instagram
@@ -117,23 +114,6 @@ const articles = [
 </BaseLayout>
 
 <style>
-  .page-hero {
-    padding-block: var(--space-16) var(--space-12);
-    background: var(--color-bg);
-  }
-
-  .page-hero__content {
-    max-width: 600px;
-  }
-
-  .page-hero__content .overline {
-    display: block;
-    margin-bottom: var(--space-3);
-  }
-
-  .page-hero__content h1 {
-    margin-bottom: var(--space-4);
-  }
 
   .journal-grid {
     display: grid;
@@ -203,12 +183,6 @@ const articles = [
   @media (min-width: 640px) {
     .journal-grid {
       grid-template-columns: repeat(2, 1fr);
-    }
-  }
-
-  @media (min-width: 768px) {
-    .page-hero {
-      padding-block: var(--space-24) var(--space-16);
     }
   }
 

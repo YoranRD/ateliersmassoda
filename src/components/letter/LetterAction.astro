@@ -1,0 +1,51 @@
+---
+import { PLACEHOLDER_LABELS, getAnnouncementCta } from '../../data/site';
+const cta = getAnnouncementCta(false);
+---
+
+<div class="letter-action">
+  {cta.kind === 'instagram' && (
+    <p class="letter-action__pending" data-massoda-placeholder="LETTER_SIGNUP_URL">
+      {PLACEHOLDER_LABELS.letterSignup}
+    </p>
+  )}
+  <a
+    href={cta.href}
+    target="_blank"
+    rel="noopener"
+    class="letter-action__button"
+    data-massoda-placeholder={cta.isPlaceholder ? cta.placeholderId : undefined}
+  >
+    {cta.label}
+  </a>
+</div>
+
+<style>
+  .letter-action__pending {
+    margin-bottom: var(--space-4);
+    font-size: var(--text-sm);
+    font-weight: var(--weight-semibold);
+    color: var(--color-text-on-brand);
+  }
+
+  .letter-action__button {
+    max-width: 100%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-4) var(--space-10);
+    background: var(--color-bg);
+    color: var(--color-brand);
+    font-size: var(--text-sm);
+    font-weight: var(--weight-semibold);
+    border-radius: var(--radius-full);
+    text-align: center;
+    transition: background-color var(--duration-normal) var(--ease-out),
+                transform var(--duration-normal) var(--ease-out);
+  }
+
+  .letter-action__button:hover {
+    background: var(--color-surface);
+    transform: translateY(-2px);
+  }
+</style>

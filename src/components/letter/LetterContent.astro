@@ -1,0 +1,44 @@
+---
+interface Props { excerpt?: boolean; }
+const { excerpt = false } = Astro.props;
+---
+
+<div class="letter-copy">
+  <p>
+    Bien avant d’être un concept, <strong>Massoda est le fruit d’un cheminement.</strong>
+  </p>
+  <p>
+    Celui d’apprendre à mieux se connaître, de questionner ce que l’on nous a transmis,
+    d’expérimenter de nouvelles façons de prendre soin de soi et de créer du lien avec les
+    autres.
+  </p>
+  {!excerpt && (
+    <>
+      <p>
+        Parce que nous prenons rarement le temps de nous arrêter, d’être curieux, d’essayer,
+        de nous questionner. Pourtant, je crois que ces moments participent profondément à
+        notre bien-⁠être.
+      </p>
+      <p><strong>La Lettre de Massoda</strong>, c’est un peu le prolongement de cette réflexion.</p>
+      <p>
+        Chaque mois, je t’y partagerai les questionnements, rencontres et découvertes qui
+        nourrissent Massoda et donnent naissance aux ateliers. Mais aussi mes recommandations :
+        lieux, food, bien-⁠être, culture, activités et belles découvertes à expérimenter.
+      </p>
+      <p>
+        Et parce que cette lettre est aussi une façon de réunir celles et ceux qui souhaitent
+        suivre Massoda de plus près, <strong>ses abonné·es auront accès en avant-première aux
+        billetteries de tous les ateliers du trimestre</strong>, avant leur annonce sur
+        Instagram.
+      </p>
+      <p>
+        Une lettre pour découvrir, expérimenter, s’inspirer… et peut-être voir son quotidien
+        autrement.
+      </p>
+    </>
+  )}
+</div>
+
+<style>
+  .letter-copy p + p { margin-top: var(--space-4); }
+</style>

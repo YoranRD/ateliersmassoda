@@ -1,0 +1,73 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHeader from '../components/PageHeader.astro';
+import LetterContent from '../components/letter/LetterContent.astro';
+import LetterAction from '../components/letter/LetterAction.astro';
+
+const pageHeader = {
+  title: 'La Lettre de Massoda',
+  lede: 'L’accès prioritaire aux billetteries',
+};
+---
+
+<BaseLayout
+  title="La Lettre de Massoda"
+  description="La Lettre de Massoda : chaque mois, rencontres, découvertes et recommandations, et l’accès en avant-première aux billetteries des ateliers."
+>
+  <PageHeader {...pageHeader} />
+  <section class="letter-page letter-surface on-brand">
+    <div class="container letter-page__grid">
+      <article class="letter-sheet">
+        <LetterContent />
+      </article>
+      <div class="letter-page__action">
+        <LetterAction />
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .letter-page__grid {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas: 'sheet' 'action';
+    gap: var(--space-8);
+    align-items: start;
+  }
+
+  .letter-page__grid > * { min-width: 0; }
+
+  .letter-sheet {
+    grid-area: sheet;
+    width: 100%;
+    max-width: 62ch;
+    background: var(--color-bg-white);
+    color: var(--color-text);
+    border-radius: var(--radius-sm);
+    box-shadow: var(--shadow-lg);
+    padding: clamp(1.5rem, 4vw, 3.5rem);
+    font-size: var(--text-base);
+    line-height: 1.7;
+  }
+
+  .letter-page__action { grid-area: action; }
+
+  @media (min-width: 768px) {
+    .letter-sheet { font-size: var(--text-lg); }
+  }
+
+  @media (min-width: 1024px) {
+    .letter-page__grid {
+      grid-template-columns: minmax(0, 4fr) minmax(0, 7fr);
+      grid-template-areas: 'action sheet';
+      gap: var(--space-16);
+    }
+
+    .letter-page__action {
+      position: sticky;
+      top: calc(var(--header-h) + var(--space-8));
+    }
+  }
+</style>

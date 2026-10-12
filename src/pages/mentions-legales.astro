@@ -1,23 +1,21 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHeader from '../components/PageHeader.astro';
 import { getNavHref } from '../utils/nav';
 
 const base = import.meta.env.BASE_URL;
+
+const pageHeader = {
+  "title": "Mentions légales",
+  "lede": "Informations légales relatives au site Les Ateliers Massoda. Certaines mentions sont en cours de finalisation et seront complétées prochainement."
+};
 ---
 
 <BaseLayout
   title="Mentions légales — Les Ateliers Massoda"
   description="Mentions légales du site Les Ateliers Massoda : éditeur, hébergement, données personnelles, formulaire de contact."
 >
-  <section class="page-hero">
-    <div class="container">
-      <div class="page-hero__content">
-        <span class="overline">Informations</span>
-        <h1 class="heading-1">Mentions légales</h1>
-        <p class="subtitle">Informations légales relatives au site Les Ateliers Massoda. Certaines mentions sont en cours de finalisation et seront complétées prochainement.</p>
-      </div>
-    </div>
-  </section>
+  <PageHeader {...pageHeader} />
 
   <section class="section">
     <div class="container container--narrow">
@@ -25,20 +23,20 @@ const base = import.meta.env.BASE_URL;
 
         <article class="legal__block">
           <h2 class="heading-4">Éditeur du site</h2>
-          <p>Le site <strong>Les Ateliers Massoda</strong> est édité par la structure portant le projet « Les Ateliers Massoda ».</p>
+          <p>Le site <strong>Les Ateliers Massoda</strong> est édité par la structure portant le projet « Les Ateliers Massoda ».</p>
           <ul class="legal__list">
-            <li>Raison sociale : <em>À compléter</em></li>
-            <li>Forme juridique : <em>À compléter</em></li>
-            <li>Siège social : <em>À compléter</em></li>
-            <li>SIRET / SIREN : <em>À compléter</em></li>
-            <li>Numéro de TVA intracommunautaire (le cas échéant) : <em>À compléter</em></li>
-            <li>Adresse e-mail de contact : <a href="mailto:yoranrd@gmail.com">yoranrd@gmail.com</a></li>
+            <li>Raison sociale : <em>À compléter</em></li>
+            <li>Forme juridique : <em>À compléter</em></li>
+            <li>Siège social : <em>À compléter</em></li>
+            <li>SIRET / SIREN : <em>À compléter</em></li>
+            <li>Numéro de TVA intracommunautaire (le cas échéant) : <em>À compléter</em></li>
+            <li>Adresse e-mail de contact : <a href="mailto:yoranrd@gmail.com">yoranrd@gmail.com</a></li>
           </ul>
         </article>
 
         <article class="legal__block">
           <h2 class="heading-4">Responsable de publication</h2>
-          <p>Nom du ou de la responsable de publication : <em>À compléter</em>.</p>
+          <p>Nom du ou de la responsable de publication : <em>À compléter</em>.</p>
           <p>Pour toute question relative au contenu du site, vous pouvez écrire à <a href="mailto:yoranrd@gmail.com">yoranrd@gmail.com</a> ou utiliser le <a href={getNavHref('contact', base)}>formulaire de contact</a>.</p>
         </article>
 
@@ -47,13 +45,13 @@ const base = import.meta.env.BASE_URL;
           <p>Le site est hébergé en pages statiques par <strong>GitHub Pages</strong>, service fourni par GitHub, Inc.</p>
           <ul class="legal__list">
             <li>GitHub, Inc. — 88 Colin P. Kelly Jr. Street, San Francisco, CA 94107, États-Unis</li>
-            <li>Site : <a href="https://pages.github.com/" target="_blank" rel="noopener">pages.github.com</a></li>
+            <li>Site : <a href="https://pages.github.com/" target="_blank" rel="noopener">pages.github.com</a></li>
           </ul>
         </article>
 
         <article class="legal__block">
           <h2 class="heading-4">Propriété intellectuelle</h2>
-          <p>L'ensemble des contenus présents sur le site (textes, photographies, illustrations, identité visuelle, logo, mise en page) est la propriété de Les Ateliers Massoda ou de ses partenaires, sauf mention contraire.</p>
+          <p>L’ensemble des contenus présents sur le site (textes, photographies, illustrations, identité visuelle, logo, mise en page) est la propriété de Les Ateliers Massoda ou de ses partenaires, sauf mention contraire.</p>
           <p>Toute reproduction, représentation, modification ou exploitation, totale ou partielle, est interdite sans autorisation écrite préalable.</p>
           <p>Les marques et logos cités appartiennent à leurs propriétaires respectifs (notamment notre lieu partenaire actuel BMK Folie-Bamako).</p>
         </article>
@@ -62,20 +60,20 @@ const base = import.meta.env.BASE_URL;
           <h2 class="heading-4">Données personnelles</h2>
           <p>Le site Les Ateliers Massoda ne dépose pas de cookies de suivi et ne collecte pas de données de navigation à des fins publicitaires.</p>
           <p>Les seules données personnelles traitées sont celles que vous transmettez volontairement via le <a href={getNavHref('contact', base)}>formulaire de contact</a> (nom, e-mail, sujet, message). Elles sont utilisées uniquement pour répondre à votre demande et ne sont ni revendues, ni utilisées à des fins commerciales.</p>
-          <p>Conformément à la réglementation applicable, vous pouvez demander à tout moment l'accès, la rectification ou la suppression de vos données en écrivant à <a href="mailto:yoranrd@gmail.com">yoranrd@gmail.com</a>.</p>
-          <p>Délai de conservation des messages reçus : <em>À compléter</em>.</p>
+          <p>Conformément à la réglementation applicable, vous pouvez demander à tout moment l’accès, la rectification ou la suppression de vos données en écrivant à <a href="mailto:yoranrd@gmail.com">yoranrd@gmail.com</a>.</p>
+          <p>Délai de conservation des messages reçus : <em>À compléter</em>.</p>
         </article>
 
         <article class="legal__block">
           <h2 class="heading-4">Formulaire de contact</h2>
-          <p>L'envoi d'un message via le formulaire de contact est techniquement assuré par le service tiers <strong>Web3Forms</strong> (<a href="https://web3forms.com/" target="_blank" rel="noopener">web3forms.com</a>), qui transmet le contenu du message à l'adresse e-mail des Ateliers Massoda.</p>
-          <p>Les informations que vous renseignez transitent par ce service uniquement pour permettre la délivrance du message. Aucun de ces champs n'est utilisé à d'autres fins.</p>
+          <p>L’envoi d’un message via le formulaire de contact est techniquement assuré par le service tiers <strong>Web3Forms</strong> (<a href="https://web3forms.com/" target="_blank" rel="noopener">web3forms.com</a>), qui transmet le contenu du message à l’adresse e-mail des Ateliers Massoda.</p>
+          <p>Les informations que vous renseignez transitent par ce service uniquement pour permettre la délivrance du message. Aucun de ces champs n’est utilisé à d’autres fins.</p>
         </article>
 
         <article class="legal__block">
-          <h2 class="heading-4">Cookies / mesure d'audience</h2>
-          <p>Le site n'utilise actuellement aucun cookie de mesure d'audience ni outil d'analyse comportementale.</p>
-          <p>Si une solution de mesure d'audience est mise en place à l'avenir, elle sera choisie pour son respect de la vie privée (par exemple Plausible, Umami ou Cloudflare Web Analytics) et cette page sera mise à jour en conséquence.</p>
+          <h2 class="heading-4">Cookies / mesure d’audience</h2>
+          <p>Le site n’utilise actuellement aucun cookie de mesure d’audience ni outil d’analyse comportementale.</p>
+          <p>Si une solution de mesure d’audience est mise en place à l’avenir, elle sera choisie pour son respect de la vie privée (par exemple Plausible, Umami ou Cloudflare Web Analytics) et cette page sera mise à jour en conséquence.</p>
         </article>
 
       </div>
@@ -84,23 +82,6 @@ const base = import.meta.env.BASE_URL;
 </BaseLayout>
 
 <style>
-  .page-hero {
-    padding-block: var(--space-16) var(--space-12);
-    background: var(--color-bg);
-  }
-
-  .page-hero__content {
-    max-width: 600px;
-  }
-
-  .page-hero__content .overline {
-    display: block;
-    margin-bottom: var(--space-3);
-  }
-
-  .page-hero__content h1 {
-    margin-bottom: var(--space-4);
-  }
 
   .legal {
     display: flex;
@@ -154,9 +135,4 @@ const base = import.meta.env.BASE_URL;
     color: var(--color-brand-hover);
   }
 
-  @media (min-width: 768px) {
-    .page-hero {
-      padding-block: var(--space-24) var(--space-16);
-    }
-  }
 </style>

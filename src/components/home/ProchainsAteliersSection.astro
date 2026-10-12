@@ -10,7 +10,6 @@ const ateliers = getWorkshopViews();
 <section class="prochains section" id="prochains-ateliers">
   <div class="container">
     <div class="prochains__header">
-      <span class="overline">Programmation</span>
       <h2 class="heading-2">Nos trois prochains ateliers</h2>
       {ateliers.some(atelier => atelier.hasPlaceholder) && (
         <p class="prochains__note">Dates, lieux et billetteries seront annoncés ici dès leur ouverture.</p>

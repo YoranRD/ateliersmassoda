@@ -1,10 +1,12 @@
 ---
-import { getNavHref } from '../utils/nav';
+import { getNavHref, isActiveLink } from '../utils/nav';
 import { SOCIAL_LINKS } from '../data/site';
 
 const base = import.meta.env.BASE_URL;
 const basePath = base.endsWith('/') ? base : `${base}/`;
 const year = new Date().getFullYear();
+const currentPath = Astro.url.pathname;
+const letterHref = getNavHref('la-lettre', base);
 const homeHref = getNavHref('', base);
 const logoUrl = `${basePath}brand/nouveau_logo_crop.png`;
 ---
@@ -35,7 +37,7 @@ const logoUrl = `${basePath}brand/nouveau_logo_crop.png`;
         <ul class="footer__links">
           <li><a href={homeHref}>Accueil</a></li>
           <li><a href={getNavHref('ateliers', base)}>Ateliers &amp; expériences</a></li>
-          <li><a href={`${homeHref}#la-lettre`}>La Lettre</a></li>
+          <li><a href={letterHref} aria-current={isActiveLink(currentPath, letterHref) ? 'page' : undefined}>La Lettre</a></li>
           <li><a href={getNavHref('a-propos', base)}>À propos</a></li>
           <li><a href={getNavHref('contact', base)}>Collaborer</a></li>
         </ul>
