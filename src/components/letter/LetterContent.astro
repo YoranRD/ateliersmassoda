@@ -27,7 +27,7 @@ const { excerpt = false } = Astro.props;
       </p>
       <p>
         Et parce que cette lettre est aussi une façon de réunir celles et ceux qui souhaitent
-        suivre Massoda de plus près, <strong>ses abonné·es auront accès en avant-première aux
+        suivre Massoda de plus près, <strong>les personnes abonnées auront accès en avant-première aux
         billetteries de tous les ateliers du trimestre</strong>, avant leur annonce sur
         Instagram.
       </p>
@@ -39,6 +39,35 @@ const { excerpt = false } = Astro.props;
   )}
 </div>
 
+{!excerpt && (
+  <div class="letter-signature">
+    <span class="letter-signature__name">Barbara</span>
+    <span class="letter-signature__role">Fondatrice des Ateliers Massoda</span>
+  </div>
+)}
+
 <style>
   .letter-copy p + p { margin-top: var(--space-4); }
+
+  .letter-signature {
+    margin-top: var(--space-8);
+    text-align: right;
+  }
+
+  .letter-signature__name {
+    display: block;
+    font-family: var(--font-display);
+    font-style: italic;
+    font-weight: 400;
+    font-synthesis: none;
+    font-size: var(--text-3xl);
+    color: var(--color-text);
+  }
+
+  .letter-signature__role {
+    display: block;
+    font-family: var(--font-body);
+    font-size: var(--text-sm);
+    color: var(--color-text-light);
+  }
 </style>

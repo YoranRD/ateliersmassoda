@@ -48,8 +48,7 @@ ul, ol {
   list-style: none;
 }
 
-/* Une seule famille : le contraste titres/texte vient de la graisse
-   (700 contre 400) et du letter-spacing, pas d'une seconde police. */
+/* Raleway reste la famille des petits titres et du texte. */
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-heading);
   font-weight: var(--weight-bold);
@@ -95,13 +94,13 @@ p {
 /* --- Typography --- */
 
 .heading-1 {
-  font-size: clamp(var(--text-4xl), 5vw, var(--text-6xl));
-  line-height: var(--leading-tight);
+  font-size: clamp(2.75rem, 6.5vw, 4.75rem);
+  line-height: 1.05;
 }
 
 .heading-2 {
-  font-size: clamp(var(--text-3xl), 4vw, var(--text-5xl));
-  line-height: var(--leading-tight);
+  font-size: clamp(2.25rem, 4.5vw, 3.5rem);
+  line-height: 1.1;
 }
 
 .heading-3 {
@@ -112,6 +111,24 @@ p {
 .heading-4 {
   font-size: clamp(var(--text-xl), 2.5vw, var(--text-3xl));
   line-height: var(--leading-snug);
+}
+
+h1, h2:not(.footer__heading) {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-synthesis: none;
+  letter-spacing: -0.005em;
+  line-height: 1.1;
+}
+
+h1.heading-1 { line-height: 1.05; }
+
+h2.heading-3 {
+  font-size: clamp(calc(var(--text-2xl) * 1.25), 3.75vw, calc(var(--text-4xl) * 1.25));
+}
+
+h2.heading-4 {
+  font-size: clamp(calc(var(--text-xl) * 1.25), 3.125vw, calc(var(--text-3xl) * 1.25));
 }
 
 .subtitle {
@@ -353,14 +370,16 @@ p {
   overflow: clip;
 }
 
-.letter-surface::before {
+.halo {
+  position: relative;
+  isolation: isolate;
+}
+
+.halo::before {
   content: '';
   position: absolute;
-  top: -80px;
-  right: -80px;
-  width: 400px;
-  height: 400px;
-  border-radius: 50%;
-  background: radial-gradient(circle, color-mix(in srgb, var(--color-warm) 32%, transparent) 0%, transparent 70%);
+  inset: -15%;
+  z-index: -1;
   pointer-events: none;
+  background: radial-gradient(closest-side, color-mix(in srgb, var(--color-warm) 30%, transparent), color-mix(in srgb, var(--color-warm-light) 20%, transparent) 55%, transparent 100%);
 }

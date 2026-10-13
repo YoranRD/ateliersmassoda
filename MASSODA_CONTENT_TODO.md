@@ -85,7 +85,6 @@ et leurs posters restent dans `public/media/`.
 | `WORKSHOP_BAYA_TIME` | PLACEHOLDER | Horaire — Confection de baya | Texte | `workshops[baya].time` | Une seule ligne commune « Infos pratiques à venir » tant que les quatre champs manquent ; sinon seuls les libellés manquants sont regroupés | Accueil + `/ateliers/` | Ex. « 14h – 17h » | L'horaire s'affiche sur les deux pages |
 | `WORKSHOP_BAYA_PLACE` | PLACEHOLDER | Lieu — Confection de baya | Texte | `workshops[baya].place` | Une seule ligne commune « Infos pratiques à venir » tant que les quatre champs manquent ; sinon seuls les libellés manquants sont regroupés | Accueil + `/ateliers/` | Lieu communicable publiquement | Le lieu s'affiche sur les deux pages |
 | `WORKSHOP_BAYA_PRICE` | PLACEHOLDER | Prix — Confection de baya | Texte | `workshops[baya].price` | Une seule ligne commune « Infos pratiques à venir » tant que les quatre champs manquent ; sinon seuls les libellés manquants sont regroupés | Accueil + `/ateliers/` | Ex. « 65 € » | Le prix s'affiche sur les deux pages |
-| `WORKSHOP_BAYA_IMAGE` | PLACEHOLDER | Photo — Confection de baya | Fichier JPEG, ratio 4:3, ≥ 1200 px | `src/assets/images/workshops/confection-baya.jpg`, puis `workshops[baya].image = { src: 'workshops/confection-baya', alt }` dans `src/data/workshops.ts` | Tuile unie « Photo à venir » de `MediaPlaceholder.astro`, teinte cyclée selon l’index de la carte | Accueil + `/ateliers/` | Déposer le master JPEG, renseigner la clé `src` sans extension et un `alt` factuel ; le composant génère AVIF/WebP sans agrandissement ; ne pas réutiliser le master `home/atelier-baya` sans validation | La photo rendue via `<Picture>` remplace la tuile sur les deux pages ; le placeholder image a disparu |
 | `WORKSHOP_BAYA_TICKETING_URL` | PLACEHOLDER | Billetterie — Confection de baya | URL https | `workshops[baya].ticketing.url` **et** `status: 'open'` | Ligne d’état avec point accent de 8 px et « Billetterie bientôt disponible » ou « Ouverture de la billetterie le … », sans faux bouton | Accueil + `/ateliers/` | URL propre à cet atelier, jamais l'URL Paint & Jam | Un vrai bouton « Réserve ta place » apparaît |
 | `WORKSHOP_BAYA_TICKETING_OPENS_ON` | PLACEHOLDER | Date d'ouverture de la billetterie — baya | Texte (facultatif) | `workshops[baya].ticketing.opensOn` | Ligne d’état « Billetterie bientôt disponible », point accent de 8 px ; même attribut que TICKETING_URL tant que les deux manquent | Accueil + `/ateliers/` | Idem cookies : annonce anticipée uniquement | La carte affiche « Ouverture de la billetterie le … » |
 | `WORKSHOP_CERAMIQUE_DATE` | PLACEHOLDER | Date — Céramique | Texte | `workshops[ceramique].date` | Une seule ligne commune « Infos pratiques à venir » tant que les quatre champs manquent ; sinon seuls les libellés manquants sont regroupés | Accueil + `/ateliers/` | Date en toutes lettres | La date s'affiche sur les deux pages |
@@ -103,28 +102,29 @@ et leurs posters restent dans `public/media/`.
 | `BRAND_LOGO` | DONE | Mot-symbole officiel « Les ateliers massoda » | PNG transparent | `public/brand/nouveau_logo_crop.png` (source intacte : `public/brand/nouveau_logo.png`) | — | Header, Footer, JSON-LD de `BaseLayout.astro` | Recadré sur ses pixels opaques, ratio 355×154 conservé | Intégré et vérifié à 320/390/768/1440 px |
 | `FOUNDER_PHOTO` | DONE | Portrait de la fondatrice | JPEG 720×960 | `src/assets/images/about/photo-fondatrice.jpg`, clé `about/photo-fondatrice` dans `/a-propos/` via `img()` | — | `/a-propos/` | Master JPEG sRGB, ratio 3:4 natif, `object-position: center 28%`, rendu `<Picture>` AVIF/WebP | Intégré, visage non coupé à toutes les largeurs |
 | `WORKSHOP_DESCRIPTIONS` | DONE | Descriptions éditoriales des trois ateliers | Textes | `workshops[*].description` dans `src/data/workshops.ts` | — | Accueil + `/ateliers/` via `WorkshopCard.astro` | Textes du brief repris mot pour mot | Affichées à l'identique sur les deux pages depuis la source unique |
+| `WORKSHOP_BAYA_IMAGE` | DONE | Photo de baya | JPEG, master existant | `src/assets/images/home/atelier-baya.jpg`, clé `home/atelier-baya` dans `workshops[baya].image` | — | Accueil + `/ateliers/` via `WorkshopCard.astro` | photo d’un atelier baya précédent, validée par le client | Photo et alt fournis intégrés ; placeholder WORKSHOP_BAYA_IMAGE disparu |
 
 ## Décompte
 
-Calcul reproductible : **5 entrées globales + 7 champs × 3 ateliers = 26 ouvertes**,
-plus 3 entrées terminées, soit 29 au total.
+Calcul reproductible : **5 entrées globales + 7 champs × 3 ateliers − 1 photo intégrée = 25 ouvertes**,
+plus 4 entrées terminées, soit 29 au total.
 
 | Statut | Nombre |
 |---|---|
 | `MISSING` | 0 |
-| `PLACEHOLDER` | 26 |
+| `PLACEHOLDER` | 25 |
 | `READY_TO_INTEGRATE` | 0 |
-| **Total ouvertes** | **26** |
-| `DONE` | 3 |
+| **Total ouvertes** | **25** |
+| `DONE` | 4 |
 | **Total général** | **29** |
 
-Détail des 26 ouvertes :
+Détail des 25 ouvertes :
 
 - 5 globales : `HERO_VIDEO`, `HERO_VIDEO_POSTER`, `NOS_ATELIERS_MEDIA`,
   `LETTER_SIGNUP_URL`, `GLOBAL_RESERVATION_URL` ;
-- 21 ateliers : 7 champs (`DATE`, `TIME`, `PLACE`, `PRICE`, `IMAGE`,
+- 20 ateliers : 7 champs (`DATE`, `TIME`, `PLACE`, `PRICE`, `IMAGE`,
   `TICKETING_URL`, `TICKETING_OPENS_ON`) pour chacun des 3 ateliers
-  (`COOKIES`, `BAYA`, `CERAMIQUE`).
+  (`COOKIES`, `BAYA`, `CERAMIQUE`), sauf `WORKSHOP_BAYA_IMAGE`, intégré.
 
 Une seule entrée ouverte n'a pas de balise `data-massoda-placeholder` dans le
 HTML : `HERO_VIDEO_POSTER`, qui n'a pas d'emplacement propre tant qu'aucune vidéo
@@ -147,14 +147,14 @@ Céramique :
 - [ ] l'**horaire** (ex. « 14h – 17h ») ;
 - [ ] le **lieu** communicable publiquement ;
 - [ ] le **prix** (ex. « 55 € ») ;
-- [ ] une **photo** de l'atelier — format paysage 4:3, au moins 1200 px de large,
+- [ ] une **photo** pour Cookies au moringa et Céramique — format paysage 4:3, au moins 1200 px de large,
       avec une phrase décrivant ce qu'on y voit (pour l'accessibilité) ;
 - [ ] le **lien de billetterie** propre à cet atelier ;
 - [ ] *(facultatif)* la **date d'ouverture** de la billetterie, si l'on veut
       l'annoncer avant qu'elle n'ouvre.
 
-En attendant, les trois cartes restent affichées avec une seule ligne
-« Infos pratiques à venir », une tuile « Photo à venir » et une ligne d’état
+La photo baya est intégrée. Les cartes gardent une seule ligne
+« Infos pratiques à venir », une tuile « Photo à venir » pour les deux photos manquantes et une ligne d’état
 « Billetterie bientôt disponible ». Les champs fournis retrouvent chacun leur
 ligne ; les champs encore manquants restent regroupés.
 

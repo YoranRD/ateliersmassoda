@@ -3,6 +3,8 @@ import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import { SOCIAL_LINKS } from '../data/site';
 import '@fontsource-variable/raleway';
+import '@fontsource/instrument-serif/latin-400.css';
+import '@fontsource/instrument-serif/latin-400-italic.css';
 import ralewayLatin from '@fontsource-variable/raleway/files/raleway-latin-wght-normal.woff2?url';
 import '../styles/global.css';
 
@@ -10,13 +12,18 @@ interface Props {
   title: string;
   description?: string;
   ogImage?: string;
+  noindex?: boolean;
 }
 
 const {
   title,
   description = 'Les Ateliers Massoda — Ateliers créatifs, bien-être et lifestyle afro-caribéen.',
   ogImage,
+  noindex = false,
 } = Astro.props;
+
+const headTitle = title.replaceAll('\u2060', '');
+const headDescription = description.replaceAll('\u2060', '');
 
 const base = import.meta.env.BASE_URL;
 // base may or may not have a trailing slash depending on Astro version — normalise once
@@ -37,6 +44,7 @@ const organizationJsonLd = {
   url: `${siteOrigin}${basePath}`,
   logo: `${siteOrigin}${basePath}brand/nouveau_logo_crop.png`,
   sameAs: SOCIAL_LINKS.map(reseau => reseau.url),
+  areaServed: 'Paris',
 };
 ---
 
@@ -46,12 +54,13 @@ const organizationJsonLd = {
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#ECE9D9" />
-  <meta name="description" content={description} />
-  <title>{title}</title>
+  <meta name="description" content={headDescription} />
+  {noindex && <meta name="robots" content="noindex, follow" />}
+  <title>{headTitle}</title>
   <link rel="canonical" href={canonicalURL} />
   <meta property="og:type" content="website" />
-  <meta property="og:title" content={title} />
-  <meta property="og:description" content={description} />
+  <meta property="og:title" content={headTitle} />
+  <meta property="og:description" content={headDescription} />
   <meta property="og:url" content={canonicalURL} />
   <meta property="og:site_name" content="Les Ateliers Massoda" />
   <meta property="og:locale" content="fr_FR" />
@@ -60,8 +69,8 @@ const organizationJsonLd = {
   <meta property="og:image:height" content="630" />
   <meta property="og:image:alt" content="Les Ateliers Massoda — visuel de marque" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content={title} />
-  <meta name="twitter:description" content={description} />
+  <meta name="twitter:title" content={headTitle} />
+  <meta name="twitter:description" content={headDescription} />
   <meta name="twitter:image" content={absoluteOgImage} />
   <link rel="icon" type="image/svg+xml" href={`${basePath}favicon.svg`} />
   <link rel="apple-touch-icon" href={`${basePath}apple-touch-icon.png`} />

@@ -22,7 +22,7 @@ const articles = [
     excerpt: 'Pourquoi peindre sans règle peut transformer votre rapport à vous-même et libérer votre expression.',
     date: 'En écriture',
     image: 'home/atelier-paint-jam',
-    alt: 'Des participant·es peignent sur des toiles autour d’une table',
+    alt: 'Des personnes peignent sur des toiles autour d’une table',
   },
   {
     tag: 'Plantes',
@@ -64,7 +64,7 @@ const pageHeader = {
 };
 ---
 
-<BaseLayout title="Journal — Les Ateliers Massoda" description="Inspirations, bien-être et culture afro-caribéenne. Articles et ressources pour prendre soin de soi autrement.">
+<BaseLayout noindex title="Journal — Les Ateliers Massoda" description="Inspirations, bien-être et culture afro-caribéenne. Articles et ressources pour prendre soin de soi autrement.">
 
   <PageHeader {...pageHeader} />
 
@@ -91,7 +91,7 @@ const pageHeader = {
                 <span class="card__tag">{article.tag}</span>
                 <span class="journal-date">{article.date}</span>
               </div>
-              <h2 class="card__title">{article.title}</h2>
+              <h3 class="card__title">{article.title}</h3>
               <p class="card__text">{article.excerpt}</p>
             </div>
           </article>
@@ -104,7 +104,7 @@ const pageHeader = {
     <div class="container container--narrow">
       <div class="journal-cta">
         <h2 class="heading-4">Le journal s’écrit en ce moment.</h2>
-        <p>Les premiers articles arrivent par vagues. Suivez-nous sur Instagram pour être prévenue dès leur publication.</p>
+        <p>Les premiers articles arrivent par vagues. Suivez-nous sur Instagram pour suivre leur publication.</p>
         <a href={INSTAGRAM_URL} target="_blank" rel="noopener" class="btn btn--primary">
           Suivre sur Instagram
         </a>

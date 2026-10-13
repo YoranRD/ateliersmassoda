@@ -5,5 +5,5 @@ export default defineConfig({
   site: 'https://yoranrd.github.io',
   base: '/ateliersmassoda',
   output: 'static',
-  integrations: [sitemap()],
+  integrations: [sitemap({ filter: (page) => !/\/(boutique|journal)\/$/.test(page) })],
 });

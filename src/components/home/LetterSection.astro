@@ -3,20 +3,22 @@ import { LETTER } from '../../data/site';
 import { getNavHref } from '../../utils/nav';
 import LetterContent from '../letter/LetterContent.astro';
 import LetterAction from '../letter/LetterAction.astro';
+import LetterSurface from '../letter/LetterSurface.astro';
 const base = import.meta.env.BASE_URL;
 ---
 
-<section class="lettre letter-surface on-brand" id={LETTER.anchorId}>
+<LetterSurface class="lettre" id={LETTER.anchorId}>
   <div class="container lettre__inner">
     <span class="overline lettre__eyebrow">La Lettre de Massoda</span>
-    <h2 class="heading-3 lettre__titre">L’accès prioritaire aux billetteries</h2>
+    <h2 class="heading-3 lettre__titre">Une lettre pour explorer, créer et se retrouver</h2>
+    <p class="lettre__subtitle">Culture, découvertes, inspirations et accès aux ateliers en avant-première.</p>
     <div class="lettre__texte">
       <LetterContent excerpt />
     </div>
     <a href={getNavHref('la-lettre', base)} class="lettre__read-link">Lire la lettre en entier</a>
     <LetterAction />
   </div>
-</section>
+</LetterSurface>
 
 <style>
   .lettre__inner {
@@ -42,6 +44,11 @@ const base = import.meta.env.BASE_URL;
     line-height: var(--leading-normal);
     margin-bottom: var(--space-6);
     text-align: left;
+  }
+
+  .lettre__subtitle {
+    color: var(--color-text-on-brand);
+    margin-bottom: var(--space-6);
   }
 
   .lettre__read-link {

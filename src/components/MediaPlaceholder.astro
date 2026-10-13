@@ -6,12 +6,11 @@ interface Props {
   placeholderId?: string;
 }
 
-const { index = 0, caption, label, placeholderId } = Astro.props;
-if (!Number.isSafeInteger(index) || index < 0) throw new Error('Index de média invalide');
+const { caption, label, placeholderId } = Astro.props;
 ---
 
 <div
-  class:list={['media-placeholder', `media-placeholder--${index % 3}`]}
+  class="media-placeholder"
   role="img"
   aria-label={label}
   data-massoda-placeholder={placeholderId}
@@ -22,7 +21,8 @@ if (!Number.isSafeInteger(index) || index < 0) throw new Error('Index de média 
 <style>
   .media-placeholder {
     width: 100%;
-    aspect-ratio: 4 / 3;
+    aspect-ratio: 2 / 1;
+    background: color-mix(in srgb, var(--color-warm-light) 60%, var(--color-surface));
     display: flex;
     align-items: flex-end;
     padding: var(--space-4);
@@ -31,7 +31,7 @@ if (!Number.isSafeInteger(index) || index < 0) throw new Error('Index de média 
     text-align: left;
   }
 
-  .media-placeholder--0 { background: var(--color-warm-light); }
-  .media-placeholder--1 { background: var(--color-bg-warm); }
-  .media-placeholder--2 { background: var(--color-surface-warm); }
+  :global(div.boutique-card__image-wrap:has(> .media-placeholder)) {
+    aspect-ratio: 2 / 1;
+  }
 </style>

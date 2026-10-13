@@ -87,7 +87,7 @@ export const workshops: Workshop[] = [
     time: null,        // MASSODA_MISSING:WORKSHOP_BAYA_TIME
     place: null,       // MASSODA_MISSING:WORKSHOP_BAYA_PLACE
     price: null,       // MASSODA_MISSING:WORKSHOP_BAYA_PRICE
-    image: null,       // MASSODA_MISSING:WORKSHOP_BAYA_IMAGE
+    image: { src: 'home/atelier-baya', alt: 'Baya de perles colorées sur un présentoir, lors d’un précédent atelier baya' },
     ticketing: {
       status: 'coming-soon',
       url: null,       // MASSODA_MISSING:WORKSHOP_BAYA_TICKETING_URL

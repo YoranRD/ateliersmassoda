@@ -6,12 +6,17 @@ interface Props {
 }
 
 const { title, lede, eyebrow } = Astro.props;
+const stacked = (lede?.length ?? 0) < 80 && !Astro.slots.has('default');
+const wideTitle = title.length > 25;
 ---
 
 <section class="page-header">
   <div class="container">
     {eyebrow && <span class="overline page-header__eyebrow">{eyebrow}</span>}
-    <div class="page-header__grid">
+    <div class:list={['page-header__grid', {
+      'page-header__grid--stacked': stacked,
+      'page-header__grid--wide-title': wideTitle && !stacked,
+    }]}>
       <h1 class="heading-1">{title}</h1>
       <div class="page-header__content">
         {lede && <p class="subtitle page-header__lede">{lede}</p>}
@@ -41,6 +46,8 @@ const { title, lede, eyebrow } = Astro.props;
 
   .page-header__grid > * { min-width: 0; }
 
+  .page-header__grid > h1 { text-wrap: balance; }
+
   .page-header__content :global(p) {
     color: var(--color-text-light);
     line-height: var(--leading-relaxed);
@@ -60,5 +67,18 @@ const { title, lede, eyebrow } = Astro.props;
     }
 
     .page-header__content { padding-top: var(--space-2); }
+
+    .page-header__grid--wide-title {
+      grid-template-columns: minmax(0, 6fr) minmax(0, 6fr);
+    }
   }
+
+  .page-header__grid--stacked {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-6);
+    align-items: start;
+  }
+
+  .page-header__grid--stacked .page-header__content { padding-top: 0; }
+  .page-header__grid--stacked .page-header__lede { font-size: var(--text-xl); }
 </style>

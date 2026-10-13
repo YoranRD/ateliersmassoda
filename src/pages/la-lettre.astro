@@ -3,10 +3,12 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import PageHeader from '../components/PageHeader.astro';
 import LetterContent from '../components/letter/LetterContent.astro';
 import LetterAction from '../components/letter/LetterAction.astro';
+import LetterSurface from '../components/letter/LetterSurface.astro';
 
 const pageHeader = {
-  title: 'La Lettre de Massoda',
-  lede: 'L’accès prioritaire aux billetteries',
+  eyebrow: 'La Lettre de Massoda',
+  title: 'Une lettre pour explorer, créer et se retrouver',
+  lede: 'Culture, découvertes, inspirations et accès aux ateliers en avant-première.',
 };
 ---
 
@@ -15,7 +17,7 @@ const pageHeader = {
   description="La Lettre de Massoda : chaque mois, rencontres, découvertes et recommandations, et l’accès en avant-première aux billetteries des ateliers."
 >
   <PageHeader {...pageHeader} />
-  <section class="letter-page letter-surface on-brand">
+  <LetterSurface class="letter-page">
     <div class="container letter-page__grid">
       <article class="letter-sheet">
         <LetterContent />
@@ -24,7 +26,7 @@ const pageHeader = {
         <LetterAction />
       </div>
     </div>
-  </section>
+  </LetterSurface>
 </BaseLayout>
 
 <style>

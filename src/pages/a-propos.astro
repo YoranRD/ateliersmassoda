@@ -1,13 +1,11 @@
 ---
 import { getNavHref } from '../utils/nav';
-import { getReservationCta } from '../data/site';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PageHeader from '../components/PageHeader.astro';
 import { Picture } from 'astro:assets';
 import { img } from '../utils/images';
 
 const base = import.meta.env.BASE_URL;
-const cta = getReservationCta(getNavHref('ateliers', base));
 const masodaImage = img('home/communaute-masoda');
 const founderImage = img('about/photo-fondatrice');
 
@@ -89,72 +87,29 @@ const pageHeader = {
         </p>
       </div>
       <div class="about-founder__visual">
-        <div class="about-founder__frame">
-          <Picture
-            src={founderImage}
-            alt="Portrait de la fondatrice des Ateliers Massoda"
-            class="about-founder__img"
-            formats={['avif', 'webp']}
-            widths={[480, 800, 1100]}
-            sizes="(min-width:768px) 45vw, 100vw"
-            loading="lazy"
-            width={founderImage.width}
-            height={founderImage.height}
-          />
+        <div class="about-founder__portrait halo">
+          <div class="about-founder__frame">
+            <Picture
+              src={founderImage}
+              alt="Portrait de la fondatrice des Ateliers Massoda"
+              class="about-founder__img"
+              formats={['avif', 'webp']}
+              widths={[480, 800, 1100]}
+              sizes="(min-width:768px) 45vw, 100vw"
+              loading="lazy"
+              width={founderImage.width}
+              height={founderImage.height}
+            />
+          </div>
         </div>
+      </div>
+      <div class="about-founder__closing">
+        <p>C’est cette conviction qui guide chaque atelier Massoda.</p>
+        <a href={getNavHref('ateliers', base)} class="btn btn--primary">Découvrir les ateliers</a>
       </div>
     </div>
   </section>
 
-  <!-- Values -->
-  <section class="section values-section">
-    <div class="container">
-      <h2 class="heading-3 values-section__title">Ce qui nous guide</h2>
-      <div class="values-grid">
-        <div class="value-card">
-          <h3 class="value-card__title">Authenticité</h3>
-          <p>Des expériences ancrées dans la culture, pas dans les tendances éphémères.</p>
-        </div>
-        <div class="value-card">
-          <h3 class="value-card__title">Bienveillance</h3>
-          <p>Un espace sans jugement, où chacune avance à son rythme.</p>
-        </div>
-        <div class="value-card">
-          <h3 class="value-card__title">Qualité</h3>
-          <p>Des ateliers soignés, des matériaux choisis, une attention portée à chaque détail.</p>
-        </div>
-        <div class="value-card">
-          <h3 class="value-card__title">Communauté</h3>
-          <p>On vient pour l’atelier, on revient pour les liens qu’on y crée.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Vision -->
-  <section class="section">
-    <div class="container container--narrow">
-      <div class="vision-block">
-        <h2 class="heading-3">Notre vision</h2>
-        <p class="vision-block__text">
-          Massoda aspire à devenir un repère pour toutes celles qui cherchent un espace
-          de bien-⁠être sincère, ancré dans la culture afro-⁠caribéenne. Un lieu où la créativité
-          est un outil de reconnexion, où le partage est une force, et où chaque femme
-          peut rayonner à sa manière.
-        </p>
-        <div class="vision-block__actions">
-          <a
-            href={cta.href}
-            target={cta.external ? '_blank' : undefined}
-            rel={cta.external ? 'noopener' : undefined}
-            class="btn btn--primary"
-            data-massoda-placeholder={cta.isPlaceholder ? cta.placeholderId : undefined}
-          >{cta.label}</a>
-          <a href={getNavHref('contact', base)} class="btn btn--outline">Nous contacter</a>
-        </div>
-      </div>
-    </div>
-  </section>
 </BaseLayout>
 
 <style>
@@ -229,6 +184,22 @@ const pageHeader = {
     margin-top: var(--space-4);
   }
 
+  .about-founder__portrait {
+    width: 100%;
+    max-width: 380px;
+    margin-inline: auto;
+  }
+
+  .about-founder__closing {
+    grid-column: 1 / -1;
+    text-align: left;
+  }
+
+  .about-founder__closing p {
+    margin-bottom: var(--space-6);
+    color: var(--color-text-light);
+  }
+
   .about-founder__frame {
     width: 100%;
     max-width: 380px;
@@ -250,67 +221,10 @@ const pageHeader = {
     display: block;
   }
 
-  /* Values */
-  .values-section {
-    background: var(--color-bg-light);
-  }
-
-  .values-section__title {
-    text-align: center;
-    margin-bottom: var(--space-10);
-  }
-
-  .values-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: var(--space-6);
-  }
-
-  .value-card {
-    background: var(--color-surface);
-    border-radius: var(--radius-lg);
-    padding: var(--space-8);
-    border: 1px solid var(--color-border);
-  }
-
-  .value-card__title {
-    font-family: var(--font-heading);
-    font-size: var(--text-xl);
-    margin-bottom: var(--space-3);
-  }
-
-  .value-card p {
-    font-size: var(--text-sm);
-    color: var(--color-text-light);
-    line-height: var(--leading-normal);
-  }
-
-  /* Vision */
-  .vision-block {
-    text-align: center;
-  }
-
-  .vision-block h2 {
-    margin-bottom: var(--space-6);
-  }
-
-  .vision-block__text {
-    font-size: var(--text-lg);
-    color: var(--color-text-light);
-    line-height: var(--leading-relaxed);
-    margin-bottom: var(--space-8);
-  }
-
-  .vision-block__actions {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: var(--space-4);
-  }
-
   @media (min-width: 768px) {
     .about-story__frame,
-    .about-founder__frame { margin-inline: 0; }
+    .about-founder__frame,
+    .about-founder__portrait { margin-inline: 0; }
 
     .about-story {
       grid-template-columns: 1fr 1.2fr;
@@ -320,16 +234,6 @@ const pageHeader = {
     .about-founder {
       grid-template-columns: 1.1fr 0.9fr;
       gap: var(--space-16);
-    }
-
-    .values-grid {
-      grid-template-columns: repeat(2, 1fr);
-    }
-  }
-
-  @media (min-width: 1024px) {
-    .values-grid {
-      grid-template-columns: repeat(4, 1fr);
     }
   }
 </style>

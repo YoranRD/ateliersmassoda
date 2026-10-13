@@ -180,7 +180,7 @@ export const HERO_MEDIA: HeroMedia = {
   videoSrc: null,
   posterSrc: null,
   fallbackImage: 'about/masoda-cest-quoi',
-  fallbackAlt: 'Une femme sur le seuil de BMK, lieu partenaire des Ateliers Massoda',
+  fallbackAlt: 'Une femme sur le seuil de BMK Folie-Bamako, à Paris.',
 };
 
 /* ---------- Média de la section « Nos ateliers » ---------- */
@@ -196,5 +196,5 @@ export interface SectionMedia {
 export const NOS_ATELIERS_MEDIA: SectionMedia = {
   finalImage: null,
   fallbackImage: 'home/atelier-paint-jam',
-  alt: 'Des participant·es peignent sur des toiles autour d’une table',
+  alt: 'Des personnes peignent sur des toiles autour d’une table',
 };

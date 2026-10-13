@@ -3,6 +3,8 @@ import { getNavHref } from '../utils/nav';
 import { getAnnouncementCta, LETTER } from '../data/site';
 import { getWorkshopViews } from '../data/workshops';
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { Picture } from 'astro:assets';
+import { img } from '../utils/images';
 import PageHeader from '../components/PageHeader.astro';
 import WorkshopCard from '../components/WorkshopCard.astro';
 import Faq, { type FaqItem } from '../components/Faq.astro';
@@ -17,24 +19,24 @@ const cta = getAnnouncementCta();
 
 const faqItems: FaqItem[] = [
   {
-    question: 'Puis-je venir seul·e à un atelier ?',
+    question: 'Peut-on venir en solo ?',
     answer:
-      'Bien sûr. Beaucoup de participant·es viennent seul·es. Nos expériences sont pensées comme des espaces de partage et de rencontre, et nous veillons à créer une ambiance chaleureuse afin que chacun·e puisse se sentir à l’aise dès son arrivée.',
+      'Bien sûr. Beaucoup de personnes viennent en solo. Nos expériences sont pensées comme des espaces de partage et de rencontre, et nous veillons à créer une ambiance chaleureuse afin que chacun puisse se sentir à l’aise dès son arrivée.',
   },
   {
-    question: 'Puis-je venir accompagné·e ?',
+    question: 'Peut-on venir à deux ou entre amis ?',
     answer:
       'Avec plaisir. Selon les ateliers, nous proposons ponctuellement des tarifs préférentiels pour venir à deux. Certaines expériences sont mixtes et d’autres peuvent être pensées pour un public particulier : toutes les informations sont précisées sur la page de l’atelier.',
   },
   {
     question: 'Faut-il déjà savoir pratiquer l’activité ?',
     answer:
-      'Non. Nos ateliers sont conçus pour permettre à chacun·e de découvrir, d’expérimenter et d’apprendre à son rythme. Les artistes, artisan·es et expert·es accompagnent le groupe tout au long de l’expérience.',
+      'Non. Nos ateliers sont conçus pour permettre à tout le monde de découvrir, d’expérimenter et d’apprendre à son rythme. Les personnes qui animent l’atelier accompagnent le groupe tout au long de l’expérience.',
   },
   {
-    question: 'Faut-il être issu·e de la communauté afrodescendante pour participer ?',
+    question: 'Faut-il faire partie de la communauté afrodescendante pour participer ?',
     answer:
-      'Non. Les Ateliers Massoda sont ouverts à toutes et à tous. Nos expériences mettent à l’honneur les cultures afro-⁠caribéennes, leurs savoirs, leurs pratiques et leurs créateur·rices dans une démarche de découverte, de transmission et de partage. Il n’est donc pas nécessaire d’être afrodescendant·e pour participer : nous demandons simplement de venir avec curiosité, respect et envie d’apprendre.',
+      'Non. Les Ateliers Massoda sont ouverts à toutes et à tous. Nos expériences mettent à l’honneur les cultures afro-⁠caribéennes, leurs savoirs, leurs pratiques et celles et ceux qui les font vivre dans une démarche de découverte, de transmission et de partage. Il n’est donc pas nécessaire d’avoir des origines afrodescendantes pour participer : nous demandons simplement de venir avec curiosité, respect et envie d’apprendre.',
   },
   {
     question: 'Le matériel est-il fourni ?',
@@ -44,15 +46,15 @@ const faqItems: FaqItem[] = [
   {
     question: 'Pourquoi le nombre de places est-il limité ?',
     answer:
-      'Nous privilégions les petits groupes afin de préserver une expérience intimiste, de faciliter les échanges avec l’intervenant·e et de permettre à chacun·e d’être accompagné·e dans de bonnes conditions.',
+      'Nous privilégions les petits groupes afin de préserver une expérience intimiste, de faciliter les échanges avec la personne qui anime l’atelier et de permettre à chaque personne d’être bien accompagnée dans de bonnes conditions.',
   },
   {
     question: 'Où ont lieu les ateliers ?',
     answer:
-      'Les expériences Massoda sont organisées dans différents lieux sélectionnés en fonction de l’univers de chaque atelier. L’adresse exacte est indiquée sur la page de réservation et dans la confirmation.',
+      'À Paris. La plupart des ateliers se déroulent chez BMK Folie-Bamako (Paris 11e) ; d’autres ont lieu ponctuellement dans des lieux sélectionnés selon l’univers de l’expérience. L’adresse exacte est indiquée sur la page de réservation et dans la confirmation.',
   },
   {
-    question: 'Comment être informé·e des prochains ateliers ?',
+    question: 'Comment suivre la prochaine programmation ?',
     answer:
       'En rejoignant La Lettre de Massoda, il est possible de découvrir la prochaine programmation et de bénéficier d’un accès prioritaire aux billetteries avant leur ouverture au public.',
   },
@@ -63,6 +65,12 @@ const faqItems: FaqItem[] = [
   },
 ];
 
+const souvenirs = [
+  { key: 'workshops/paint-jam-banner', caption: 'Atelier peinture — les gestes', alt: 'Une main peint des formes colorées sur une toile' },
+  { key: 'home/communaute-masoda', caption: 'Atelier baya — la tablée', alt: 'Des personnes confectionnent des baya autour d’une table fleurie' },
+  { key: 'home/atelier-paint-jam', caption: 'Atelier peinture — le partage', alt: 'Des personnes peignent ensemble autour d’une longue table' },
+];
+
 const pageHeader = {
   "title": "Ateliers & expériences",
   "lede": "Les Ateliers Massoda créent des espaces de partage où les cultures afro-⁠caribéennes se vivent à travers la créativité, le bien-⁠être et l’art de vivre."
@@ -71,13 +79,13 @@ const pageHeader = {
 
 <BaseLayout
   title="Ateliers & expériences — Les Ateliers Massoda"
-  description="Rencontrer des artistes, artisan·es et expert·es le temps d’un atelier en petit comité, matériel fourni : la programmation des Ateliers Massoda."
+  description="Rencontrer des artistes et des personnes expertes le temps d’un atelier en petit comité, à Paris, matériel fourni : la programmation des Ateliers Massoda."
 >
   <!-- 1. Introduction -->
   <PageHeader {...pageHeader}>
     <p>
-      Ouverts à toutes et à tous, nos ateliers invitent à rencontrer des artistes,
-      artisan·es et expert·es, à découvrir leurs savoirs et leurs pratiques, puis à les
+      Ouverts à toutes et à tous, nos ateliers invitent à rencontrer des artistes et
+      des personnes expertes de leur pratique, à découvrir leurs savoirs et leurs pratiques, puis à les
       expérimenter à sa manière.
     </p>
     <p>
@@ -85,9 +93,13 @@ const pageHeader = {
       tout le matériel fourni, afin de profiter pleinement du moment.
     </p>
     <p>
-      Que l’on vienne seul·e ou accompagné·e, Massoda est avant tout un espace de
+      Que l’on vienne en solo, à deux ou entre amis, Massoda est avant tout un espace de
       rencontre, de transmission et de convivialité.
     </p>
+    <div class="ateliers-location">
+      <h2 class="heading-4">Où se déroulent les ateliers ?</h2>
+      <p>La plupart de nos ateliers ont lieu chez BMK Folie-Bamako, 40 rue Jean-Pierre Timbaud, Paris 11e, un lieu qui accueille fidèlement nos expériences. D’autres se déroulent ponctuellement dans des lieux choisis pour leur univers. L’adresse exacte figure toujours sur la page de réservation.</p>
+    </div>
   </PageHeader>
 
   <!-- 2. Les trois prochains ateliers -->
@@ -104,6 +116,31 @@ const pageHeader = {
           <div>
             <WorkshopCard workshop={atelier} headingLevel="h3" />
           </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section souvenirs">
+    <div class="container">
+      <h2 class="heading-2 souvenirs__title">Souvenirs d’ateliers</h2>
+      <p class="souvenirs__lede">Quelques moments partagés lors de nos ateliers précédents.</p>
+      <div class="souvenirs__row" role="region" aria-label="Souvenirs d’ateliers" tabindex="0">
+        {souvenirs.map(souvenir => (
+          <figure>
+            <Picture
+              src={img(souvenir.key)}
+              alt={souvenir.alt}
+              class="souvenirs__photo"
+              formats={['avif', 'webp']}
+              widths={[400, 640, 900]}
+              sizes="(min-width:1200px) 347px, (min-width:1024px) calc((100vw - 160px) / 3), (min-width:768px) calc((100vw - 112px) / 3), calc((100vw - 48px) * 0.78)"
+              loading="lazy"
+              width={img(souvenir.key).width}
+              height={img(souvenir.key).height}
+            />
+            <figcaption>{souvenir.caption}</figcaption>
+          </figure>
         ))}
       </div>
     </div>
@@ -151,6 +188,49 @@ const pageHeader = {
 </BaseLayout>
 
 <style>
+  .ateliers-location { margin-top: var(--space-8); }
+  .ateliers-location h2 { margin-bottom: var(--space-3); }
+
+  .souvenirs__title { margin-bottom: var(--space-3); }
+  .souvenirs__lede {
+    color: var(--color-text-light);
+    margin-bottom: var(--space-8);
+  }
+
+  .souvenirs__row {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: 78%;
+    gap: var(--space-4);
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+  }
+
+  .souvenirs__row::-webkit-scrollbar { display: none; }
+  .souvenirs__row figure { min-width: 0; scroll-snap-align: start; }
+  .souvenirs__photo {
+    width: 100%;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+    border-radius: var(--radius-lg);
+  }
+
+  .souvenirs__row figcaption {
+    margin-top: var(--space-3);
+    font-size: var(--text-sm);
+    color: var(--color-text-light);
+  }
+
+  @media (min-width: 768px) {
+    .souvenirs__row {
+      grid-auto-flow: row;
+      grid-auto-columns: auto;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      overflow: visible;
+      scroll-snap-type: none;
+    }
+  }
+
 
   /* Prochains ateliers */
   .prochains {

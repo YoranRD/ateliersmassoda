@@ -21,7 +21,6 @@ const posterUrl = HERO_MEDIA.posterSrc ? `${basePath}${HERO_MEDIA.posterSrc}` : 
 ---
 
 <section class="hero">
-  <div class="hero__halo" aria-hidden="true"></div>
   <div class="container hero__inner">
     <div class="hero__content">
       <span class="overline overline--caps">Culture · Créativité · Bien-⁠être</span>
@@ -45,58 +44,61 @@ const posterUrl = HERO_MEDIA.posterSrc ? `${basePath}${HERO_MEDIA.posterSrc}` : 
           </a>
         )}
       </div>
+      <p class="hero__location">Ateliers à Paris, dans des lieux sélectionnés selon les expériences.</p>
     </div>
 
     <div class="hero__visual">
-      <div class="hero__media-frame">
-        {hasVideo ? (
-          <video
-            class="hero__media hero__video"
-            id="hero-video"
-            src={`${basePath}${HERO_MEDIA.videoSrc}`}
-            poster={posterUrl}
-            muted
-            loop
-            playsinline
-            preload="none"
-            aria-label={HERO_MEDIA.fallbackAlt}
-            data-massoda-placeholder={HERO_MEDIA.posterSrc ? undefined : 'HERO_VIDEO_POSTER'}
-          >
+      <div class="hero__media-halo halo">
+        <div class="hero__media-frame">
+          {hasVideo ? (
+            <video
+              class="hero__media hero__video"
+              id="hero-video"
+              src={`${basePath}${HERO_MEDIA.videoSrc}`}
+              poster={posterUrl}
+              muted
+              loop
+              playsinline
+              preload="none"
+              aria-label={HERO_MEDIA.fallbackAlt}
+              data-massoda-placeholder={HERO_MEDIA.posterSrc ? undefined : 'HERO_VIDEO_POSTER'}
+            >
+              <Picture
+                src={fallbackImage}
+                alt={HERO_MEDIA.fallbackAlt}
+                formats={['avif', 'webp']}
+                widths={[480, 720, 960, 1200]}
+                sizes="(min-width:1024px) 40vw, (min-width:768px) 50vw, 100vw"
+                width={fallbackImage.width}
+                height={fallbackImage.height}
+                loading="lazy"
+              />
+            </video>
+          ) : (
             <Picture
               src={fallbackImage}
               alt={HERO_MEDIA.fallbackAlt}
               formats={['avif', 'webp']}
               widths={[480, 720, 960, 1200]}
               sizes="(min-width:1024px) 40vw, (min-width:768px) 50vw, 100vw"
+              class="hero__media"
               width={fallbackImage.width}
               height={fallbackImage.height}
-              loading="lazy"
+              loading="eager"
+              decoding="async"
+              fetchpriority="high"
+              data-massoda-placeholder="HERO_VIDEO"
             />
-          </video>
-        ) : (
-          <Picture
-            src={fallbackImage}
-            alt={HERO_MEDIA.fallbackAlt}
-            formats={['avif', 'webp']}
-            widths={[480, 720, 960, 1200]}
-            sizes="(min-width:1024px) 40vw, (min-width:768px) 50vw, 100vw"
-            class="hero__media"
-            width={fallbackImage.width}
-            height={fallbackImage.height}
-            loading="eager"
-            decoding="async"
-            fetchpriority="high"
-            data-massoda-placeholder="HERO_VIDEO"
-          />
-        )}
-        {hasVideo && (
-          <button
-            type="button"
-            class="btn btn--primary hero__video-toggle"
-            aria-controls="hero-video"
-            aria-pressed="false"
-          >Lire la vidéo</button>
-        )}
+          )}
+          {hasVideo && (
+            <button
+              type="button"
+              class="btn btn--primary hero__video-toggle"
+              aria-controls="hero-video"
+              aria-pressed="false"
+            >Lire la vidéo</button>
+          )}
+        </div>
       </div>
     </div>
   </div>
@@ -108,17 +110,6 @@ const posterUrl = HERO_MEDIA.posterSrc ? `${basePath}${HERO_MEDIA.posterSrc}` : 
     overflow: hidden;
     padding-block: var(--space-16) var(--space-20);
     background: var(--color-bg);
-  }
-
-  .hero__halo {
-    position: absolute;
-    top: -120px;
-    right: -80px;
-    width: 500px;
-    height: 500px;
-    border-radius: 50%;
-    background: radial-gradient(circle, color-mix(in srgb, var(--color-warm) 22%, transparent) 0%, transparent 70%);
-    pointer-events: none;
   }
 
   .hero__inner {
@@ -154,6 +145,17 @@ const posterUrl = HERO_MEDIA.posterSrc ? `${basePath}${HERO_MEDIA.posterSrc}` : 
   .hero__visual {
     display: flex;
     justify-content: center;
+  }
+
+  .hero__location {
+    margin-top: var(--space-4);
+    color: var(--color-text-light);
+    font-size: var(--text-sm);
+  }
+
+  .hero__media-halo {
+    width: 100%;
+    max-width: 480px;
   }
 
   .hero__media-frame {
@@ -225,13 +227,6 @@ const posterUrl = HERO_MEDIA.posterSrc ? `${basePath}${HERO_MEDIA.posterSrc}` : 
   @media (min-width: 768px) {
     .hero {
       padding-block: var(--space-24) var(--space-32);
-    }
-
-    .hero__halo {
-      width: 700px;
-      height: 700px;
-      top: -200px;
-      right: -100px;
     }
 
     .hero__inner {

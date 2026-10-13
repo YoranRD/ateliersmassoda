@@ -52,7 +52,7 @@ const pageHeader = {
 };
 ---
 
-<BaseLayout title="Boutique — Les Ateliers Massoda" description="Découvrez notre sélection curatée d'objets de bien-être, déco et lifestyle afro-caribéen.">
+<BaseLayout noindex title="Boutique — Les Ateliers Massoda" description="Découvrez notre sélection curatée d'objets de bien-être, déco et lifestyle afro-caribéen.">
 
   <PageHeader {...pageHeader} />
 
@@ -80,7 +80,7 @@ const pageHeader = {
                 <MediaPlaceholder index={i} caption="Sélection à venir" label={`${cat.name} — Sélection à venir`} />
               </div>
             )}
-            <h2 class="boutique-card__title">{cat.name}</h2>
+            <h3 class="boutique-card__title">{cat.name}</h3>
             <p class="boutique-card__text">{cat.description}</p>
             <span class={`boutique-card__badge boutique-card__badge--${cat.image ? 'soon' : 'later'}`}>{cat.badge}</span>
           </article>
@@ -93,7 +93,7 @@ const pageHeader = {
     <div class="container container--narrow">
       <div class="boutique-notice__inner">
         <h2 class="heading-4">La boutique se construit, vague après vague.</h2>
-        <p>Pour être informée du lancement de chaque catégorie, suivez-nous sur Instagram — ou écrivez-nous directement si vous avez un projet ou une question.</p>
+        <p>Pour suivre le lancement de chaque catégorie, rendez-vous sur Instagram — ou écrivez-nous directement si vous avez un projet ou une question.</p>
         <div class="boutique-notice__actions">
           <a href={INSTAGRAM_URL} target="_blank" rel="noopener" class="btn btn--primary">
             Suivre sur Instagram

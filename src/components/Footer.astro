@@ -28,7 +28,7 @@ const logoUrl = `${basePath}brand/nouveau_logo_crop.png`;
             loading="lazy"
           />
         </a>
-        <p class="footer__tagline">Ateliers créatifs, bien-⁠être<br/>et lifestyle afro-⁠caribéen.</p>
+        <p class="footer__tagline">Ateliers créatifs, bien-⁠être et lifestyle afro-⁠caribéen, à Paris.</p>
       </div>
 
       <!-- Navigation -->
@@ -40,15 +40,6 @@ const logoUrl = `${basePath}brand/nouveau_logo_crop.png`;
           <li><a href={letterHref} aria-current={isActiveLink(currentPath, letterHref) ? 'page' : undefined}>La Lettre</a></li>
           <li><a href={getNavHref('a-propos', base)}>À propos</a></li>
           <li><a href={getNavHref('contact', base)}>Collaborer</a></li>
-        </ul>
-      </div>
-
-      <!-- Explorer -->
-      <div class="footer__col">
-        <h2 class="footer__heading">Explorer</h2>
-        <ul class="footer__links">
-          <li><a href={getNavHref('boutique', base)}>Boutique</a></li>
-          <li><a href={getNavHref('journal', base)}>Journal</a></li>
         </ul>
       </div>
 
@@ -93,8 +84,6 @@ const logoUrl = `${basePath}brand/nouveau_logo_crop.png`;
   .footer a {
     display: inline-flex;
     align-items: center;
-    min-height: 44px;
-    padding-block: var(--space-3);
   }
 
   .footer__logo-link {
@@ -169,6 +158,13 @@ const logoUrl = `${basePath}brand/nouveau_logo_crop.png`;
     color: var(--color-brand);
   }
 
+  @media (max-width: 767px), (pointer: coarse) {
+    .footer a {
+      min-height: 44px;
+      padding-block: var(--space-3);
+    }
+  }
+
   @media (min-width: 640px) {
     .footer__bottom {
       flex-direction: row;
@@ -179,7 +175,7 @@ const logoUrl = `${basePath}brand/nouveau_logo_crop.png`;
 
   @media (min-width: 768px) {
     .footer__grid {
-      grid-template-columns: 1.6fr 1fr 1fr 1fr;
+      grid-template-columns: 1.6fr 1fr 1fr;
     }
     .footer__brand { grid-column: auto; }
     .footer__logo-img { height: 42px; }
