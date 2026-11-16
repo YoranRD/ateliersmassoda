@@ -2,6 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PageHeader from '../components/PageHeader.astro';
 import { getNavHref } from '../utils/nav';
+import { CONTACT_EMAIL, WEB3FORMS_ACCESS_KEY } from '../data/contact';
 
 const base = import.meta.env.BASE_URL;
 
@@ -30,14 +31,14 @@ const pageHeader = {
             <li>Siège social : <em>À compléter</em></li>
             <li>SIRET / SIREN : <em>À compléter</em></li>
             <li>Numéro de TVA intracommunautaire (le cas échéant) : <em>À compléter</em></li>
-            <li>Adresse e-mail de contact : <a href="mailto:yoranrd@gmail.com">yoranrd@gmail.com</a></li>
+            <li>Adresse e-mail de contact : <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a></li>
           </ul>
         </article>
 
         <article class="legal__block">
           <h2 class="heading-4">Responsable de publication</h2>
           <p>Nom du ou de la responsable de publication : <em>À compléter</em>.</p>
-          <p>Pour toute question relative au contenu du site, vous pouvez écrire à <a href="mailto:yoranrd@gmail.com">yoranrd@gmail.com</a> ou utiliser le <a href={getNavHref('contact', base)}>formulaire de contact</a>.</p>
+          <p>Pour toute question relative au contenu du site, vous pouvez écrire à <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>{WEB3FORMS_ACCESS_KEY && <> ou utiliser le <a href={getNavHref('contact', base)}>formulaire de contact</a></>}.</p>
         </article>
 
         <article class="legal__block">
@@ -59,16 +60,16 @@ const pageHeader = {
         <article class="legal__block">
           <h2 class="heading-4">Données personnelles</h2>
           <p>Le site Les Ateliers Massoda ne dépose pas de cookies de suivi et ne collecte pas de données de navigation à des fins publicitaires.</p>
-          <p>Les seules données personnelles traitées sont celles que vous transmettez volontairement via le <a href={getNavHref('contact', base)}>formulaire de contact</a> (nom, e-mail, sujet, message). Elles sont utilisées uniquement pour répondre à votre demande et ne sont ni revendues, ni utilisées à des fins commerciales.</p>
-          <p>Conformément à la réglementation applicable, vous pouvez demander à tout moment l’accès, la rectification ou la suppression de vos données en écrivant à <a href="mailto:yoranrd@gmail.com">yoranrd@gmail.com</a>.</p>
+          <p>Les données communiquées lors d’une prise de contact par e-mail{WEB3FORMS_ACCESS_KEY && ' ou via le formulaire'} (nom, e-mail, sujet, message) servent à répondre à votre demande.</p>
+          <p>Conformément à la réglementation applicable, vous pouvez demander à tout moment l’accès, la rectification ou la suppression de vos données en écrivant à <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>.</p>
           <p>Délai de conservation des messages reçus : <em>À compléter</em>.</p>
         </article>
 
-        <article class="legal__block">
+        {WEB3FORMS_ACCESS_KEY && <article class="legal__block">
           <h2 class="heading-4">Formulaire de contact</h2>
           <p>L’envoi d’un message via le formulaire de contact est techniquement assuré par le service tiers <strong>Web3Forms</strong> (<a href="https://web3forms.com/" target="_blank" rel="noopener">web3forms.com</a>), qui transmet le contenu du message à l’adresse e-mail des Ateliers Massoda.</p>
           <p>Les informations que vous renseignez transitent par ce service uniquement pour permettre la délivrance du message. Aucun de ces champs n’est utilisé à d’autres fins.</p>
-        </article>
+        </article>}
 
         <article class="legal__block">
           <h2 class="heading-4">Cookies / mesure d’audience</h2>

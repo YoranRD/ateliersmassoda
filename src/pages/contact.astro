@@ -3,6 +3,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import PageHeader from '../components/PageHeader.astro';
 import { getNavHref } from '../utils/nav';
 import { SOCIAL_LINKS } from '../data/site';
+import { CONTACT_EMAIL, WEB3FORMS_ACCESS_KEY } from '../data/contact';
 
 const base = import.meta.env.BASE_URL;
 const legalHref = getNavHref('mentions-legales', base);
@@ -21,7 +22,7 @@ const pageHeader = {
   <PageHeader {...pageHeader} />
 
   <section class="section">
-    <div class="container contact-grid">
+    <div class:list={['container', 'contact-grid', { 'contact-grid--with-form': WEB3FORMS_ACCESS_KEY }]}>
       <!-- Contact info -->
       <div class="contact-info">
         <div class="contact-info__block">
@@ -42,12 +43,12 @@ const pageHeader = {
             ))}
           </ul>
           <p class="contact-info__email">
-            Ou écrivez directement à <a href="mailto:yoranrd@gmail.com">yoranrd@gmail.com</a>
+            {WEB3FORMS_ACCESS_KEY ? 'Ou écrivez directement à' : 'Écrivez-nous à'} <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>
           </p>
         </div>
       </div>
 
-      <div class="contact-form-wrap">
+      {WEB3FORMS_ACCESS_KEY && <div class="contact-form-wrap">
         <form
           class="contact-form"
           id="contact-form"
@@ -55,7 +56,7 @@ const pageHeader = {
           action="https://api.web3forms.com/submit"
           method="POST"
         >
-          <input type="hidden" name="access_key" value="519f48fd-824e-4443-81f1-f78653fbcfce" />
+          <input type="hidden" name="access_key" value={WEB3FORMS_ACCESS_KEY} />
           <input type="checkbox" name="botcheck" tabindex="-1" autocomplete="off" class="contact-form__botcheck" />
           <div class="contact-form__group">
             <label for="name">Nom</label>
@@ -93,7 +94,7 @@ const pageHeader = {
             Vos messages sont transmis via le service <a href="https://web3forms.com/" target="_blank" rel="noopener">Web3Forms</a>. Les informations envoyées servent uniquement à vous répondre. Plus de détails dans nos <a href={legalHref}>mentions légales</a>.
           </p>
         </form>
-      </div>
+      </div>}
     </div>
   </section>
 </BaseLayout>
@@ -143,21 +144,20 @@ const pageHeader = {
 
         const result = await response.json();
 
-        if (response.ok) {
+        if (response.ok && result?.success === true) {
           status.dataset.state = 'success';
-          status.textContent =
-            result.message || 'Merci, votre message est bien arrivé. Nous revenons vers vous très vite.';
+          status.textContent = 'Merci, votre message a été envoyé.';
           form.reset();
         } else {
           status.dataset.state = 'error';
           status.textContent =
-            result.message || "L’envoi n’a pas pu aboutir. Merci de réessayer ou de nous écrire à yoranrd@gmail.com.";
+            "L’envoi n’a pas pu aboutir. Réessayez ou utilisez l’adresse e-mail indiquée sur cette page.";
         }
       } catch (error) {
         console.error(error);
         status.dataset.state = 'error';
         status.textContent =
-          "Connexion interrompue. Merci de réessayer ou de nous écrire à yoranrd@gmail.com.";
+          "L’envoi a été interrompu. Réessayez ou utilisez l’adresse e-mail indiquée sur cette page.";
       } finally {
         submitButton.disabled = false;
         submitButton.textContent = initialButtonText || 'Envoyer';
@@ -342,7 +342,7 @@ const pageHeader = {
 
   @media (min-width: 768px) {
 
-    .contact-grid {
+    .contact-grid--with-form {
       grid-template-columns: 1fr 1.2fr;
       gap: var(--space-16);
     }
